@@ -1,0 +1,110 @@
+body
+{
+  font-family: Verdana;
+  background-color: #FFF;
+  color: #555;
+  text-align: left;
+  margin: 0;
+}
+
+#admin
+{
+    font-family: monospace;
+    text-align: right;
+    float: right;
+    padding: 5px;
+}
+
+#admin a
+{
+    color: #555;
+}
+
+#admin li
+{
+    list-style: none;
+}
+
+#header
+{
+	font-family: monospace;
+    text-align: left;
+	padding: 5px;
+	border: 1px solid #c9c2c1;
+	border-top: none;
+	margin: 0 auto;
+	width: 400px;
+}
+
+#header a
+{
+	float: right;
+}
+
+div.sysmessage
+{
+	width: 350px;
+	margin: 10px auto;
+	padding: 10px;
+	border: 1px solid #f9c2c1;
+	text-align: center;
+	font-size: 9pt;
+}
+
+form.composer
+{
+	width: 300px;
+	margin: 30px auto 15px auto;
+	font-size: 9pt;
+}
+
+form.composer textarea, form.composer input
+{
+	width: 300px;
+	color: #555;
+}
+
+div.message
+{
+	width: 300px;
+	margin: 30px auto 15px auto;
+	font-size: 9pt;
+}
+
+div.message blockquote
+{
+    background-color: #FFF;
+	margin: 0px;
+	padding: 0 10px;
+	border: 1px solid #c9c2c1;
+}
+
+div.message cite
+{
+	position: relative;
+	display: block;
+	margin: 0px;
+	padding-left: 15px;
+	padding-top: 7px;
+	top: -1px; /* 1px less than padding-top */
+	font-style: normal;
+}
+
+div.message cite.left
+{
+	background: transparent url(tip.gif) no-repeat 20px 0;
+}
+
+div.message cite.right
+{
+	background: transparent url(tip.gif) no-repeat 260px 0;
+	text-align: right;
+}
+
+b {
+    color: #090;
+}
+
+a {
+    color: #0AA;
+}

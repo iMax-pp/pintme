@@ -1,16 +1,15 @@
 <html>
   <head>
 	<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-	<link rel="shortcut icon" href="stylesheets/pint.ico" />
-	<title>{{ subtitle }}</title>
+	<title>{{ random_title }}</title>
   </head>
   <body>
 	{% if is_admin %}
 	<div id="admin">
 		<ul>
-			<li><a href="http://appengine.google.com/datastore/explorer?&app_id=neopownce">Data Viewer</a></li>
-			<li><a href="http://appengine.google.com/dashboard?&app_id=neopownce">Dashboard</a></li>
-			<li><a href="http://appengine.google.com/adminlogs?&app_id=neopownce">Admin Logs</a></li>
+			<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
+			<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
+			<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
 		</ul>
 	</div>
 	{% endif %}
@@ -18,7 +17,7 @@
 	<div id="header">
 		<b>P</b>int <b>I</b>s <b>N</b>ot <b>T</b>witter...<a href="{{ url }}">{{ url_linktext }}</a>
 		<br>
-		<h4>{{ subtitle }}</h4>
+		<h4>{{ random_title }}</h4>
 	</div>
 
 
@@ -67,14 +66,16 @@
 	  </div>
 	{% endfor %}
 
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-7258394-1");
-pageTracker._trackPageview();
-} catch(err) {}</script>
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try
+		{
+			var pageTracker = _gat._getTracker("UA-7258394-1");
+			pageTracker._trackPageview();
+		} catch(err) {}
+	</script>
   </body>
 </html>

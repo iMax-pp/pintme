@@ -17,6 +17,7 @@
 
 import cgi
 import os
+import random
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
@@ -58,9 +59,13 @@ class MainPage(webapp.RequestHandler):
 	  
 		# Check if user is admin
 		is_admin = users.is_current_user_admin()
-	
+	    
+		# Un titre au hasard a chaque coup
+   		titles = ('PintSpot', 'Pinted', 'PintMe', 'PintSoft', 'PintHard', 'PintSM', 'Pintware', 'PintBDSM', 'PintBSD', 'PintLSD', 'Pintou (or ubuntu)', 'Pintubuntu', 'iPint', 'youPint', 'Google Pint', 'PintPlease', 'PintSorry', 'PintWelcomed', 'PintAgain', 'Pintguin', 'JustOnePint', 'JustAnotherPint', 'OneMorePint', 'Bier&Pint', 'PintOfVodka', 'Pintade', 'Pintaid', 'PintADD', 'PintINC', 'Pintagramme', 'Pint-A-Gramme', 'Pint-A-Kilo', 'Pound-A-Pint', 'FishPint', 'PintSized', 'MysticPint', 'SuperPint', 'HyperPint', 'QuanticPint', 'QuantumOfPint', 'ElectroPint', 'RoyalPint', 'RepublicanPint', 'YesWeCan...Pint', 'WhatTheFucking...Pint', 'IVotedForPint', 'WhatSThePint', 'PintAday', 'PintIsMine', 'myPint!', 'PintBook', 'PintBook-Air', 'less Air, more Pint', 'ApplePint', 'WebPint', 'Command+Pint', 'Ctrl+Meta+Alt+Pint', ':pint', '3ClickPint', 'BlackPint', 'Pintsh', 'Pint (Pint Is Not Twilight)', 'tinP', 'tniP', 'TonightPint', 'CoffeePint', 'BreakfastPint', 'BaconPint', 'PintPause', 'Pint-nic', 'PintAddress', 'PintPhone', 'MultiPint', 'SimplePint...', 'FourFingersPint', 'StartPint', 'StopPint', 'pINT', 'pINTEGER', 'FloatOrPint', 'PintPointer', 'MasterPinter', 'LicensePinter', 'GNUPint', 'Pintix', 'Pintux', 'Pintium', 'PintOS', 'ThanksForThePint', 'LordOfThePint', 'PissPint', 'Pint8', '666 Number Of The Pint', 'BugPint', 'BlueScreenOfPint', 'PintPanic', 'PintOSleep', 'Pintcraft', 'WarPint', 'PintOfDead', 'PintsOfTheCaribeans', 'TheLastPint', 'Pint:Revolution', 'Pint:Resurrection', 'EvilPint', 'TheIncrediblePint ', 'XPint ', 'YPint', 'WhyPint', 'InexhaustiblePint', 'SauronSPint', 'SleepyPint', 'NeverSleepPint')
+		subtitle = random.choice(titles)
 		# These values are to be sent to the template
 		template_values = {
+			'subtitle': subtitle,
 			'unknown_user': unknown_user,
 			'messages': messages,
 			'authors': authors,

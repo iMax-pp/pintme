@@ -2,6 +2,7 @@
   <head>
 	<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 	<link rel="shortcut icon" href="stylesheets/pint.ico" />
+	<title>{{ subtitle }}</title>
   </head>
   <body>
 	{% if is_admin %}
@@ -14,7 +15,11 @@
 	</div>
 	{% endif %}
 	
-	<div id="header"><b>P</b>int <b>I</b>s <b>N</b>ot <b>T</b>witter...<a href="{{ url }}">{{ url_linktext }}</a></div>
+	<div id="header">
+		<b>P</b>int <b>I</b>s <b>N</b>ot <b>T</b>witter...<a href="{{ url }}">{{ url_linktext }}</a>
+		<br>
+		<h4>{{ subtitle }}</h4>
+	</div>
 
 
 	{% if not anon %}

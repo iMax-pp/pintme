@@ -40,6 +40,11 @@ body
 {
 	float: right;
 }
+#header h4
+{
+	margin: 0px;
+	text-align: center;
+}
 
 div.sysmessage
 {

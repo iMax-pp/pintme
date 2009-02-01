@@ -1,59 +1,113 @@
 body
 {
-  font-family: Verdana;
-  background-color: #FFF;
-  color: #555;
-  text-align: left;
-  margin: 0;
-}
-
-#admin
-{
-    font-family: monospace;
-    text-align: right;
-    float: right;
-    padding: 5px;
-}
-
-#admin a
-{
-    color: #555;
-}
-
-#admin li
-{
-    list-style: none;
+	font-family: Verdana;
+	background-color: #BDD684;
+	color: #BDD684;
+	text-align: left;
+	margin: 0;
 }
 
 #header
 {
-	font-family: monospace;
-    text-align: left;
-	padding: 5px;
-	border: 1px solid #c9c2c1;
-	border-top: none;
-	margin: 0 auto;
-	width: 400px;
+	color: #E2F0D6;
+	margin-left: 190px;
 }
 
-#header a
+#header a.loglink
 {
 	float: right;
-}
-#header h4
-{
-	margin: 0px;
-	text-align: center;
+	padding: 0;
 }
 
-div.sysmessage
+#header h1
 {
-	width: 350px;
-	margin: 10px auto;
-	padding: 10px;
-	border: 1px solid #f9c2c1;
-	text-align: center;
+	display: inline
+}
+
+#mainbox
+{
+	margin: 20px auto;
+	width: 900px
+}
+
+#tabmenu
+{
+	padding: 3px 0;
+	margin-left: 0;
+	font: bold 12px Verdana, sans-serif;
+	background-color: #BDD684;
+}
+
+#tabmenu li
+{
+	list-style: none;
+	margin: 0;
+	display: inline;
+}
+
+#tabmenu li a
+{
+	padding: 3px 0.5em;
+	margin-right: 3px;
+	background: #95AB63;
+	text-decoration: none;
+	color: white;
+}
+
+#tabmenu li a:hover
+{
+	border-bottom: #FF7F2A solid 4px;
+}
+
+#tabmenu li a#current
+{
+	background: white;
+	color: #95AB63;
+	border: none;
+}
+
+#maincontent
+{
+	background-color: white;
+	margin-left: 300px;
+	min-height: 500px;	
+	padding-bottom: 20px;
+}
+
+#rightnav
+{
+	float: left;
+	width: 300px;
+	padding-top: 15px
+}
+
+#rightnav .navbox
+{
+	width: 250px;
+	margin: 0 auto 30px auto;
 	font-size: 9pt;
+}
+
+#rightnav .navbox .title
+{
+	text-align: right;
+}
+
+#rightnav .navbox .title h3
+{
+	margin-bottom: 0;
+	background: white;
+	display: inline;
+	text-align: right;
+	padding: 3px 10px;
+	color: #95AB63;
+}
+
+#rightnav .navbox .content
+{
+	margin: 0;
+	background-color: white;
+	padding: 5px 10px;	
 }
 
 form.composer
@@ -81,7 +135,7 @@ div.message blockquote
     background-color: #FFF;
 	margin: 0px;
 	padding: 0 10px;
-	border: 1px solid #c9c2c1;
+	border: 1px solid #BDD684;
 }
 
 div.message cite
@@ -106,10 +160,28 @@ div.message cite.right
 	text-align: right;
 }
 
-b {
-    color: #090;
+ul#footer
+{
+	margin-left: 300px;
+	padding: 0;
+	text-align: center;
+	color: white;
+	font-size: 8pt;
 }
 
-a {
-    color: #0AA;
+ul#footer li
+{
+	display: inline;
+	padding: 0;
+	margin: 0;
+}
+
+b
+{
+    color: #FF7F2A;
+}
+
+a
+{
+    color: #95AB63;
 }

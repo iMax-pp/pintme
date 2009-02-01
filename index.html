@@ -1,70 +1,105 @@
 <html>
   <head>
 	<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-	<title>{{ random_title }}</title>
+	<title>Pint</title>
   </head>
-  <body>
-	{% if is_admin %}
-	<div id="admin">
-		<ul>
-			<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
-			<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
-			<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
+  <body>	
+	<div id="mainbox">
+		<div id="header">
+			<a href="{{ url }}" class="loglink">{{ url_linktext }}</a>
+			<h1>{{ random_title }}</h1>
+			<cite>&#8220;Share and share alike.&#8221;</cite>
+		</div>
+		<div id="rightnav">
+			{% if not anon %}
+			<div class="navbox">
+				<div class="title">
+					<h3>Hi!</h3>
+				</div>
+				<div class="content">
+					<p>Share and Enjoy!</p>
+				</div>
+			</div>
+			{% if is_admin %}
+			<div class="navbox">
+				<div class="title">
+					<h3>Admin</h3>
+				</div>
+				<div class="content">
+					<ul>
+						<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
+						<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
+						<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
+					</ul>
+					</div>
+			</div>
+			{% endif %}
+			{% else %}
+			<div class="navbox">
+				<div class="title">
+					<h3>Hi!</h3>
+				</div>
+				<div class="content">
+					<p>Share and Enjoy!</p>
+					<p>(Login to start :)</p>
+				</div>
+			</div>
+			{% endif %}
+			<div class="navbox">
+				<div class="title">
+					<h3>Info</h3>
+				</div>
+				<div class="content">
+					<p>Information! Yay!</p>
+				</div>
+			</div>
+		</div>
+		<div id="maincontent">
+			<ul id="tabmenu">
+				<li><a href="http://pintme.appspot.com" id="current">Pints</a></li>
+				<li><a href="http://pintme.appspot.com">Another</a></li>
+				<li><a href="http://pintme.appspot.com">few</a></li>
+				<li><a href="http://pintme.appspot.com">tags!</a></li>
+			</ul>
+			{% if not anon %}
+				{% if unknown_user %}
+				<form action="/register" method="post" class="composer">
+					<div id="unknown_user">New? Enter a nickname...
+						<input name="nickname" type="text" name="nickname" value="Nickname">
+						<input type="submit" value="ok">
+					</div>
+				</form>
+				{% else %}
+				<form action="/post" method="post" class="composer">
+				  <div>
+					Your message :
+				  	<textarea name="content" rows="3" cols="40"></textarea>
+				  	<input type="submit" value="Send">
+				  </div>
+				</form> 
+				{% endif %}
+			{% endif %}
+		
+			{% for message in messages %}
+			<div class="message">
+				<blockquote>
+					<p>{{ message.content|escape }}</p>
+				</blockquote>
+				<cite class="{% cycle left,right %}">
+					{% for author in authors %}
+						{% ifequal message.author author.user %}
+							<b>{{ author.nickname }}</b>
+						{% endifequal %}
+					{% endfor %}
+				</cite>
+			  </div>
+			{% endfor %}
+		</div>
+		<ul id="footer">
+			<li>&copy; 2009</li>
+			<li><a href="/about">About</a></li>
 		</ul>
 	</div>
-	{% endif %}
-	
-	<div id="header">
-		<b>P</b>int <b>I</b>s <b>N</b>ot <b>T</b>witter...<a href="{{ url }}">{{ url_linktext }}</a>
-		<br>
-		<h4>{{ random_title }}</h4>
-	</div>
-
-
-	{% if not anon %}
-	<div class="sysmessage">
-		Share and Enjoy!
-	</div>
-
-		{% if unknown_user %}
-		<form action="/register" method="post" class="composer">
-			<div id="unknown_user">New? Enter a nickname...
-				<input name="nickname" type="text" name="nickname" value="Nickname">
-				<input type="submit" value="ok">
-			</div>
-		</form>
-		{% else %}
-		<form action="/post" method="post" class="composer">
-		  <div>
-			Your message :
-		  	<textarea name="content" rows="3" cols="40"></textarea>
-		  	<input type="submit" value="Send">
-		  </div>
-		</form> 
-		{% endif %}
-
-	{% else %}
-	<div class="sysmessage">
-		Share and Enjoy!
-		<br/>
-		(Login to start :)
-	</div>
-	{% endif %}
-
-	{% for message in messages %}
-	<div class="message">
-		<blockquote>
-			<p>{{ message.content|escape }}</p>
-		</blockquote>
-		<cite class="{% cycle left,right %}">
-			{% for author in authors %}
-				{% ifequal message.author author.user %}
-					<b>{{ author.nickname }}</b>
-				{% endifequal %}
-			{% endfor %}
-		</cite>
-	  </div>
-	{% endfor %}
 
 	<script type="text/javascript">
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

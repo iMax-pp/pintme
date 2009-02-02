@@ -18,6 +18,14 @@
 				</div>
 				<div class="content">
 					<p>Share and Enjoy!</p>
+					{% if not unknown_user %}
+					<form action="/add_friend" method="post">
+					  <div>
+						<input type="text" name="friend" value="Add Friend">
+						<input type="submit" value="ok">
+					  </div>
+					</form>
+					{% endif %}
 				</div>
 			</div>
 			{% if is_admin %}
@@ -65,7 +73,7 @@
 				{% if unknown_user %}
 				<form action="/register" method="post" class="composer">
 					<div id="unknown_user">New? Enter a nickname...
-						<input name="nickname" type="text" name="nickname" value="Nickname">
+						<input name="nickname" type="text" value="Nickname">
 						<input type="submit" value="ok">
 					</div>
 				</form>
@@ -76,7 +84,7 @@
 				  	<textarea name="content" rows="3" cols="40"></textarea>
 				  	<input type="submit" value="Send">
 				  </div>
-				</form> 
+				</form>
 				{% endif %}
 			{% endif %}
 		
@@ -86,11 +94,7 @@
 					<p>{{ message.content|escape }}</p>
 				</blockquote>
 				<cite class="{% cycle left,right %}">
-					{% for author in authors %}
-						{% ifequal message.author author.user %}
-							<b>{{ author.nickname }}</b>
-						{% endifequal %}
-					{% endfor %}
+					<b>{{ message.author.nickname }}</b>
 				</cite>
 			  </div>
 			{% endfor %}

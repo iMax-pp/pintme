@@ -20,8 +20,9 @@ from google.appengine.ext import db
 class Account(db.Model):
 	user = db.UserProperty()
 	nickname = db.StringProperty()
+	followed = db.ListProperty(db.Key)
 
 class Message(db.Model):
-	author = db.UserProperty()
+	author = db.ReferenceProperty(Account)
 	content = db.StringProperty(multiline=True)
 	date = db.DateTimeProperty(auto_now_add=True)

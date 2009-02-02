@@ -29,11 +29,8 @@ from models import Message
 from models import Account
 
 class MainPage(webapp.RequestHandler):
-	def get(self):
-		# We fetch all the accounts
-		authors = Account.all()
-		
-		# We fetch the last ten messages
+	def get(self):		
+		# By default we fetch the last ten messages
 		message_query = Message.all().order('-date')
 		messages = message_query.fetch(10)
 		
@@ -46,11 +43,16 @@ class MainPage(webapp.RequestHandler):
 			anon = False
 
 			# We check that the user is registered
-			accounts = Account.all()
-			accounts.filter('user = ', users.get_current_user())
-			account = accounts.get()
-			if account == None:
+			user_query = Account.all().filter('user = ', users.get_current_user())
+			user_account = user_query.get()
+			if user_account == None:
 				unknown_user = True
+			else:
+				# If user exist we fetch the last ten messages of him and his friends
+				# Adding himself do not change the List until I do not put him to the db
+				user_account.followed.append(user_account.key())
+				message_query = Message.gql("WHERE author IN :friends ORDER BY date DESC", friends = user_account.followed)
+				messages = message_query.fetch(10)
 		else:
 			# Generate the login url
 			url = users.create_login_url(self.request.uri)
@@ -69,7 +71,6 @@ class MainPage(webapp.RequestHandler):
 			'random_title': random_title,
 			'unknown_user': unknown_user,
 			'messages': messages,
-			'authors': authors,
 			'url': url,
 			'url_linktext': url_linktext,
 			'anon': anon,
@@ -84,8 +85,10 @@ class PostMessage(webapp.RequestHandler):
 	def post(self):
 		# Set up the message instance
 		message = Message()
-		
-		message.author = users.get_current_user()
+		# A Reference to the current user
+		user = Account.gql("WHERE user = :user", user=users.get_current_user())
+		for current_user in user:
+			message.author = current_user.key()
 		
 		if self.request.get('content') != '':
 			message.content = self.request.get('content')
@@ -108,11 +111,25 @@ class NewUser(webapp.RequestHandler):
 		
 		self.redirect('/')
 
+class AddFriend(webapp.RequestHandler):
+	def post(self):
+		accounts = Account.all()
+		user_query = Account.gql("WHERE user = :user", user=users.get_current_user())
+		current_user = user_query.get()
+		
+		for user in accounts:
+			if self.request.get('friend') == user.nickname:
+				current_user.followed.append(user.key())
+				current_user.put()
+				break
+		
+		self.redirect('/')
 
 application = webapp.WSGIApplication(
 									 [('/', MainPage),
 									  ('/post', PostMessage),
-									  ('/register', NewUser)],
+									  ('/register', NewUser),
+									  ('/add_friend', AddFriend)],
 									 debug = True)
 
 

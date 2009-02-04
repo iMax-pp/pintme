@@ -35,17 +35,10 @@ class AccountSettings(webapp.RequestHandler):
 		# Check if user is admin
 		is_admin = users.is_current_user_admin()
 		
-		# And get a list of friends nickname
-		accounts = Account.all()
-		followed = list()
-		for user in accounts:
-			if user.key() in user_account.followed:
-				followed.append(user.nickname)
-		
 		# These values are to be sent to the template
 		template_values = {
 			'user_account': user_account,
-			'followed': followed,
+			'followed': Account.get(user_account.followed),
 			'is_admin': is_admin
 		}
 		
@@ -66,11 +59,7 @@ class PostSettings(webapp.RequestHandler):
 			for user in accounts:
 				if friend_added == user.nickname:
 					# Verify not already in the list and do it
-					already_in_list = (friend_added == user_account.nickname)
-					for friend in user_account.followed:
-						if friend == user.key():
-							already_in_list = True
-					if not already_in_list:
+					if (user.key() not in user_account.followed) & (friend_added != user_account.nickname):
 						user_account.followed.append(user.key())
 						user_account.put()
 					break

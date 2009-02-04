@@ -34,7 +34,8 @@ class MainPage(webapp.RequestHandler):
 		message_query = Message.all().order('-date')
 		messages = message_query.fetch(10)
 		
-		followed = list()
+		# An empty list of followed friends (in case of an unsigned visitor)
+		followed_friends = list()
 		
 		# Check if user is logged in
 		unknown_user = False
@@ -50,17 +51,12 @@ class MainPage(webapp.RequestHandler):
 			if user_account == None:
 				unknown_user = True
 			else:
-				# Get a list of friends nickname
-				accounts = Account.all()
-				for user in accounts:
-					if user.key() in user_account.followed:
-						followed.append(user.nickname)
-				# If user exist we fetch the last ten messages of him and his friends
-				# Adding himself do not change the List until I do not put him to the db
-				user_account.followed.append(user_account.key())
-				message_query = Message.gql("WHERE author IN :friends ORDER BY date DESC", friends = user_account.followed)
+				# If user exist we get his followed friends
+				followed_friends = Account.get(user_account.followed)
+				# And we fetch the last ten messages of him and his friends
+				message_query = Message.gql("WHERE author IN :friends AND author = :current_user ORDER BY date DESC", friends = user_account.followed, current_user = users.get_current_user())
 				messages = message_query.fetch(10)
-
+		
 		else:
 			# Generate the login url
 			url = users.create_login_url(self.request.uri)
@@ -79,7 +75,7 @@ class MainPage(webapp.RequestHandler):
 			'random_title': random_title,
 			'unknown_user': unknown_user,
 			'messages': messages,
-			'followed': followed,
+			'followed': followed_friends,
 			'url': url,
 			'url_linktext': url_linktext,
 			'anon': anon,

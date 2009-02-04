@@ -95,6 +95,8 @@
 		
 			{% for message in messages %}
 			<div class="message">
+				{{ message.date.date }}
+				{{ message.date.hour }}:{{ message.date.minute }}
 				<blockquote>
 					<p>{{ message.content|escape }}</p>
 				</blockquote>

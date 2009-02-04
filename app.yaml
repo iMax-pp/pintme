@@ -1,11 +1,25 @@
 application: pintme
-version: 1
+version: 2
 runtime: python
 api_version: 1
 
 handlers:
 - url: /stylesheets
   static_dir: stylesheets
-
-- url: /.*
+  
+# Index page and post request handle by main.py
+- url: /
   script: main.py
+  
+- url: /index\.html
+  script: main.py
+  
+- url: /(post|register)
+  script: main.py
+  
+# Account Setting page and post config request handle by account_settings.py
+- url: /account_settings
+  script: account_settings/account_settings.py
+  
+- url: /account_settings/post
+  script: account_settings/account_settings.py

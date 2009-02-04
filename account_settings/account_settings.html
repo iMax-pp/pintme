@@ -1,0 +1,81 @@
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+		<title>Pint - Account Settings</title>
+	</head>
+  	<body>
+		<div id="mainbox">
+			<div id="header">
+				<h1><a>Pint</a></h1>
+				<cite>&#8220;Share and share alike.&#8221;</cite>
+			</div>
+			<div id="rightnav">
+				<div class="navbox">
+					<div class="title">
+						<h3>All you can do</h3>
+					</div>
+					<div class="content">
+						<ul>
+							<li>Change your nickname...</li>
+							<li>Add friends to your list.</li>
+							<li>Remove friends also.<br>(it's on the way)</li>
+						</ul>
+					</div>
+				</div>
+				{% if is_admin %}
+				<div class="navbox">
+					<div class="title">
+						<h3>Admin</h3>
+					</div>
+					<div class="content">
+						<ul>
+							<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
+							<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
+							<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
+						</ul>
+					</div>
+				</div>
+				{% endif %}
+				<div class="navbox">
+					<div class="title">
+						<h3>Info</h3>
+					</div>
+					<div class="content">
+						<div>
+							<p>Followed Friend</p>
+							{% for friend in followed %}
+								<a>{{ friend }}</a>
+								<br>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				
+			</div>
+
+			<div id="maincontent">
+				<ul id="tabmenu">
+					<li><a href="/">Pints</a></li>
+					<li><a href="/account_settings" id="current">Account Settings</a></li>
+				</ul>
+				<form action="/account_settings/post" method="post" class="composer">
+					<div>
+						<p>Want to change your nickname ?</p>
+						<input name="nickname" type="text" value={{ user_account.nickname }}>
+					</div>
+				  	<div>
+						<p>Adding a Friend ?</p>
+						<input name="friend_added" type="text">
+						<input type="submit" value="ok">
+				    </div>
+				</form>
+			</div>
+
+			<ul id="footer">
+				<li>&copy; 2009</li>
+				<li><a href="/about">About</a></li>
+			</ul>
+		</div>
+
+	</body>
+</html>

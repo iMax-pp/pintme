@@ -18,14 +18,6 @@
 				</div>
 				<div class="content">
 					<p>Share and Enjoy!</p>
-					{% if not unknown_user %}
-					<form action="/add_friend" method="post">
-					  <div>
-						<input type="text" name="friend" value="Add Friend">
-						<input type="submit" value="ok">
-					  </div>
-					</form>
-					{% endif %}
 				</div>
 			</div>
 			{% if is_admin %}
@@ -58,16 +50,28 @@
 					<h3>Info</h3>
 				</div>
 				<div class="content">
-					<p>Information! Yay!</p>
+					{% if not unknown_user %}
+					<div>
+						<p>Followed Friend</p>
+						{% for friend in followed %}
+							<a>{{ friend }}</a>
+							<br>
+						{% endfor %}
+					</div>
+					{% else %}
+					<div>
+						<p>Information! Yay!</p>
+					</div>
+					{% endif %}
 				</div>
 			</div>
 		</div>
 		<div id="maincontent">
 			<ul id="tabmenu">
-				<li><a href="http://pintme.appspot.com" id="current">Pints</a></li>
-				<li><a href="http://pintme.appspot.com">Another</a></li>
-				<li><a href="http://pintme.appspot.com">few</a></li>
-				<li><a href="http://pintme.appspot.com">tags!</a></li>
+				<li><a href="/" id="current">Pints</a></li>
+				{% if not unknown_user %}
+				<li><a href="/account_settings">Account Settings</a></li>
+				{% endif %}
 			</ul>
 			{% if not anon %}
 				{% if unknown_user %}

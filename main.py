@@ -48,11 +48,18 @@ class MainPage(webapp.RequestHandler):
 			if user_account == None:
 				unknown_user = True
 			else:
+				# Get a list of friends nickname
+				accounts = Account.all()
+				followed = list()
+				for user in accounts:
+					if user.key() in user_account.followed:
+						followed.append(user.nickname)
 				# If user exist we fetch the last ten messages of him and his friends
 				# Adding himself do not change the List until I do not put him to the db
 				user_account.followed.append(user_account.key())
 				message_query = Message.gql("WHERE author IN :friends ORDER BY date DESC", friends = user_account.followed)
 				messages = message_query.fetch(10)
+
 		else:
 			# Generate the login url
 			url = users.create_login_url(self.request.uri)
@@ -63,7 +70,7 @@ class MainPage(webapp.RequestHandler):
 		is_admin = users.is_current_user_admin()
 	    
 		# Choose a random title
-   		titles = ('<a>PINT</a>Spot', '<a>PINT</a>ed', '<a>PINT</a>Me', '<a>PINT</a>Soft', '<a>PINT</a>Hard', '<a>PINT</a>SM', '<a>PINT</a>ware', '<a>PINT</a>BDSM', '<a>PINT</a>BSD', '<a>PINT</a>LSD', '<a>PINT</a>ou (or ubuntu)', '<a>PINT</a>ubuntu', 'i<a>PINT</a>', 'you<a>PINT</a>', 'Google <a>PINT</a>', '<a>PINT</a>Please', '<a>PINT</a>Sorry', '<a>PINT</a>Welcomed', '<a>PINT</a>Again', '<a>PINT</a>guin', 'JustOne<a>PINT</a>', 'JustAnother<a>PINT</a>', 'OneMore<a>PINT</a>', 'Bier&<a>PINT</a>', '<a>PINT</a>OfVodka', '<a>PINT</a>ade', '<a>PINT</a>aid', '<a>PINT</a>ADD', '<a>PINT</a>INC', '<a>PINT</a>agramme', '<a>PINT</a>-A-Gramme', '<a>PINT</a>-A-Kilo', 'Pound-A-<a>PINT</a>', 'Fish<a>PINT</a>', '<a>PINT</a>Sized', 'Mystic<a>PINT</a>', 'Super<a>PINT</a>', 'Hyper<a>PINT</a>', 'Quantic<a>PINT</a>', 'QuantumOf<a>PINT</a>', 'Electro<a>PINT</a>', 'Royal<a>PINT</a>', 'Republican<a>PINT</a>', 'YesWeCan...<a>PINT</a>', 'WhatTheFucking...<a>PINT</a>', 'IVotedFor<a>PINT</a>', 'WhatSThe<a>PINT</a>', '<a>PINT</a>Aday', '<a>PINT</a>IsMine', 'my<a>PINT</a>!', '<a>PINT</a>Book', '<a>PINT</a>Book-Air', 'less Air, more <a>PINT</a>', 'Apple<a>PINT</a>', 'Web<a>PINT</a>', 'Command+<a>PINT</a>', 'Ctrl+Meta+Alt+<a>PINT</a>', ':<a>PINT</a>', '3Click<a>PINT</a>', 'Black<a>PINT</a>', '<a>PINT</a>sh', '<a>PINT</a> (<a>PINT</a> Is Not Twilight)', 'tinP', 'tniP', 'Tonight<a>PINT</a>', 'Coffee<a>PINT</a>', 'Breakfast<a>PINT</a>', 'Bacon<a>PINT</a>', '<a>PINT</a>Pause', '<a>PINT</a>-nic', '<a>PINT</a>Address', '<a>PINT</a>Phone', 'Multi<a>PINT</a>', 'Simple<a>PINT</a>...', 'FourFingers<a>PINT</a>', 'Start<a>PINT</a>', 'Stop<a>PINT</a>', '<a>PINT</a>', '<a>PINT</a>EGER', 'FloatOr<a>PINT</a>', '<a>PINT</a>Pointer', 'Master<a>PINT</a>er', 'License<a>PINT</a>er', 'GNU<a>PINT</a>', '<a>PINT</a>ix', '<a>PINT</a>ux', '<a>PINT</a>ium', '<a>PINT</a>OS', 'ThanksForThe<a>PINT</a>', 'LordOfThe<a>PINT</a>', 'Piss<a>PINT</a>', '<a>PINT</a>8', '666 Number Of The <a>PINT</a>', 'Bug<a>PINT</a>', 'BlueScreenOf<a>PINT</a>', '<a>PINT</a>Panic', '<a>PINT</a>OSleep', '<a>PINT</a>craft', 'War<a>PINT</a>', '<a>PINT</a>OfDead', '<a>PINT</a>sOfTheCaribeans', 'TheLast<a>PINT</a>', '<a>PINT</a>:Revolution', '<a>PINT</a>:Resurrection', 'Evil<a>PINT</a>', 'TheIncredible<a>PINT</a> ', 'X<a>PINT</a> ', 'Y<a>PINT</a>', 'Why<a>PINT</a>', 'Inexhaustible<a>PINT</a>', 'SauronS<a>PINT</a>', 'Sleepy<a>PINT</a>', 'NeverSleep<a>PINT</a>', '<a>PINT</a>Wars', 'P1N7')
+   		titles = ('<a>PINT</a>Spot', '<a>PINT</a>ed', '<a>PINT</a>Me', '<a>PINT</a>Soft', '<a>PINT</a>Hard', '<a>PINT</a>SM', '<a>PINT</a>ware', '<a>PINT</a>BDSM', '<a>PINT</a>BSD', '<a>PINT</a>LSD', '<a>PINT</a>ou (or ubuntu)', '<a>PINT</a>ubuntu', 'i<a>PINT</a>', 'you<a>PINT</a>', 'Google <a>PINT</a>', '<a>PINT</a>Please', '<a>PINT</a>Sorry', '<a>PINT</a>Welcomed', '<a>PINT</a>Again', '<a>PINT</a>guin', 'JustOne<a>PINT</a>', 'JustAnother<a>PINT</a>', 'OneMore<a>PINT</a>', 'Bier&<a>PINT</a>', '<a>PINT</a>OfVodka', '<a>PINT</a>ade', '<a>PINT</a>aid', '<a>PINT</a>ADD', '<a>PINT</a>INC', '<a>PINT</a>agramme', '<a>PINT</a>-A-Gramme', '<a>PINT</a>-A-Kilo', 'Pound-A-<a>PINT</a>', 'Fish<a>PINT</a>', '<a>PINT</a>Sized', 'Mystic<a>PINT</a>', 'Super<a>PINT</a>', 'Hyper<a>PINT</a>', 'Quantic<a>PINT</a>', 'QuantumOf<a>PINT</a>', 'Electro<a>PINT</a>', 'Royal<a>PINT</a>', 'Republican<a>PINT</a>', 'YesWeCan...<a>PINT</a>', 'WhatTheFucking...<a>PINT</a>', 'IVotedFor<a>PINT</a>', 'WhatSThe<a>PINT</a>', '<a>PINT</a>Aday', '<a>PINT</a>IsMine', 'my<a>PINT</a>!', '<a>PINT</a>Book', '<a>PINT</a>Book-Air', 'less Air, more <a>PINT</a>', 'Apple<a>PINT</a>', 'Web<a>PINT</a>', 'Command+<a>PINT</a>', 'Ctrl+Meta+Alt+<a>PINT</a>', ':<a>PINT</a>', '3Click<a>PINT</a>', 'Black<a>PINT</a>', '<a>PINT</a>sh', '<a>PINT</a> (<a>PINT</a> Is Not Twilight)', 'tinP', 'tniP', 'Tonight<a>PINT</a>', 'Coffee<a>PINT</a>', 'Breakfast<a>PINT</a>', 'Bacon<a>PINT</a>', '<a>PINT</a>Pause', '<a>PINT</a>-nic', '<a>PINT</a>Address', '<a>PINT</a>Phone', 'Multi<a>PINT</a>', 'Simple<a>PINT</a>...', 'FourFingers<a>PINT</a>', 'Start<a>PINT</a>', 'Stop<a>PINT</a>', '<a>PINT</a>', '<a>PINT</a>EGER', 'FloatOr<a>PINT</a>', '<a>PINT</a>Pointer', 'Master<a>PINT</a>er', 'License<a>PINT</a>er', 'GNU<a>PINT</a>', '<a>PINT</a>ix', '<a>PINT</a>ux', '<a>PINT</a>ium', '<a>PINT</a>OS', 'ThanksForThe<a>PINT</a>', 'LordOfThe<a>PINT</a>', 'Piss<a>PINT</a>', '<a>PINT</a>8', '666 Number Of The <a>PINT</a>', 'Bug<a>PINT</a>', 'BlueScreenOf<a>PINT</a>', '<a>PINT</a>Panic', '<a>PINT</a>OSleep', '<a>PINT</a>craft', 'War<a>PINT</a>', '<a>PINT</a>OfDead', '<a>PINT</a>sOfTheCaribeans', 'TheLast<a>PINT</a>', '<a>PINT</a>:Revolution', '<a>PINT</a>:Resurrection', 'Evil<a>PINT</a>', 'TheIncredible<a>PINT</a> ', 'X<a>PINT</a> ', 'Y<a>PINT</a>', 'Why<a>PINT</a>', 'Inexhaustible<a>PINT</a>', 'SauronS<a>PINT</a>', 'Sleepy<a>PINT</a>', 'NeverSleep<a>PINT</a>', '<a>PINT</a>Wars', 'P1N7', '<a>PINT</a> in PAL/SECAM')
 		random_title = random.choice(titles)
 		
 		# These values are to be sent to the template
@@ -71,6 +78,7 @@ class MainPage(webapp.RequestHandler):
 			'random_title': random_title,
 			'unknown_user': unknown_user,
 			'messages': messages,
+			'followed': followed,
 			'url': url,
 			'url_linktext': url_linktext,
 			'anon': anon,
@@ -111,25 +119,10 @@ class NewUser(webapp.RequestHandler):
 		
 		self.redirect('/')
 
-class AddFriend(webapp.RequestHandler):
-	def post(self):
-		accounts = Account.all()
-		user_query = Account.gql("WHERE user = :user", user=users.get_current_user())
-		current_user = user_query.get()
-		
-		for user in accounts:
-			if self.request.get('friend') == user.nickname:
-				current_user.followed.append(user.key())
-				current_user.put()
-				break
-		
-		self.redirect('/')
-
 application = webapp.WSGIApplication(
 									 [('/', MainPage),
 									  ('/post', PostMessage),
-									  ('/register', NewUser),
-									  ('/add_friend', AddFriend)],
+									  ('/register', NewUser)],
 									 debug = True)
 
 

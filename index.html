@@ -50,7 +50,7 @@
 					<h3>Info</h3>
 				</div>
 				<div class="content">
-					{% if not unknown_user %}
+					{% if not anon %}
 					<div>
 						<p>Followed Friend</p>
 						{% for friend in followed %}
@@ -69,7 +69,7 @@
 		<div id="maincontent">
 			<ul id="tabmenu">
 				<li><a href="/" id="current">Pints</a></li>
-				{% if not unknown_user %}
+				{% if not anon and not unknown_user %}
 				<li><a href="/account_settings">Account Settings</a></li>
 				{% endif %}
 			</ul>

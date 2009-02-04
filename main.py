@@ -34,6 +34,8 @@ class MainPage(webapp.RequestHandler):
 		message_query = Message.all().order('-date')
 		messages = message_query.fetch(10)
 		
+		followed = list()
+		
 		# Check if user is logged in
 		unknown_user = False
 		if users.get_current_user():
@@ -50,7 +52,6 @@ class MainPage(webapp.RequestHandler):
 			else:
 				# Get a list of friends nickname
 				accounts = Account.all()
-				followed = list()
 				for user in accounts:
 					if user.key() in user_account.followed:
 						followed.append(user.nickname)

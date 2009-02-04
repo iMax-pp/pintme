@@ -27,6 +27,7 @@
 				</div>
 				<div class="content">
 					<ul>
+						<li><a href="http://appengine.google.com/logs?&app_id=pintme">Logs</li>
 						<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
 						<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
 						<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
@@ -52,7 +53,7 @@
 				<div class="content">
 					{% if not anon %}
 					<div>
-						<p>Followed Friend</p>
+						<p>Followed Friends</p>
 						{% for friend in followed %}
 							<a>{{ friend }}</a>
 							<br>

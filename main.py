@@ -54,7 +54,8 @@ class MainPage(webapp.RequestHandler):
 				# If user exist we get his followed friends
 				followed_friends = Account.get(user_account.followed)
 				# And we fetch the last ten messages of him and his friends
-				message_query = Message.gql("WHERE author IN :friends AND author = :current_user ORDER BY date DESC", friends = user_account.followed, current_user = users.get_current_user())
+				user_account.followed.append(user_account.key())
+				message_query = Message.gql("WHERE author IN :authors ORDER BY date DESC", authors = user_account.followed)
 				messages = message_query.fetch(10)
 		
 		else:

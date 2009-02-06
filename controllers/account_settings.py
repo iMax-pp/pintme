@@ -24,7 +24,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
-from models import Account
+from models.models import Account
 
 class AccountSettings(webapp.RequestHandler):
 	def get(self):		
@@ -43,7 +43,7 @@ class AccountSettings(webapp.RequestHandler):
 		}
 		
 		# We get the template path then show it
-		path = os.path.join(os.path.dirname(__file__), 'account_settings.html')
+		path = os.path.join(os.path.dirname(__file__), '../views/account_settings.html')
 		self.response.out.write(template.render(path, template_values))
 
 class PostSettings(webapp.RequestHandler):

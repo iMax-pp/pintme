@@ -7,9 +7,6 @@ handlers:
 - url: /controllers
   static_dir: controllers
   
-- url: /models
-  static_dir: models
-  
 - url: /views
   static_dir: views
   

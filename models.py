@@ -25,7 +25,7 @@ class Title(db.Model):
 class Account(db.Model):
 	user = db.UserProperty()
 	nickname = db.StringProperty()
-	followed = db.ListProperty(db.Key)
+	following = db.ListProperty(db.Key)
 
 class Message(db.Model):
 	author = db.ReferenceProperty(Account)

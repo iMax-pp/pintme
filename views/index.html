@@ -53,9 +53,16 @@
 				<div class="content">
 					{% if not anon %}
 					<div>
-						<p>Followed Friends</p>
-						{% for friend in followed %}
+						<h4>Following</h4>
+						{% for friend in following %}
 							<a>{{ friend.nickname }}</a>
+							<br>
+						{% endfor %}
+					</div>
+					<div>
+						<h4>They follow you</h4>
+						{% for user in followed_by %}
+							<a>{{ user.nickname }}</a>
 							<br>
 						{% endfor %}
 					</div>

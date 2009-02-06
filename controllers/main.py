@@ -35,8 +35,9 @@ class MainPage(webapp.RequestHandler):
 		message_query = Message.all().order('-date')
 		messages = message_query.fetch(10)
 		
-		# An empty list of followed friends (in case of an unsigned visitor)
-		followed_friends = list()
+		# An empty list of followed/ing friends (in case of an unsigned visitor)
+		following = list()
+		followed_by = list()
 		
 		# Check if user is logged in
 		unknown_user = False
@@ -53,10 +54,13 @@ class MainPage(webapp.RequestHandler):
 				unknown_user = True
 			else:
 				# If user exist we get his followed friends
-				followed_friends = Account.get(user_account.followed)
+				following = Account.get(user_account.following)
+				# Followed by
+				followed_by = Account.gql("WHERE following = :1", user_account.key())
+				
 				# And we fetch the last ten messages of him and his friends
-				user_account.followed.append(user_account.key())
-				message_query = Message.gql("WHERE author IN :authors ORDER BY date DESC", authors = user_account.followed)
+				user_account.following.append(user_account.key())
+				message_query = Message.gql("WHERE author IN :authors ORDER BY date DESC", authors = user_account.following)
 				messages = message_query.fetch(10)
 		
 		else:
@@ -80,7 +84,8 @@ class MainPage(webapp.RequestHandler):
 			'random_title': random_title,
 			'unknown_user': unknown_user,
 			'messages': messages,
-			'followed': followed_friends,
+			'following': following,
+			'followed_by': followed_by,
 			'url': url,
 			'url_linktext': url_linktext,
 			'anon': anon,

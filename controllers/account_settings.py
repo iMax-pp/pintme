@@ -27,24 +27,32 @@ from google.appengine.ext import db
 from models import Account
 
 class AccountSettings(webapp.RequestHandler):
-	def get(self):		
-		# Get the user account 
-		user_query = Account.all().filter('user = ', users.get_current_user())
-		user_account = user_query.get()
+	def get(self):
+		# If user isn't log in we redirect him to the main page
+		if not users.get_current_user():
+			self.redirect('/')
+		else:
+			# Get the user account 
+			user_query = Account.all().filter('user = ', users.get_current_user())
+			user_account = user_query.get()
 		
-		# Check if user is admin
-		is_admin = users.is_current_user_admin()
+			# Check if user is admin
+			is_admin = users.is_current_user_admin()
 		
-		# These values are to be sent to the template
-		template_values = {
-			'user_account': user_account,
-			'followed': Account.get(user_account.followed),
-			'is_admin': is_admin
-		}
+			# Followed by
+			followed_by = Account.gql("WHERE following = :1", user_account.key())
+				
+			# These values are to be sent to the template
+			template_values = {
+				'user_account': user_account,
+				'following': Account.get(user_account.following),
+				'followed_by': followed_by,
+				'is_admin': is_admin
+			}
 		
-		# We get the template path then show it
-		path = os.path.join(os.path.dirname(__file__), '../views/account_settings.html')
-		self.response.out.write(template.render(path, template_values))
+			# We get the template path then show it
+			path = os.path.join(os.path.dirname(__file__), '../views/account_settings.html')
+			self.response.out.write(template.render(path, template_values))
 
 class PostSettings(webapp.RequestHandler):
 	def post(self):
@@ -59,14 +67,19 @@ class PostSettings(webapp.RequestHandler):
 			for user in accounts:
 				if friend_added == user.nickname:
 					# Verify not already in the list and do it
-					if (user.key() not in user_account.followed) & (friend_added != user_account.nickname):
-						user_account.followed.append(user.key())
+					if (user.key() not in user_account.following) & (friend_added != user_account.nickname):
+						user_account.following.append(user.key())
 						user_account.put()
 					break
 		
 		if self.request.get('nickname') != user_account.nickname:
-			user_account.nickname = self.request.get('nickname')
-			user_account.put()
+			accounts = Account.all()
+			accounts.filter('nickname = ', self.request.get('nickname'))
+			nick_already_exist = accounts.get()
+
+			if nick_already_exist == None:
+				new_user.nickname = self.request.get('nickname')
+				new_user.put()
 		
 		self.redirect('/account_settings')
 

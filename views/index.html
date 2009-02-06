@@ -1,134 +1,35 @@
-<html>
-  <head>
-	<link type="text/css" rel="stylesheet" href="/views/stylesheets/main.css" />
-	<title>Pint</title>
-  </head>
-  <body>	
-	<div id="mainbox">
-		<div id="header">
-			<a href="{{ url }}" class="loglink">{{ url_linktext }}</a>
-			<h1>{{ random_title }}</h1>
-			<cite>&#8220;Share and share alike.&#8221;</cite>
-		</div>
-		<div id="rightnav">
-			{% if not anon %}
-			<div class="navbox">
-				<div class="title">
-					<h3>Hi!</h3>
-				</div>
-				<div class="content">
-					<p>Share and Enjoy!</p>
-				</div>
-			</div>
-			{% if is_admin %}
-			<div class="navbox">
-				<div class="title">
-					<h3>Admin</h3>
-				</div>
-				<div class="content">
-					<ul>
-						<li><a href="http://appengine.google.com/logs?&app_id=pintme">Logs</li>
-						<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
-						<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
-						<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
-					</ul>
-					</div>
-			</div>
-			{% endif %}
-			{% else %}
-			<div class="navbox">
-				<div class="title">
-					<h3>Hi!</h3>
-				</div>
-				<div class="content">
-					<p>Share and Enjoy!</p>
-					<p>(Login to start :)</p>
-				</div>
-			</div>
-			{% endif %}
-			<div class="navbox">
-				<div class="title">
-					<h3>Info</h3>
-				</div>
-				<div class="content">
-					{% if not anon %}
-					<div>
-						<h4>Following</h4>
-						{% for friend in following %}
-							<a>{{ friend.nickname }}</a>
-							<br>
-						{% endfor %}
-					</div>
-					<div>
-						<h4>They follow you</h4>
-						{% for user in followed_by %}
-							<a>{{ user.nickname }}</a>
-							<br>
-						{% endfor %}
-					</div>
-					{% else %}
-					<div>
-						<p>Information! Yay!</p>
-					</div>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-		<div id="maincontent">
-			<ul id="tabmenu">
-				<li><a href="/" id="current">Pints</a></li>
-				{% if not anon and not unknown_user %}
-				<li><a href="/account_settings">Account Settings</a></li>
-				{% endif %}
-			</ul>
-			{% if not anon %}
-				{% if unknown_user %}
-				<form action="/register" method="post" class="composer">
-					<div id="unknown_user">New? Enter a nickname...
-						<input name="nickname" type="text" value="Nickname">
-						<input type="submit" value="ok">
-					</div>
-				</form>
-				{% else %}
-				<form action="/post" method="post" class="composer">
-				  <div>
-					Your message :
-				  	<textarea name="content" rows="3" cols="40"></textarea>
-				  	<input type="submit" value="Send">
-				  </div>
-				</form>
-				{% endif %}
-			{% endif %}
-		
-			{% for message in messages %}
-			<div class="message">
-				{{ message.date.date }}
-				{{ message.date.hour }}:{{ message.date.minute }}
-				<blockquote>
-					<p>{{ message.content|escape }}</p>
-				</blockquote>
-				<cite class="{% cycle left,right %}">
-					<b>{{ message.author.nickname }}</b>
-				</cite>
-			  </div>
-			{% endfor %}
-		</div>
-		<ul id="footer">
-			<li>&copy; 2009</li>
-			<li><a href="/about">About</a></li>
-		</ul>
-	</div>
+{% extends "base.html" %}
 
-	<script type="text/javascript">
-		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>
-	<script type="text/javascript">
-		try
-		{
-			var pageTracker = _gat._getTracker("UA-7258394-1");
-			pageTracker._trackPageview();
-		} catch(err) {}
-	</script>
-  </body>
-</html>
+	{% block maincontent %}
+	{% if not anon %}
+		{% if unknown_user %}
+		<form action="/register" method="post" class="composer">
+			<div id="unknown_user">New? Enter a nickname...
+				<input name="nickname" type="text" value="Nickname">
+				<input type="submit" value="ok">
+			</div>
+		</form>
+		{% else %}
+		<form action="/post" method="post" class="composer">
+		  <div>
+			Your message :
+		  	<textarea name="content" rows="3" cols="40"></textarea>
+		  	<input type="submit" value="Send">
+		  </div>
+		</form>
+		{% endif %}
+	{% endif %}
+
+	{% for message in messages %}
+	<div class="message">
+		{{ message.date.date }}
+		{{ message.date.hour }}:{{ message.date.minute }}
+		<blockquote>
+			<p>{{ message.content|escape }}</p>
+		</blockquote>
+		<cite class="{% cycle left,right %}">
+			<b>{{ message.author.nickname }}</b>
+		</cite>
+	</div>
+	{% endfor %}
+	{% endblock %}

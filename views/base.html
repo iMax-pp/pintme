@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<link type="text/css" rel="stylesheet" href="/views/stylesheets/main.css" />
+	<title>{% block title %}Pint{% endblock title %}</title>
+</head>
+
+<body>	
+	<div id="mainbox">
+		<div id="header">
+			{% block header %}
+			<a href="{{ url }}" class="loglink">{{ url_linktext }}</a>
+			<h1>{{ random_title }}</h1>
+			<cite>&#8220;Share and share alike.&#8221;</cite>
+			{% endblock header %}
+		</div>
+
+		<div id="rightnav">
+			{% block firstpanel %}
+			{% if not anon %}
+			<div class="navbox">
+				<div class="title">
+					<h3>Hi!</h3>
+				</div>
+				<div class="content">
+					<p>Share and Enjoy!</p>
+				</div>
+			</div>
+			{% endif %}
+			{% endblock firstpanel %}
+
+			{% if not anon %}
+			{% if is_admin %}
+			<div class="navbox">
+				<div class="title">
+					<h3>Admin</h3>
+				</div>
+				<div class="content">
+					<ul>
+						<li><a href="http://appengine.google.com/logs?&app_id=pintme">Logs</li>
+						<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
+						<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
+						<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
+					</ul>
+					</div>
+			</div>
+			{% endif %}
+			{% else %}
+			<div class="navbox">
+				<div class="title">
+					<h3>Hi!</h3>
+				</div>
+				<div class="content">
+					<p>Share and Enjoy!</p>
+					<p>(Login to start :)</p>
+				</div>
+			</div>
+			{% endif %}
+
+			<div class="navbox">
+				<div class="title">
+					<h3>Info</h3>
+				</div>
+				<div class="content">
+					{% if not anon %}
+					<div>
+						<h4>Following</h4>
+						{% for friend in following %}
+							<a>{{ friend.nickname }}</a>
+							<br>
+						{% endfor %}
+					</div>
+					<div>
+						<h4>They follow you</h4>
+						{% for user in followed_by %}
+							<a>{{ user.nickname }}</a>
+							<br>
+						{% endfor %}
+					</div>
+					{% else %}
+					<div>
+						<p>Information! Yay!</p>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+		<div id="maincontent">
+			<ul id="tabmenu">
+				{% block tabmenu %}
+				<li><a href="/" id="current">Pints</a></li>
+				{% if not anon and not unknown_user %}
+				<li><a href="/account_settings">Account Settings</a></li>
+				{% endif %}
+				{% endblock tabmenu %}
+			</ul>
+
+			{% block maincontent %}
+			{% endblock maincontent %}
+
+		</div>
+		<ul id="footer">
+			<li>&copy; 2009</li>
+			<li><a href="/about">About</a></li>
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try
+		{
+			var pageTracker = _gat._getTracker("UA-7258394-1");
+			pageTracker._trackPageview();
+		} catch(err) {}
+	</script>
+</body>
+</html>

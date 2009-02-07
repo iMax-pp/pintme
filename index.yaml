@@ -10,14 +10,14 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-# Used 109 times in query history.
+# Used once in query history.
 - kind: Message
   properties:
   - name: author
   - name: date
     direction: desc
 
-# Used 81 times in query history.
+# Used 3 times in query history.
 - kind: Message
   properties:
   - name: date

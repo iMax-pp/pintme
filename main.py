@@ -25,7 +25,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
-from models import Title
+from models import MainTitle
 from models import Message
 from models import Account
 
@@ -73,11 +73,12 @@ class MainPage(webapp.RequestHandler):
 		is_admin = users.is_current_user_admin()
 		
 		# Get random title
-		title_query = Title.all()
-		titles = list()
-		for title in title_query:
-			titles.append(title)
-		random_title = random.choice(titles).title
+#		title_query = MainTitle.all()
+#		titles = list()
+#		for title in title_query:
+#			titles.append(title)
+#		random_title = random.choice(titles).title
+		random_title = "<a>PINT</a>"
 		
 		# These values are to be sent to the template
 		template_values = {

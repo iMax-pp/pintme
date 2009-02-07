@@ -19,7 +19,7 @@ import random
 
 from google.appengine.ext import db
 
-class Title(db.Model):
+class MainTitle(db.Model):
 	title = db.StringProperty()
 
 class Account(db.Model):

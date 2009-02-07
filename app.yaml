@@ -3,26 +3,23 @@ version: 2
 runtime: python
 api_version: 1
 
-handlers:
-- url: /controllers
-  static_dir: controllers
-  
-- url: /views
-  static_dir: views
-  
-# Index page and post request handle by main.py
+handlers: 
+- url: /stylesheets
+  static_dir: stylesheets
+    
+# Index page and post requests handle by main.py
 - url: /
-  script: controllers/main.py
+  script: main.py
   
 - url: /index.*
-  script: controllers/main.py
+  script: main.py
   
 - url: /(post|register)
-  script: controllers/main.py
+  script: main.py
   
-# Account Setting page and post config request handle by account_settings.py
+# Account Setting page and post config requests handle by account_settings.py
 - url: /account_settings
-  script: controllers/account_settings.py
+  script: account_settings.py
   
 - url: /account_settings/post
-  script: controllers/account_settings.py
+  script: account_settings.py

@@ -73,12 +73,11 @@ class MainPage(webapp.RequestHandler):
 		is_admin = users.is_current_user_admin()
 		
 		# Get random title
-#		title_query = MainTitle.all()
-#		titles = list()
-#		for title in title_query:
-#			titles.append(title)
-#		random_title = random.choice(titles).title
-		random_title = "<a>PINT</a>"
+		title_query = MainTitle.all()
+		titles = list()
+		for title in title_query:
+			titles.append(title)
+		random_title = random.choice(titles).title
 		
 		# These values are to be sent to the template
 		template_values = {

@@ -51,7 +51,7 @@ class AccountSettings(webapp.RequestHandler):
 			}
 		
 			# We get the template path then show it
-			path = os.path.join(os.path.dirname(__file__), '../views/account_settings.html')
+			path = os.path.join(os.path.dirname(__file__), 'account_settings.html')
 			self.response.out.write(template.render(path, template_values))
 
 class PostSettings(webapp.RequestHandler):

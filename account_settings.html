@@ -2,25 +2,23 @@
 
 	{% block title %}Pint - Account Settings{% endblock title %}
 
-	{% block header %}
+	{% block top %}
 	<h1>Pint</h1>
 	<cite>&#8220;Share and share alike.&#8221;</cite>
-	{% endblock header %}
+	{% endblock top %}
 
-	{% block firstpanel %}
+	{% block leftblocs %}
 	<div class="navbox">
 		<div class="title">
-			<h3>All you can do</h3>
+			<h3>Settings</h3>
 		</div>
 		<div class="content">
-			<ul>
-				<li>Change your nickname...</li>
-				<li>Add friends to your list.</li>
-				<li>Remove friends also.<br>(it's on the way)</li>
-			</ul>
+            <p>Welcome to your control panel!</p>
+            <p>Here you can change your profile and the way you want the site to work for you.</p>
+            <p>Change your nick, add posters you want to follow, or even remove them if you're mean...but do whatever you want, it's your profile ;)</p>
 		</div>
 	</div>
-	{% endblock firstpanel %}
+	{% endblock leftblocs %}
 	
 	{% block tabmenu %}
 		<li><a href="/">Pints</a></li>
@@ -30,11 +28,11 @@
 	{% block maincontent %}
 	<form action="/account_settings/post" method="post" class="composer">
 		<div>
-			<p>Want to change your nickname ?</p>
+			<p>Right now you're called '{{  }}'</p>
 			<input name="nickname" type="text" value={{ user_account.nickname }}>
 		</div>
 	  	<div>
-			<p>Adding a Friend ?</p>
+			<p>Any one you want to follow?</p>
 			<input name="friend_added" type="text">
 			<input type="submit" value="ok">
 	    </div>

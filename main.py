@@ -31,71 +31,76 @@ from models import Account
 
 class MainPage(webapp.RequestHandler):
 	def get(self):		
-		# By default we fetch the last ten messages
+		# Default: last ten messages
 		message_query = Message.all().order('-date')
 		messages = message_query.fetch(10)
 		
-		# An empty list of followed/ing friends (in case of an unsigned visitor)
-		following = list()
-		followed_by = list()
+		# Declaration: following/followed lists
+		followed_list = list()
+		followers_list = list()
 		
-		# Check if user is logged in
-		unknown_user = False
+		# Query: is user logged in?
+		user_status = "anon"
 		if users.get_current_user():
-			# Generate the logout url
-			url = users.create_logout_url(self.request.uri)
-			url_linktext = 'Logout'
-			anon = False
+			# User Url = Logout
+			log_url = users.create_logout_url(self.request.uri)
+			user_status = "unregistered"
 
-			# We check that the user is registered
+			# Query: is user registered?
 			user_query = Account.all().filter('user = ', users.get_current_user())
 			user_account = user_query.get()
-			if user_account == None:
-				unknown_user = True
-			else:
-				# If user exist we get his followed friends
-				following = Account.get(user_account.following)
-				# Followed by
-				followed_by = Account.gql("WHERE following = :1", user_account.key())
+
+            # User is registered!
+			if user_account:
+				user_status = "registered"
 				
-				# And we fetch the last ten messages of him and his friends
-				user_account.following.append(user_account.key())
+                # Query: Get the list of users being followed
+				followed_list = Account.get(user_account.following)
+				
+                # Query: Get the list of the users followers
+				followers = Account.gql("WHERE following = :1", user_account.key())
+				
+				# Default action (10 last messages), but only for the followed users
+				user_account.followed_list.append(user_account.key())
 				message_query = Message.gql("WHERE author IN :authors ORDER BY date DESC", authors = user_account.following)
 				messages = message_query.fetch(10)
-		
+
 		else:
 			# Generate the login url
-			url = users.create_login_url(self.request.uri)
-			url_linktext = 'Login'
-			anon = True
+			log_url = users.create_login_url(self.request.uri)
 	  
-		# Check if user is admin
+		# Query: User is admin? (Could it be? Is the Savior here?)
 		is_admin = users.is_current_user_admin()
 		
-		# Get random title
+		# Get random title (From our list of super wacky titles!)
 		title_query = MainTitle.all()
 		titles = list()
 		for title in title_query:
 			titles.append(title)
 		random_title = random.choice(titles).title
+
+        # Note:
+        #  There is a better way! This is a real slow and costly technique...
+        #  In SQL you can ask for a random row, but not in GQL yet...
+        #  However I sent you a technique that was posted on the group :)
 		
-		# These values are to be sent to the template
+		# Template values, yay!
 		template_values = {
 			'random_title': random_title,
-			'unknown_user': unknown_user,
 			'messages': messages,
-			'following': following,
-			'followed_by': followed_by,
-			'url': url,
-			'url_linktext': url_linktext,
-			'anon': anon,
+			'following': followers_list,
+			'followed_by': followers_list,
+			'log_url': log_url,
+			'user_status': user_status,
 			'is_admin': is_admin
 		}
 	
 		# We get the template path then show it
 		path = os.path.join(os.path.dirname(__file__), 'index.html')
 		self.response.out.write(template.render(path, template_values))
+        # I still haven't understood why we need to make the path...
 
+# Do you think we could put all the actions in another file?
 class PostMessage(webapp.RequestHandler):
 	def post(self):
 		# Set up the message instance
@@ -105,7 +110,7 @@ class PostMessage(webapp.RequestHandler):
 		for current_user in user:
 			message.author = current_user.key()
 		
-		# And if the content isn't empty we put all in the db
+		# And if the content isn't empty, off to the database! Happy message :D
 		if self.request.get('content') != '':
 			message.content = self.request.get('content')
 			message.put()
@@ -127,6 +132,15 @@ class NewUser(webapp.RequestHandler):
 		
 		self.redirect('/')
 
+
+
+
+
+
+# Let's seperate this part off a bit ok? ^^
+# It freaks me out when I get here...Agh! What's this?! no def...no class...it's a thing!
+
+# Route definitions, that's what's here!
 application = webapp.WSGIApplication(
 									 [('/', MainPage),
 									  ('/index.*', MainPage),
@@ -134,9 +148,10 @@ application = webapp.WSGIApplication(
 									  ('/register', NewUser)],
 									 debug = True)
 
-
+# Duh, it's the main!
 def main():
 	run_wsgi_app(application)
 
+# And its friend, __main__ !
 if __name__ == "__main__":
 	main()

@@ -7,19 +7,19 @@ body
 	margin: 0;
 }
 
-#header
+#top
 {
 	color: #E2F0D6;
 	margin-left: 190px;
 }
 
-#header a.loglink
+#top a.loglink
 {
 	float: right;
 	padding: 0;
 }
 
-#header h1
+#top h1
 {
 	display: inline
 }

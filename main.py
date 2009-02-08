@@ -29,6 +29,8 @@ from models import MainTitle
 from models import Message
 from models import Account
 
+#from titles_generation import *
+
 class MainPage(webapp.RequestHandler):
 	def get(self):		
 		# By default we fetch the last ten messages
@@ -73,15 +75,12 @@ class MainPage(webapp.RequestHandler):
 		is_admin = users.is_current_user_admin()
 		
 		# Get random title
-		title_query = MainTitle.all()
-		titles = list()
-		for title in title_query:
-			titles.append(title)
-		random_title = random.choice(titles).title
+#		generate_titles()
+		random_title = MainTitle.gql("WHERE rand > :rand ORDER BY rand LIMIT 1", rand=random.random()).get()
 		
 		# These values are to be sent to the template
 		template_values = {
-			'random_title': random_title,
+			'random_title': random_title.title,
 			'unknown_user': unknown_user,
 			'messages': messages,
 			'following': following,

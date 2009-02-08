@@ -20,6 +20,7 @@ import random
 from google.appengine.ext import db
 
 class MainTitle(db.Model):
+	rand = db.FloatProperty()
 	title = db.StringProperty()
 
 class Account(db.Model):

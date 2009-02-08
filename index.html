@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 	{% block maincontent %}
-	{% if not anon %}
-		{% if unknown_user %}
+    {% ifnotequal user_status "anon" %}
+        {% ifequal user_status "unregistered" %}
 		<form action="/register" method="post" class="composer">
 			<div id="unknown_user">New? Enter a nickname...
 				<input name="nickname" type="text" value="Nickname">
 				<input type="submit" value="ok">
 			</div>
 		</form>
-		{% else %}
+    	{% else %}
 		<form action="/post" method="post" class="composer">
 		  <div>
 			Your message :

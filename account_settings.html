@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-	{% block title %}Pint - Account Settings{% endblock title %}
+	{% block title %}Pint - Account Settings{% endblock %}
 
 	{% block top %}
 	<h1>Pint</h1>
 	<cite>&#8220;Share and share alike.&#8221;</cite>
-	{% endblock top %}
+	{% endblock %}
 
 	{% block leftblocs %}
 	<div class="navbox">
@@ -18,17 +18,17 @@
             <p>Change your nick, add posters you want to follow, or even remove them if you're mean...but do whatever you want, it's your profile ;)</p>
 		</div>
 	</div>
-	{% endblock leftblocs %}
+	{% endblock %}
 	
 	{% block tabmenu %}
 		<li><a href="/">Pints</a></li>
 		<li><a href="/account_settings" id="current">Account Settings</a></li>
-	{% endblock tabmenu %}
+	{% endblock %}
 	
 	{% block maincontent %}
 	<form action="/account_settings/post" method="post" class="composer">
 		<div>
-			<p>Right now you're called '{{  }}'</p>
+			<p>Enter a new nick if you wish: </p>
 			<input name="nickname" type="text" value={{ user_account.nickname }}>
 		</div>
 	  	<div>
@@ -37,4 +37,4 @@
 			<input type="submit" value="ok">
 	    </div>
 	</form>
-	{% endblock maincontent %}
+	{% endblock %}

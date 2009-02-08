@@ -73,33 +73,14 @@ class MainPage(webapp.RequestHandler):
 	  
 		# Query: User is admin? (Could it be? Is the Savior here?)
 		is_admin = users.is_current_user_admin()
-		
-<<<<<<< HEAD:main.py
-		# Get random title
-#		generate_titles()
-		random_title = MainTitle.gql("WHERE rand > :rand ORDER BY rand LIMIT 1", rand=random.random()).get()
-=======
-		# Get random title (From our list of super wacky titles!)
-		title_query = MainTitle.all()
-		titles = list()
-		for title in title_query:
-			titles.append(title)
-		random_title = random.choice(titles).title
 
-        # Note:
-        #  There is a better way! This is a real slow and costly technique...
-        #  In SQL you can ask for a random row, but not in GQL yet...
-        #  However I sent you a technique that was posted on the group :)
->>>>>>> 51c5fdcab52f9253a2ea1275878eb89e2c0a5e05:main.py
-		
+		# Get random title (From our list of super wacky titles!)		
+#		generate_titles()
+		random_title = MainTitle.gql("WHERE rand > :rand ORDER BY rand LIMIT 1", rand=random.random()).get().title
+
 		# Template values, yay!
 		template_values = {
-<<<<<<< HEAD:main.py
-			'random_title': random_title.title,
-			'unknown_user': unknown_user,
-=======
 			'random_title': random_title,
->>>>>>> 51c5fdcab52f9253a2ea1275878eb89e2c0a5e05:main.py
 			'messages': messages,
 			'following': followers_list,
 			'followed_by': followers_list,

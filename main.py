@@ -63,7 +63,7 @@ class MainPage(webapp.RequestHandler):
 				followers = Account.gql("WHERE following = :1", user_account.key())
 				
 				# Default action (10 last messages), but only for the followed users
-				user_account.followed_list.append(user_account.key())
+				user_account.following.append(user_account.key())
 				message_query = Message.gql("WHERE author IN :authors ORDER BY date DESC", authors = user_account.following)
 				messages = message_query.fetch(10)
 

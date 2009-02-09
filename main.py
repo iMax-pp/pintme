@@ -82,7 +82,7 @@ class MainPage(webapp.RequestHandler):
 		template_values = {
 			'random_title': random_title,
 			'messages': messages,
-			'following': followers_list,
+			'following': followed_list,
 			'followed_by': followers_list,
 			'log_url': log_url,
 			'user_status': user_status,

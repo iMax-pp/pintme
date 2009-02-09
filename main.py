@@ -29,7 +29,7 @@ from models import MainTitle
 from models import Message
 from models import Account
 
-#from titles_generation import *
+#from generate_titles import *
 
 class MainPage(webapp.RequestHandler):
 	def get(self):		
@@ -60,7 +60,7 @@ class MainPage(webapp.RequestHandler):
 				followed_list = Account.get(user_account.following)
 				
                 # Query: Get the list of the users followers
-				followers = Account.gql("WHERE following = :1", user_account.key())
+				followers_list = Account.gql("WHERE following = :1", user_account.key())
 				
 				# Default action (10 last messages), but only for the followed users
 				user_account.following.append(user_account.key())
@@ -75,15 +75,15 @@ class MainPage(webapp.RequestHandler):
 		is_admin = users.is_current_user_admin()
 
 		# Get random title (From our list of super wacky titles!)		
-#		generate_titles()
+		#generate_titles()
 		random_title = MainTitle.gql("WHERE rand > :rand ORDER BY rand LIMIT 1", rand=random.random()).get().title
 
 		# Template values, yay!
 		template_values = {
 			'random_title': random_title,
 			'messages': messages,
-			'following': followed_list,
-			'followed_by': followers_list,
+			'followed_list': followed_list,
+			'followers_list': followers_list,
 			'log_url': log_url,
 			'user_status': user_status,
 			'is_admin': is_admin

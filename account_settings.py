@@ -40,13 +40,13 @@ class AccountSettings(webapp.RequestHandler):
 			is_admin = users.is_current_user_admin()
 		
 			# Followed by
-			followed_by = Account.gql("WHERE following = :1", user_account.key())
+			followers_list = Account.gql("WHERE following = :1", user_account.key())
 				
 			# These values are to be sent to the template
 			template_values = {
 				'user_account': user_account,
-				'following': Account.get(user_account.following),
-				'followed_by': followed_by,
+				'followed_list': Account.get(user_account.following),
+				'followers_list': followers_list,
 				'is_admin': is_admin
 			}
 		

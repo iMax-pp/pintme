@@ -3,25 +3,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-	<title>{% block title %}Pint{% endblock title %}</title>
+	<title>{% block title %}Pint{% endblock %}</title>
 </head>
 
 <body>	
 	<div id="mainbox">
 		<div id="top">
-			{% block top %}
-            {% ifequal user_status "anon" %}
+		{% block top %}
+			{% ifequal user_status "anon" %}
 			<a href="{{ log_url }}" class="loglink">Login</a>
-            {% else %}
-            <a href="{{ log_url }}" class="loglink">Logout</a>
-            {% endif %}
+			{% else %}
+			<a href="{{ log_url }}" class="loglink">Logout</a>
+			{% endifequal %}
 			<h1>{{ random_title }}</h1>
 			<!--<cite>&#8220;Share and share alike.&#8221;</cite>-->
-			{% endblock top %}
+		{% endblock %}
 		</div>
 
 		<div id="rightnav">
-			{% block leftblocs %}
+		{% block leftblocs %}
 			{% ifnotequal user_status "anon" %}
 			<div class="navbox">"
 				<div class="title">
@@ -31,10 +31,10 @@
 					<p>Share and Enjoy!</p>
 				</div>
 			</div>
-			{% endif %}
-			{% endblock leftblocs %}
+			{% endifnotequal %}
+		{% endblock %}
 
-			{% ifnotequal user_status "anon" %}
+		{% ifnotequal user_status "anon" %}
 			{% if is_admin %}
 			<div class="navbox">
 				<div class="title">
@@ -50,7 +50,7 @@
 					</div>
 			</div>
 			{% endif %}
-			{% else %}
+		{% else %}
 			<div class="navbox">
 				<div class="title">
 					<h3>Hi!</h3>
@@ -60,49 +60,49 @@
 					<p>(Login to start :)</p>
 				</div>
 			</div>
-			{% endif %}
+		{% endifnotequal %}
 
 			<div class="navbox">
 				<div class="title">
 					<h3>Info</h3>
 				</div>
 				<div class="content">
-					{% ifnotequal user_status "anon" %}
+				{% ifnotequal user_status "anon" %}
 					<div>
 						<h4>Following</h4>
-						{% for followed in followed_list %}
+					{% for followed in followed_list %}
 							<a>{{ followed.nickname }}</a>
 							<br>
-						{% endfor %}
+					{% endfor %}
 					</div>
 					<div>
 						<h4>Followers</h4>
-						{% for follower in followers_list %}
+					{% for follower in followers_list %}
 							<a>{{ follower.nickname }}</a>
 							<br>
-						{% endfor %}
+					{% endfor %}
 					</div>
-					{% else %}
+				{% else %}
 					<div>
 						<p>Information! Yay!</p>
 					</div>
-					{% endif %}
+				{% endifnotequal %}
 				</div>
 			</div>
 		</div>
 
 		<div id="maincontent">
 			<ul id="tabmenu">
-				{% block tabmenu %}
+			{% block tabmenu %}
 				<li><a href="/" id="current">Pints</a></li>
 				{% ifequal user_status "registered" %}
 				<li><a href="/account_settings">Account Settings</a></li>
-				{% endif %}
-				{% endblock tabmenu %}
+				{% endifequal %}
+			{% endblock %}
 			</ul>
 
 			{% block maincontent %}
-			{% endblock maincontent %}
+			{% endblock %}
 
 		</div>
 		<ul id="footer">

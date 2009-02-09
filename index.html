@@ -1,35 +1,35 @@
 {% extends "base.html" %}
 
 	{% block maincontent %}
-    {% ifnotequal user_status "anon" %}
-        {% ifequal user_status "unregistered" %}
-		<form action="/register" method="post" class="composer">
-			<div id="unknown_user">New? Enter a nickname...
-				<input name="nickname" type="text" value="Nickname">
-				<input type="submit" value="ok">
-			</div>
-		</form>
-    	{% else %}
-		<form action="/post" method="post" class="composer">
-		  <div>
-			Your message :
-		  	<textarea name="content" rows="3" cols="40"></textarea>
-		  	<input type="submit" value="Send">
-		  </div>
-		</form>
-		{% endif %}
-	{% endif %}
-
-	{% for message in messages %}
-	<div class="message">
-		{{ message.date.date }}
-		{{ message.date.hour }}:{{ message.date.minute }}
-		<blockquote>
-			<p>{{ message.content|escape }}</p>
-		</blockquote>
-		<cite class="{% cycle left,right %}">
-			<b>{{ message.author.nickname }}</b>
-		</cite>
-	</div>
-	{% endfor %}
+        {% ifnotequal user_status "anon" %}
+            {% ifequal user_status "unregistered" %}
+            <form action="/register" method="post" class="composer">
+                <div id="unknown_user">New? Enter a nickname...
+                    <input name="nickname" type="text" value="Nickname">
+                    <input type="submit" value="ok">
+                </div>
+            </form>
+            {% else %}
+            <form action="/post" method="post" class="composer">
+              <div>
+                Your message :
+                <textarea name="content" rows="3" cols="40"></textarea>
+                <input type="submit" value="Send">
+              </div>
+            </form>
+            {% endifequal %}
+        {% endifnotequal %}
+    
+        {% for message in messages %}
+        <div class="message">
+            {{ message.date.date }}
+            {{ message.date.hour }}:{{ message.date.minute }}
+            <blockquote>
+                <p>{{ message.content|escape }}</p>
+            </blockquote>
+            <cite class="{% cycle left,right %}">
+                <b>{{ message.author.nickname }}</b>
+            </cite>
+        </div>
+        {% endfor %}
 	{% endblock %}

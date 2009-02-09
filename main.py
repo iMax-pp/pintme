@@ -76,11 +76,11 @@ class MainPage(webapp.RequestHandler):
 
 		# Get random title (From our list of super wacky titles!)		
 		#generate_titles()
-		random_title = MainTitle.gql("WHERE rand > :rand ORDER BY rand LIMIT 1", rand=random.random()).get().title
+		#random_title = MainTitle.gql("WHERE rand > :rand ORDER BY rand LIMIT 1", rand=random.random()).get().title
 
 		# Template values, yay!
 		template_values = {
-			'random_title': random_title,
+			#'random_title': random_title,
 			'messages': messages,
 			'followed_list': followed_list,
 			'followers_list': followers_list,

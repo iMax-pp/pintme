@@ -11,9 +11,6 @@ handlers:
 - url: /
   script: main.py
   
-- url: /index.*
-  script: main.py
-  
 - url: /(post|register)
   script: main.py
   

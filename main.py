@@ -124,6 +124,11 @@ class NewUser(webapp.RequestHandler):
 		self.redirect('/')
 
 
+class Maintenance(webapp.RequestHandler):
+	def get(self):
+		empty_template_list = dict()
+		path = os.path.join(os.path.dirname(__file__), 'maintenance.html')
+		self.response.out.write(template.render(path, empty_template_list))
 
 
 
@@ -133,7 +138,8 @@ class NewUser(webapp.RequestHandler):
 
 # Route definitions, that's what's here!
 application = webapp.WSGIApplication(
-									 [('/', MainPage),
+									 [#('/', MainPage),
+									  ('/', Maintenance),
 									  ('/post', PostMessage),
 									  ('/register', NewUser)],
 									 debug = True)
@@ -145,4 +151,3 @@ def main():
 # And its friend, __main__ !
 if __name__ == "__main__":
 	main()
-

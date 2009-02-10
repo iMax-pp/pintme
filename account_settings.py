@@ -33,8 +33,7 @@ class AccountSettings(webapp.RequestHandler):
 			self.redirect('/')
 		else:
 			# Get the user account 
-			user_query = Account.all().filter('user = ', users.get_current_user())
-			user_account = user_query.get()
+			user_account = Account.gql("WHERE user = :1", users.get_current_user()).get()
 		
 			# Check if user is admin
 			is_admin = users.is_current_user_admin()
@@ -57,8 +56,7 @@ class AccountSettings(webapp.RequestHandler):
 class PostSettings(webapp.RequestHandler):
 	def post(self):
 		# Get the user account
-		user_query = Account.all().filter('user = ', users.get_current_user())
-		user_account = user_query.get()
+		user_account = Account.gql("WHERE user = :1", users.get_current_user()).get()
 		
 		# Add a friend
 		friend_added = self.request.get('friend_added')
@@ -73,9 +71,7 @@ class PostSettings(webapp.RequestHandler):
 					break
 		
 		if self.request.get('nickname') != user_account.nickname:
-			accounts = Account.all()
-			accounts.filter('nickname = ', self.request.get('nickname'))
-			nick_already_exist = accounts.get()
+			nick_already_exist = Account.gql("WHERE nickname = :1", self.request.get('nickname')).get()
 
 			if nick_already_exist == None:
 				new_user.nickname = self.request.get('nickname')
@@ -93,3 +89,4 @@ def main():
 
 if __name__ == "__main__":
 	main()
+

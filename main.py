@@ -34,8 +34,7 @@ from models import Account
 class MainPage(webapp.RequestHandler):
 	def get(self):		
 		# Default: last ten messages
-		message_query = Message.all().order('-date')
-		messages = message_query.fetch(10)
+		messages = Message.gql("ORDER date DESC LIMIT 10")
 		
 		# Declaration: following/followed lists
 		followed_list = list()
@@ -49,8 +48,7 @@ class MainPage(webapp.RequestHandler):
 			user_status = "unregistered"
 
 			# Query: is user registered?
-			user_query = Account.all().filter('user = ', users.get_current_user())
-			user_account = user_query.get()
+			user_account = Account.gql("WHERE user = :1", users.get_current_user())
 
             # User is registered!
 			if user_account:
@@ -64,7 +62,7 @@ class MainPage(webapp.RequestHandler):
 				
 				# Default action (10 last messages), but only for the followed users
 				user_account.following.append(user_account.key())
-				message_query = Message.gql("WHERE author IN :authors ORDER BY date DESC", authors = user_account.following)
+				message_query = Message.gql("WHERE author IN :1 ORDER BY date DESC", user_account.following)
 				messages = message_query.fetch(10)
 
 		else:
@@ -76,7 +74,9 @@ class MainPage(webapp.RequestHandler):
 
 		# Get random title (From our list of super wacky titles!)		
 		#generate_titles()
-		#random_title = MainTitle.gql("WHERE rand > :rand ORDER BY rand LIMIT 1", rand=random.random()).get().title
+		#title_query = MainTitle.gql("WHERE rand > :1 ORDER BY rand LIMIT 1",random.random()).get()
+                #random_title = title_query.title
+
 
 		# Template values, yay!
 		template_values = {
@@ -100,7 +100,7 @@ class PostMessage(webapp.RequestHandler):
 		# Set up the message instance
 		message = Message()
 		# A Reference to the current user
-		user = Account.gql("WHERE user = :user", user=users.get_current_user())
+		user = Account.gql("WHERE user = :1", users.get_current_user())
 		for current_user in user:
 			message.author = current_user.key()
 		
@@ -115,9 +115,7 @@ class NewUser(webapp.RequestHandler):
 	def post(self):
 		new_user = Account()
 		
-		accounts = Account.all()
-		accounts.filter('nickname = ', self.request.get('nickname'))
-		nick_already_exist = accounts.get()
+		nick_already_exist = Account.gql("WHERE nickname = :1", self.request.get('nickname')).get()
 		
 		if nick_already_exist == None:
 			new_user.user = users.get_current_user()
@@ -137,7 +135,6 @@ class NewUser(webapp.RequestHandler):
 # Route definitions, that's what's here!
 application = webapp.WSGIApplication(
 									 [('/', MainPage),
-									  ('/index.*', MainPage),
 									  ('/post', PostMessage),
 									  ('/register', NewUser)],
 									 debug = True)

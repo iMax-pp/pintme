@@ -34,7 +34,7 @@ from models import Account
 class MainPage(webapp.RequestHandler):
 	def get(self):		
 		# Default: last ten messages
-		messages = Message.gql("ORDER date DESC LIMIT 10")
+		messages = Message.gql("ORDER BY date DESC LIMIT 10")
 		
 		# Declaration: following/followed lists
 		followed_list = list()
@@ -48,7 +48,7 @@ class MainPage(webapp.RequestHandler):
 			user_status = "unregistered"
 
 			# Query: is user registered?
-			user_account = Account.gql("WHERE user = :1", users.get_current_user())
+			user_account = Account.gql("WHERE user = :1", users.get_current_user()).get()
 
             # User is registered!
 			if user_account:
@@ -62,8 +62,7 @@ class MainPage(webapp.RequestHandler):
 				
 				# Default action (10 last messages), but only for the followed users
 				user_account.following.append(user_account.key())
-				message_query = Message.gql("WHERE author IN :1 ORDER BY date DESC", user_account.following)
-				messages = message_query.fetch(10)
+				messages = Message.gql("WHERE author IN :1 ORDER BY date DESC LIMIT 10", user_account.following)
 
 		else:
 			# Generate the login url
@@ -75,7 +74,7 @@ class MainPage(webapp.RequestHandler):
 		# Get random title (From our list of super wacky titles!)		
 		#generate_titles()
 		#title_query = MainTitle.gql("WHERE rand > :1 ORDER BY rand LIMIT 1",random.random()).get()
-                #random_title = title_query.title
+        #random_title = title_query.title
 
 
 		# Template values, yay!
@@ -146,3 +145,4 @@ def main():
 # And its friend, __main__ !
 if __name__ == "__main__":
 	main()
+

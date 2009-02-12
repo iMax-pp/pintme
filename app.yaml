@@ -11,12 +11,12 @@ handlers:
 - url: /
   script: main.py
   
-#- url: /(post|register)
-#  script: main.py
+- url: /(post|register)
+  script: main.py
   
 # Account Setting page and post config requests handle by account_settings.py
-#- url: /account_settings
-#  script: account_settings.py
+- url: /account_settings
+  script: account_settings.py
   
-#- url: /account_settings/post
-#  script: account_settings.py
+- url: /account_settings/post
+  script: account_settings.py

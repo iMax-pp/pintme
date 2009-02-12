@@ -29,8 +29,6 @@ from models import MainTitle
 from models import Message
 from models import Account
 
-#from generate_titles import *
-
 class MainPage(webapp.RequestHandler):
 	def get(self):		
 		# Default: last ten messages
@@ -42,14 +40,15 @@ class MainPage(webapp.RequestHandler):
 		
 		# Query: is user logged in?
 		user_status = "anon"
-		if users.get_current_user():
+		user = users.get_current_user()
+		if user:
 			# User Url = Logout
 			log_url = users.create_logout_url(self.request.uri)
 			user_status = "unregistered"
-
+			
 			# Query: is user registered?
-			user_account = Account.gql("WHERE user = :1", users.get_current_user()).get()
-
+			user_account = Account.gql("WHERE user = :1", user).get()
+			
             # User is registered!
 			if user_account:
 				user_status = "registered"
@@ -63,23 +62,16 @@ class MainPage(webapp.RequestHandler):
 				# Default action (10 last messages), but only for the followed users
 				user_account.following.append(user_account.key())
 				messages = Message.gql("WHERE author IN :1 ORDER BY date DESC LIMIT 10", user_account.following)
-
+		
 		else:
 			# Generate the login url
 			log_url = users.create_login_url(self.request.uri)
-	  
+	  	
 		# Query: User is admin? (Could it be? Is the Savior here?)
 		is_admin = users.is_current_user_admin()
-
-		# Get random title (From our list of super wacky titles!)		
-		#generate_titles()
-		#title_query = MainTitle.gql("WHERE rand > :1 ORDER BY rand LIMIT 1",random.random()).get()
-        #random_title = title_query.title
-
-
+		
 		# Template values, yay!
 		template_values = {
-			#'random_title': random_title,
 			'messages': messages,
 			'followed_list': followed_list,
 			'followers_list': followers_list,
@@ -87,7 +79,7 @@ class MainPage(webapp.RequestHandler):
 			'user_status': user_status,
 			'is_admin': is_admin
 		}
-	
+		
 		# We get the template path then show it
 		path = os.path.join(os.path.dirname(__file__), 'index.html')
 		self.response.out.write(template.render(path, template_values))
@@ -96,29 +88,35 @@ class MainPage(webapp.RequestHandler):
 # Do you think we could put all the actions in another file?
 class PostMessage(webapp.RequestHandler):
 	def post(self):
-		# Set up the message instance
+		# Declaration: new Message
 		message = Message()
-		# A Reference to the current user
-		user = Account.gql("WHERE user = :1", users.get_current_user())
-		for current_user in user:
-			message.author = current_user.key()
+		
+		# Query: user's Account & new message's content
+		user = Account.gql("WHERE user = :1", users.get_current_user()).get()
+		message.author = user.key()
+		content = self.request.get('content')
 		
 		# And if the content isn't empty, off to the database! Happy message :D
-		if self.request.get('content') != '':
-			message.content = self.request.get('content')
+		if content != '':
+			message.content = content
 			message.put()
 	  
 		self.redirect('/')
 
 class NewUser(webapp.RequestHandler):
 	def post(self):
+		# Declaration: new Account
+		# Query: nickname
 		new_user = Account()
+		nickname = self.request.get('nickname')
 		
-		nick_already_exist = Account.gql("WHERE nickname = :1", self.request.get('nickname')).get()
+		# Query: Is nickname already exist ?
+		nick_already_exist = Account.gql("WHERE nickname = :1", nickname).get()
 		
+		# If not let's create the new user !
 		if nick_already_exist == None:
 			new_user.user = users.get_current_user()
-			new_user.nickname = self.request.get('nickname')
+			new_user.nickname = nickname
 			new_user.put()
 		
 		self.redirect('/')
@@ -126,11 +124,10 @@ class NewUser(webapp.RequestHandler):
 
 class Maintenance(webapp.RequestHandler):
 	def get(self):
+		# Maintenance page
 		empty_template_list = dict()
 		path = os.path.join(os.path.dirname(__file__), 'maintenance.html')
 		self.response.out.write(template.render(path, empty_template_list))
-
-
 
 
 # Let's seperate this part off a bit ok? ^^
@@ -138,8 +135,7 @@ class Maintenance(webapp.RequestHandler):
 
 # Route definitions, that's what's here!
 application = webapp.WSGIApplication(
-									 [#('/', MainPage),
-									  ('/', Maintenance),
+									 [('/', MainPage),
 									  ('/post', PostMessage),
 									  ('/register', NewUser)],
 									 debug = True)

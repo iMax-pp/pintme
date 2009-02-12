@@ -28,20 +28,23 @@ from models import Account
 
 class AccountSettings(webapp.RequestHandler):
 	def get(self):
-		# If user isn't log in we redirect him to the main page
-		if not users.get_current_user():
-			self.redirect('/')
-		else:
-			# Get the user account 
-			user_account = Account.gql("WHERE user = :1", users.get_current_user()).get()
+		# Query: is user logged in?
+		user = users.get_current_user()
 		
-			# Check if user is admin
+		if not user:
+			self.redirect('/')
+		
+		else:
+			# Query: User's account
+			user_account = Account.gql("WHERE user = :1", user).get()
+		
+			# Query: User is admin?
 			is_admin = users.is_current_user_admin()
 		
-			# Followed by
+			# Query: Get the list of the users followers
 			followers_list = Account.gql("WHERE following = :1", user_account.key())
 				
-			# These values are to be sent to the template
+			# Template values
 			template_values = {
 				'user_account': user_account,
 				'followed_list': Account.get(user_account.following),
@@ -55,29 +58,33 @@ class AccountSettings(webapp.RequestHandler):
 
 class PostSettings(webapp.RequestHandler):
 	def post(self):
-		# Get the user account
+		# Let's adding a Friend to following list
+		# Query: User's account & friend's nickname
 		user_account = Account.gql("WHERE user = :1", users.get_current_user()).get()
-		
-		# Add a friend
 		friend_added = self.request.get('friend_added')
-		if friend_added != '':
-			accounts = Account.all()
-			for user in accounts:
-				if friend_added == user.nickname:
-					# Verify not already in the list and do it
-					if (user.key() not in user_account.following) & (friend_added != user_account.nickname):
-						user_account.following.append(user.key())
-						user_account.put()
-					break
 		
-		if self.request.get('nickname') != user_account.nickname:
-			nick_already_exist = Account.gql("WHERE nickname = :1", self.request.get('nickname')).get()
-
+		# And if he exists, isn't the user himself and isn't already in the list, let's add it to the list
+		if friend_added != '':
+			friend_account = Account.gql("WHERE nickname = :1", friend_added).get()
+			if ((friend_account != None) & (friend_account != user_account) & (friend_account.key() not in user_account.following)):
+				user_account.following.append(friend_account.key())
+				user_account.put()
+		
+		# Let's change the nickname
+		# Query: nickname
+		nickname = self.request.get('nickname')
+		
+		# Is the nickname available ?
+		if nickname != user_account.nickname:
+			nick_already_exist = Account.gql("WHERE nickname = :1", nickname).get()
+			
+			# Ok ? so change the nickname
 			if nick_already_exist == None:
-				new_user.nickname = self.request.get('nickname')
-				new_user.put()
+				user_account.nickname = nickname
+				user_account.put()
 		
 		self.redirect('/account_settings')
+
 
 application = webapp.WSGIApplication(
 									 [('/account_settings', AccountSettings),
@@ -89,4 +96,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-

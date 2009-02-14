@@ -20,3 +20,6 @@ handlers:
   
 - url: /account_settings/post
   script: account_settings.py
+  
+- url: /research
+  script: research.py

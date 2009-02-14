@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+	{% block title %}Pint - Search Results{% endblock %}
+
+	{% block top %}
+	<h1>Pint</h1>
+	<cite>&#8220;Share and share alike.&#8221;</cite>
+	{% endblock %}
+	
+	{% block tabmenu %}
+		<li><a href="/">Pints</a></li>
+		<li><a href="/research" id="current">Search Results</a></li>
+	{% endblock %}
+
+	{% block maincontent %}
+		{% if no_result %}
+			<div class="message">
+				<blockquote>
+	                <p>Sorry, We've no results for you !</p>
+	            </blockquote>
+	            <cite class="{% cycle left,right %}">
+	                <b>Pint</b>
+	            </cite>
+			</div>
+		{% else %}
+			{% for user in results %}
+					<div class="message">
+						<blockquote>
+	                		<p><a href="/profil/{{ user.nickname }}">{{ user.nickname }}</a></p>
+	            		</blockquote>
+			            <cite class="{% cycle left,right %}">
+			                <b>Number {{ forloop.counter }}</b>
+			            </cite>
+					</div>
+			{% endfor %}
+		{% endif %}
+	{% endblock %}

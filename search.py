@@ -17,6 +17,7 @@
 
 import cgi
 import os
+import string
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
@@ -27,9 +28,16 @@ from models import Account
 
 class SearchResults(webapp.RequestHandler):
 	def post(self):
-		# Query: research & result list
-		research = self.request.get('research')
-		results = Account.gql("WHERE nickname = :1", research).fetch(25)
+		# Query: search & result list
+		search = self.request.get('search')
+		# Convert the search to lower case
+		search = string.lower(search)
+		results = list()
+		# Make a loop to find results
+		results_query = Account.all()
+		for result in results_query:
+			if string.lower(result.nickname) == search:
+				results.append(result)
 		
 		# If there's no result 'not results' is True
 		template_values = {
@@ -44,7 +52,7 @@ class SearchResults(webapp.RequestHandler):
 		
 
 application = webapp.WSGIApplication(
-									 [('/research', SearchResults)],
+									 [('/search', SearchResults)],
 									 debug = True)
 
 def main():

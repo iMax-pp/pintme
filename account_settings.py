@@ -66,9 +66,10 @@ class PostSettings(webapp.RequestHandler):
 		# And if he exists, isn't the user himself and isn't already in the list, let's add it to the list
 		if friend_added != '':
 			friend_account = Account.gql("WHERE nickname = :1", friend_added).get()
-			if ((friend_account != None) & (friend_account != user_account) & (friend_account.key() not in user_account.following)):
-				user_account.following.append(friend_account.key())
-				user_account.put()
+			if friend_account != None:
+				if (friend_added != user_account.nickname) & (friend_account.key() not in user_account.following):
+					user_account.following.append(friend_account.key())
+					user_account.put()
 		
 		# Let's change the nickname
 		# Query: nickname

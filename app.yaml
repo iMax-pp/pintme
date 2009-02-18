@@ -21,5 +21,10 @@ handlers:
 - url: /account_settings/post
   script: account_settings.py
   
+# Search results page and profil page
 - url: /search
   script: search.py
+  
+- url: /profil/.*
+  script: profil.py
+  

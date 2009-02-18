@@ -74,6 +74,13 @@ body
 	padding-bottom: 20px;
 }
 
+#maincontent h2
+{
+	text-align: right;
+	margin-right: 15px;
+	color: #FF7F2A;
+}
+
 #rightnav
 {
 	float: left;

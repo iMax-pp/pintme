@@ -62,6 +62,7 @@
 			</div>
 		{% endifnotequal %}
 
+		{% block following %}
 			<div class="navbox">
 				<div class="title">
 					<h3>Info</h3>
@@ -71,14 +72,14 @@
 					<div>
 						<h4>Following</h4>
 					{% for followed in followed_list %}
-							<a>{{ followed.nickname }}</a>
+							<a href="/profil/{{ followed.nickname }}">{{ followed.nickname }}</a>
 							<br>
 					{% endfor %}
 					</div>
 					<div>
 						<h4>Followers</h4>
 					{% for follower in followers_list %}
-							<a>{{ follower.nickname }}</a>
+							<a href="/profil/{{ follower.nickname }}">{{ follower.nickname }}</a>
 							<br>
 					{% endfor %}
 					</div>
@@ -89,7 +90,21 @@
 				{% endifnotequal %}
 				</div>
 			</div>
+			{% endblock %}
+			
 			{% block searchbox %}
+			<div class="navbox">
+				<div class="title">
+					<h3>Search Box</h3>
+				</div>
+				<div class="content">
+					<form action="/search" method="post">
+						<p>Search for a nickname:</p>
+		                <input name="search" type="text" value="Search...">
+		                <input type="submit" value="ok">
+					</form>
+				</div>
+			</div>
 			{% endblock %}
 		</div>
 

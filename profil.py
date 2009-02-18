@@ -42,20 +42,25 @@ class Profil(webapp.RequestHandler):
 			
 				# Query: Current user is admin?
 				is_admin = users.is_current_user_admin()
-		
-				# Template values
-				template_values = {
-					'user': user,
-					'nickname': nickname,
-					'messages': messages,
-					'followed_list': Account.get(user.following),
-					'followers_list': followers_list,
-					'is_admin': is_admin
-				}
-	
-				# We get the template path then show it
-				path = os.path.join(os.path.dirname(__file__), 'profil.html')
-				self.response.out.write(template.render(path, template_values))
+				
+				current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
+				if nickname == current_user.nickname:
+					self.redirect('/account_settings')
+				
+				else:
+					# Template values
+					template_values = {
+						'user': user,
+						'nickname': nickname,
+						'messages': messages,
+						'followed_list': Account.get(user.following),
+						'followers_list': followers_list,
+						'is_admin': is_admin
+					}
+					
+					# We get the template path then show it
+					path = os.path.join(os.path.dirname(__file__), 'profil.html')
+					self.response.out.write(template.render(path, template_values))
 
 
 application = webapp.WSGIApplication(

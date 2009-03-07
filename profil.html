@@ -29,6 +29,16 @@
 	
 	{% block maincontent %}
 		<h2>{{ user.nickname }}</h2>
+
+		{% if follow_him %}
+		<form action="/profil/post" method="post" class="composer">
+		  	<div>
+				<input type="hidden" name="friend_added" value={{ user.nickname }} />
+				<input type="submit" value="follow" />
+		    </div>
+		</form>
+		{% endif %}
+
 		<div class="message">
 			<cite>
 				<b>Following</b>

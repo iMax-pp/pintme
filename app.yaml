@@ -28,3 +28,5 @@ handlers:
 - url: /profil/.*
   script: profil.py
   
+- url: /profil/post
+  script: profil.py

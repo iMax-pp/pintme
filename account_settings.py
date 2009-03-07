@@ -28,61 +28,47 @@ from models import Account
 
 class AccountSettings(webapp.RequestHandler):
 	def get(self):
-		# Query: is user logged in?
-		user = users.get_current_user()
+		# Query: User's account
+		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
 		
-		if not user:
+		if not current_user:
 			self.redirect('/')
-		
 		else:
-			# Query: User's account
-			user_account = Account.gql("WHERE user = :1", user).get()
-		
 			# Query: User is admin?
 			is_admin = users.is_current_user_admin()
-		
+	
 			# Query: Get the list of the users followers
-			followers_list = Account.gql("WHERE following = :1", user_account.key())
-				
+			followers_list = Account.gql("WHERE following = :1", current_user.key())
+			
 			# Template values
 			template_values = {
-				'user_account': user_account,
-				'followed_list': Account.get(user_account.following),
+				'current_user': current_user,
+				'followed_list': Account.get(current_user.following),
 				'followers_list': followers_list,
 				'is_admin': is_admin
 			}
-		
+	
 			# We get the template path then show it
 			path = os.path.join(os.path.dirname(__file__), 'account_settings.html')
 			self.response.out.write(template.render(path, template_values))
 
 class PostSettings(webapp.RequestHandler):
 	def post(self):
-		# Let's adding a Friend to following list
 		# Query: User's account & friend's nickname
-		user_account = Account.gql("WHERE user = :1", users.get_current_user()).get()
-		friend_added = self.request.get('friend_added')
-		
-		# And if he exists, isn't the user himself and isn't already in the list, let's add it to the list
-		if friend_added != '':
-			friend_account = Account.gql("WHERE nickname = :1", friend_added).get()
-			if friend_account != None:
-				if (friend_added != user_account.nickname) & (friend_account.key() not in user_account.following):
-					user_account.following.append(friend_account.key())
-					user_account.put()
+		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
 		
 		# Let's change the nickname
 		# Query: nickname
 		nickname = self.request.get('nickname')
 		
 		# Is the nickname available ?
-		if nickname != user_account.nickname:
+		if nickname != current_user.nickname:
 			nick_already_exist = Account.gql("WHERE nickname = :1", nickname).get()
 			
 			# Ok ? so change the nickname
 			if nick_already_exist == None:
-				user_account.nickname = nickname
-				user_account.put()
+				current_user.nickname = nickname
+				current_user.put()
 		
 		self.redirect('/account_settings')
 

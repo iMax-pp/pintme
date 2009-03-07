@@ -17,7 +17,6 @@
 
 import cgi
 import os
-import random
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
@@ -40,14 +39,14 @@ class MainPage(webapp.RequestHandler):
 		
 		# Query: is user logged in?
 		user_status = "anon"
-		user = users.get_current_user()
-		if user:
+		current_user = users.get_current_user()
+		if current_user:
 			# User Url = Logout
 			log_url = users.create_logout_url(self.request.uri)
 			user_status = "unregistered"
 			
 			# Query: is user registered?
-			user_account = Account.gql("WHERE user = :1", user).get()
+			user_account = Account.gql("WHERE user = :1", current_user).get()
 			
             # User is registered!
 			if user_account:
@@ -92,8 +91,8 @@ class PostMessage(webapp.RequestHandler):
 		message = Message()
 		
 		# Query: user's Account & new message's content
-		user = Account.gql("WHERE user = :1", users.get_current_user()).get()
-		message.author = user.key()
+		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
+		message.author = current_user.key()
 		content = self.request.get('content')
 		
 		# And if the content isn't empty, off to the database! Happy message :D

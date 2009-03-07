@@ -29,12 +29,8 @@
 	<form action="/account_settings/post" method="post" class="composer">
 		<div>
 			<p>Enter a new nick if you wish: </p>
-			<input name="nickname" type="text" value={{ user_account.nickname }} />
+			<input type="text" name="nickname" value={{ current_user.nickname }} />
+			<input type="submit" value="ok" />
 		</div>
-	  	<div>
-			<p>Any one you want to follow?</p>
-			<input name="friend_added" type="text">
-			<input type="submit" value="ok">
-	    </div>
 	</form>
 	{% endblock %}

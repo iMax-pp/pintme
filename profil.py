@@ -33,38 +33,56 @@ class Profil(webapp.RequestHandler):
 		if nickname == '':
 			self.redirect('/')
 		else:
-			user = Account.gql("WHERE nickname = :1", nickname).get()
-			if user == None:
-				self.redirect('/')
+			current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
+			if ((current_user != None) and (nickname == current_user.nickname)):
+				self.redirect('/account_settings')
 			else:
-				messages = Message.gql("WHERE author = :1", user.key()).fetch(10)
-				followers_list = Account.gql("WHERE following = :1", user.key())
-			
-				# Query: Current user is admin?
-				is_admin = users.is_current_user_admin()
-				
-				current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
-				if nickname == current_user.nickname:
-					self.redirect('/account_settings')
-				
+				user = Account.gql("WHERE nickname = :1", nickname).get()
+				if user == None:
+					self.redirect('/')
 				else:
+					follow_him = (current_user != None)
+					if follow_him:
+						follow_him = user.key() not in current_user.following
+					messages = Message.gql("WHERE author = :1", user.key()).fetch(10)
+					followers_list = Account.gql("WHERE following = :1", user.key())
+				
+					# Query: Current user is admin?
+					is_admin = users.is_current_user_admin()
+				
 					# Template values
 					template_values = {
-						'user': user,
-						'nickname': nickname,
-						'messages': messages,
-						'followed_list': Account.get(user.following),
-						'followers_list': followers_list,
-						'is_admin': is_admin
+					'user': user,
+					'follow_him': follow_him,
+					'nickname': nickname,
+					'messages': messages,
+					'followed_list': Account.get(user.following),
+					'followers_list': followers_list,
+					'is_admin': is_admin
 					}
 					
 					# We get the template path then show it
 					path = os.path.join(os.path.dirname(__file__), 'profil.html')
 					self.response.out.write(template.render(path, template_values))
 
+class PostAdding(webapp.RequestHandler):
+	def post(self):
+		# Let's adding a Friend to following list
+		# Query: User's account & friend's nickname
+		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
+		friend_added = self.request.get('friend_added')
+		
+		# And if he exists, isn't the user himself and isn't already in the list, let's add it to the list
+		friend_account = Account.gql("WHERE nickname = :1", friend_added).get()
+		if friend_account != None:
+			current_user.following.append(friend_account.key())
+			current_user.put()
+		
+		self.redirect('/')
 
 application = webapp.WSGIApplication(
-									 [(r'/profil/(.*)', Profil)],
+									 [('/profil/post', PostAdding),
+									  (r'/profil/(.*)', Profil)],
 									 debug = True)
 
 def main():

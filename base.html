@@ -2,25 +2,35 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+	<link type="text/css" rel="stylesheet" href="/stylesheets/frame.css" />
+	<link type="text/css" rel="stylesheet" href="/stylesheets/colors.css" />
 	<title>{% block title %}Pint{% endblock %}</title>
 </head>
 
 <body>	
-	<div id="mainbox">
-		<div id="top">
-		{% block top %}
-			{% ifequal user_status "anon" %}
-			<a href="{{ log_url }}" class="loglink">Login</a>
-			{% else %}
-			<a href="{{ log_url }}" class="loglink">Logout</a>
-			{% endifequal %}
+	<div id="topbox">
+		<div class="title">
 			<h1>Pint</h1>
 			<cite>&#8220;Share and share alike.&#8221;</cite>
-		{% endblock %}
 		</div>
-
-		<div id="rightnav">
+		<ul id="userbox">
+			{% block topbox %}
+			{% endblock %}
+			{% ifequal user_status "anon" %}
+			<li><a href="{{ log_url }}" class="loglink">Login</a></li>
+			{% else %}
+				{% if is_admin %}
+					<li><a href="http://appengine.google.com/logs?&app_id=pintme">Logs</a></li>
+					<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
+					<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
+					<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
+			{% endif %}
+			<li><a href="{{ log_url }}" class="loglink">Logout</a></li>
+			{% endifequal %}
+		</ul>
+	</div>
+	<div id="mainbox">
+		<div id="leftcolumn">
 		{% block leftblocs %}
 			{% ifnotequal user_status "anon" %}
 			<div class="navbox">"
@@ -28,106 +38,33 @@
 					<h3>Hi!</h3>
 				</div>
 				<div class="content">
-					<p>Share and Enjoy!</p>
+					<p>This is a test box!</p>
 				</div>
 			</div>
 			{% endifnotequal %}
 		{% endblock %}
-
-		{% ifnotequal user_status "anon" %}
-			{% if is_admin %}
-			<div class="navbox">
-				<div class="title">
-					<h3>Admin</h3>
-				</div>
-				<div class="content">
-					<ul>
-						<li><a href="http://appengine.google.com/logs?&app_id=pintme">Logs</li>
-						<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
-						<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
-						<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
-					</ul>
-					</div>
-			</div>
-			{% endif %}
-		{% else %}
-			<div class="navbox">
-				<div class="title">
-					<h3>Hi!</h3>
-				</div>
-				<div class="content">
-					<p>Share and Enjoy!</p>
-					<p>(Login to start :)</p>
-				</div>
-			</div>
-		{% endifnotequal %}
-
-		{% block following %}
-			<div class="navbox">
-				<div class="title">
-					<h3>Info</h3>
-				</div>
-				<div class="content">
-				{% ifnotequal user_status "anon" %}
-					<div>
-						<h4>Following</h4>
-					{% for followed in followed_list %}
-							<a href="/profil/{{ followed.nickname }}">{{ followed.nickname }}</a>
-							<br>
-					{% endfor %}
-					</div>
-					<div>
-						<h4>Followers</h4>
-					{% for follower in followers_list %}
-							<a href="/profil/{{ follower.nickname }}">{{ follower.nickname }}</a>
-							<br>
-					{% endfor %}
-					</div>
-				{% else %}
-					<div>
-						<p>Information! Yay!</p>
-					</div>
-				{% endifnotequal %}
-				</div>
-			</div>
-			{% endblock %}
-			
-			{% block searchbox %}
-			<div class="navbox">
-				<div class="title">
-					<h3>Search Box</h3>
-				</div>
-				<div class="content">
-					<form action="/search" method="post">
-						<p>Search for a nickname:</p>
-		                <input name="search" type="text" value="Search...">
-		                <input type="submit" value="ok">
-					</form>
-				</div>
-			</div>
-			{% endblock %}
 		</div>
-
-		<div id="maincontent">
+		<div id="rightcolumn">
+		{% block rightblocs %}
+		{% endblock %}
+		</div>
+		<div id="maincolumn">
 			<ul id="tabmenu">
-			{% block tabmenu %}
+			{% block tabs %}
 				<li><a href="/" id="current">Pints</a></li>
 				{% ifequal user_status "registered" %}
 				<li><a href="/account_settings">Account Settings</a></li>
 				{% endifequal %}
 			{% endblock %}
 			</ul>
-
-			{% block maincontent %}
+			{% block main %}
 			{% endblock %}
-
+			<ul id="footbox">
+				<li>&copy; 2009</li>
+				<li><a href="/about">About</a></li>
+			</ul>
 		</div>
-		<ul id="footer">
-			<li>&copy; 2009</li>
-			<li><a href="/about">About</a></li>
-		</ul>
 	</div>
-
 	<script type="text/javascript">
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

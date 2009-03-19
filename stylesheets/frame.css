@@ -1,0 +1,48 @@
+/* General and abstract rules for the frame of a PintMe style */
+
+body
+{
+	padding: 0;
+	margin: 0;
+	
+	font-family: arial;
+}
+
+#topbox
+{
+	text-align: left;
+	margin: auto;
+	padding: 0.5em 2em;
+}
+
+#topbox #title h1
+{
+	font-size: x-large;
+	margin-bottom: 2em;
+	margin: 0;
+}
+
+#topbox #title cite
+{
+	font-size: large;
+	font-style: italic;
+}
+
+#topbox ul#userbox
+{
+	margin: 0;
+	padding: 0;
+	float: right;
+}
+
+#topbox ul#userbox li
+{
+	display: inline;
+	margin: 0 5px;
+}
+
+#topbox ul#userbox li a
+{
+	border-bottom: 2px;
+	padding-bottom: 3px;
+}

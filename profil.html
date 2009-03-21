@@ -1,12 +1,7 @@
 {% extends "base.html" %}
 
 	{% block title %}Pint - {{ user.nickname }}{% endblock %}
-	
-	{% block top %}
-	<h1>Pint</h1>
-	<cite>&#8220;Share and share alike.&#8221;</cite>
-	{% endblock %}
-	
+		
 	{% block leftblocs %}
 	<div class="navbox">
 		<div class="title">
@@ -18,16 +13,13 @@
 		</div>
 	</div>
 	{% endblock %}
-	
-	{% block following %}
-	{% endblock %}
-	
-	{% block tabmenu %}
+		
+	{% block tabs %}
 		<li><a href="/">Pints</a></li>
 		<li><a href="" id="current">Profil</a></li>
 	{% endblock %}
 	
-	{% block maincontent %}
+	{% block main %}
 		<h2>{{ user.nickname }}</h2>
 
 		{% if follow_him %}

@@ -1,15 +1,62 @@
+body
+{
+	background-color: white; 
+}
+
 a
 {
-	color: green;
+	color: silver;
 }
 
 h1
 {
-	color: white;
+	color: ;
 }
 
 #topbox
 {
-	background-color: #AE2E04;
 }
 
+#topbox ul#userbox li
+{
+	color: white;
+}
+
+#topbox ul#userbox li a
+{
+	border-color: #AE2E04;
+}
+
+#topbox ul#userbox li a:hover
+{
+	color: #AE2E04;
+	border-color: #AE2E04;
+}
+
+#topbox ul#userbox li a#currentTab
+{
+	color: #647678;
+	border-color: #647678;
+}
+
+#topbox ul#userbox li a
+{
+	border-color: white;
+}
+
+#mainbox #leftcolumn
+{
+	background-color: transparent;
+}
+
+#mainbox #leftcolumn div
+{
+	background-color: #647678;
+	color: white;
+}
+
+#mainbox #maincolumn
+{
+	background-color: white;
+	border: #647678 1px solid;
+}

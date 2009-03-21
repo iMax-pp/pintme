@@ -9,10 +9,6 @@
 
 <body>	
 	<div id="topbox">
-		<div class="title">
-			<h1>Pint</h1>
-			<cite>&#8220;Share and share alike.&#8221;</cite>
-		</div>
 		<ul id="userbox">
 			{% block topbox %}
 			{% endblock %}
@@ -24,16 +20,22 @@
 					<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
 					<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
 					<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
-			{% endif %}
+				{% endif %}
+			<li><a href="/account_settings" id="currentTab">Account Settings</a></li>
 			<li><a href="{{ log_url }}" class="loglink">Logout</a></li>
 			{% endifequal %}
 		</ul>
+		<div class="title">
+			<h1>Pint</h1>
+			<cite>&#8220;Share and enjoy!&#8221;</cite>
+		</div>
 	</div>
 	<div id="mainbox">
 		<div id="leftcolumn">
 		{% block leftblocs %}
 			{% ifnotequal user_status "anon" %}
-			<div class="navbox">"
+			{% endifnotequal %}
+			<div>
 				<div class="title">
 					<h3>Hi!</h3>
 				</div>
@@ -41,28 +43,18 @@
 					<p>This is a test box!</p>
 				</div>
 			</div>
-			{% endifnotequal %}
-		{% endblock %}
-		</div>
-		<div id="rightcolumn">
-		{% block rightblocs %}
 		{% endblock %}
 		</div>
 		<div id="maincolumn">
-			<ul id="tabmenu">
-			{% block tabs %}
-				<li><a href="/" id="current">Pints</a></li>
-				{% ifequal user_status "registered" %}
-				<li><a href="/account_settings">Account Settings</a></li>
-				{% endifequal %}
-			{% endblock %}
-			</ul>
 			{% block main %}
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec libero vitae lacus imperdiet lacinia. Nulla quis tellus sit amet metus lacinia blandit. Donec tempus erat. Vestibulum imperdiet posuere sapien. Vivamus vitae dui sed magna consequat lobortis. Aliquam tortor erat, eleifend vel, pulvinar eu, mollis iaculis, lectus. Sed dui libero, tempor in, elementum sed, sodales vel, lorem. Etiam vestibulum. Praesent tortor massa, semper non, rutrum imperdiet, mattis ut, sem. Integer nunc ipsum, volutpat a, pretium a, imperdiet ac, nibh. Aenean sed nisl sit amet felis dapibus sodales.</p>
+
+<p>Integer blandit felis in ipsum. Nam mauris. Etiam eros leo, scelerisque id, dictum sit amet, tincidunt consequat, magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a eros eget nisl egestas fringilla. Sed nunc nibh, tincidunt non, ullamcorper at, condimentum ornare, ante. Nunc et odio non orci accumsan gravida. Morbi vel turpis id urna elementum congue. Sed ac arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam nisi erat, lobortis sed, tristique ut, suscipit ut, justo. Suspendisse eu nibh. Nulla porta eros cursus sem. Sed posuere, velit id consectetur ultrices, ante tortor gravida est, vitae dapibus diam ipsum ut est. Nullam id odio. Donec ut urna. Maecenas at libero. Etiam suscipit libero ac magna pulvinar rhoncus. Curabitur nulla metus, imperdiet at, cursus id, pretium ac, velit.</p>
 			{% endblock %}
-			<ul id="footbox">
-				<li>&copy; 2009</li>
-				<li><a href="/about">About</a></li>
-			</ul>
+		</div>
+		<div id="footbox">
+			&copy; 2009
+			<a href="/about">About</a>
 		</div>
 	</div>
 	<script type="text/javascript">

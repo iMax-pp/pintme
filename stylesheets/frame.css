@@ -91,6 +91,41 @@ body
 	padding: 1em;
 }
 
+#mainbox .composer
+{
+	margin-left: 200px;
+	padding: 10px;
+}
+
+#mainbox ul.composer_controls
+{
+	float: left;
+	list-style-type: none;
+	width: 75px;
+	text-align: right;
+	padding: 10px 0;
+	margin: 0;
+}
+
+#mainbox ul.composer_controls li
+{
+	margin-bottom: 7px;
+}
+
+#mainbox ul.composer_controls li a
+{
+	text-decoration: none;
+	padding: 2px 20px 2px 5px;
+}
+
+#mainbox .composer_form
+{
+	border-left-width: 2px;
+	border-left-style: solid;
+	margin-left: 75px;
+	padding: 10px;
+}
+
 #mainbox #footbox
 {
 	text-align: center;

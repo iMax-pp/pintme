@@ -29,21 +29,27 @@ from models import Account
 class AccountSettings(webapp.RequestHandler):
 	def get(self):
 		# Query: User's account
-		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
+		current_user = users.get_current_user();
+		user_account = Account.gql("WHERE user = :1", current_user).get()
 		
 		if not current_user:
 			self.redirect('/')
 		else:
 			# Query: User is admin?
 			is_admin = users.is_current_user_admin()
+
+			# Get users gmail nick
+			user_nick = current_user.nickname()
 	
 			# Query: Get the list of the users followers
-			followers_list = Account.gql("WHERE following = :1", current_user.key())
+			followers_list = Account.gql("WHERE following = :1", user_account.key())
 			
 			# Template values
 			template_values = {
-				'current_user': current_user,
-				'followed_list': Account.get(current_user.following),
+                'tab': "settings",
+                'usernick': user_nick,
+				'current_user': user_account,
+				'followed_list': Account.get(user_account.following),
 				'followers_list': followers_list,
 				'is_admin': is_admin
 			}

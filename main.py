@@ -39,6 +39,7 @@ class MainPage(webapp.RequestHandler):
 		
 		# Query: is user logged in?
 		user_status = "anon"
+		user_nick = "unregistered"
 		current_user = users.get_current_user()
 		if current_user:
 			# User Url = Logout
@@ -47,6 +48,7 @@ class MainPage(webapp.RequestHandler):
 			
 			# Query: is user registered?
 			user_account = Account.gql("WHERE user = :1", current_user).get()
+			user_nick = current_user.nickname()
 			
             # User is registered!
 			if user_account:
@@ -68,15 +70,19 @@ class MainPage(webapp.RequestHandler):
 	  	
 		# Query: User is admin? (Could it be? Is the Savior here?)
 		is_admin = users.is_current_user_admin()
-		
+       
 		# Template values, yay!
 		template_values = {
-			'messages': messages,
+            'tab': "home",
+            'messages': messages,
+            'msg_num': messages.count(),
 			'followed_list': followed_list,
 			'followers_list': followers_list,
 			'log_url': log_url,
 			'user_status': user_status,
-			'is_admin': is_admin
+            'usernick': user_nick,
+			'is_admin': is_admin,
+            'composer_mode': self.request.get("mode","text")
 		}
 		
 		# We get the template path then show it
@@ -135,6 +141,7 @@ class Maintenance(webapp.RequestHandler):
 # Route definitions, that's what's here!
 application = webapp.WSGIApplication(
 									 [('/', MainPage),
+									  ('/compose', MainPage),
 									  ('/post', PostMessage),
 									  ('/register', NewUser)],
 									 debug = True)

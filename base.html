@@ -7,7 +7,7 @@
 	<title>{% block title %}Pint{% endblock %}</title>
 </head>
 
-<body>	
+<body>
 	<div id="topbox">
 		<ul id="userbox">
 			{% block topbox %}
@@ -15,14 +15,16 @@
 			{% ifequal user_status "anon" %}
 			<li><a href="{{ log_url }}" class="loglink">Login</a></li>
 			{% else %}
+                <li>{{ usernick }} :: </li>
+                <li><a href="/" {% ifequal tab "home" %}id="currentTab"{% endifequal %}>Home</a></li>
 				{% if is_admin %}
 					<li><a href="http://appengine.google.com/logs?&app_id=pintme">Logs</a></li>
 					<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
 					<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
 					<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
 				{% endif %}
-			<li><a href="/account_settings" id="currentTab">Account Settings</a></li>
-			<li><a href="{{ log_url }}" class="loglink">Logout</a></li>
+                <li><a href="/account_settings" {% ifequal tab "settings" %}id="currentTab"{% endifequal %}>Account Settings</a></li>
+                <li><a href="{{ log_url }}" class="loglink">Logout</a></li>
 			{% endifequal %}
 		</ul>
 		<div class="title">
@@ -33,23 +35,10 @@
 	<div id="mainbox">
 		<div id="leftcolumn">
 		{% block leftblocs %}
-			{% ifnotequal user_status "anon" %}
-			{% endifnotequal %}
-			<div>
-				<div class="title">
-					<h3>Hi!</h3>
-				</div>
-				<div class="content">
-					<p>This is a test box!</p>
-				</div>
-			</div>
 		{% endblock %}
 		</div>
 		<div id="maincolumn">
 			{% block main %}
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec libero vitae lacus imperdiet lacinia. Nulla quis tellus sit amet metus lacinia blandit. Donec tempus erat. Vestibulum imperdiet posuere sapien. Vivamus vitae dui sed magna consequat lobortis. Aliquam tortor erat, eleifend vel, pulvinar eu, mollis iaculis, lectus. Sed dui libero, tempor in, elementum sed, sodales vel, lorem. Etiam vestibulum. Praesent tortor massa, semper non, rutrum imperdiet, mattis ut, sem. Integer nunc ipsum, volutpat a, pretium a, imperdiet ac, nibh. Aenean sed nisl sit amet felis dapibus sodales.</p>
-
-<p>Integer blandit felis in ipsum. Nam mauris. Etiam eros leo, scelerisque id, dictum sit amet, tincidunt consequat, magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a eros eget nisl egestas fringilla. Sed nunc nibh, tincidunt non, ullamcorper at, condimentum ornare, ante. Nunc et odio non orci accumsan gravida. Morbi vel turpis id urna elementum congue. Sed ac arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam nisi erat, lobortis sed, tristique ut, suscipit ut, justo. Suspendisse eu nibh. Nulla porta eros cursus sem. Sed posuere, velit id consectetur ultrices, ante tortor gravida est, vitae dapibus diam ipsum ut est. Nullam id odio. Donec ut urna. Maecenas at libero. Etiam suscipit libero ac magna pulvinar rhoncus. Curabitur nulla metus, imperdiet at, cursus id, pretium ac, velit.</p>
 			{% endblock %}
 		</div>
 		<div id="footbox">

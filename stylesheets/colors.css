@@ -13,13 +13,9 @@ h1
 	color: ;
 }
 
-#topbox
-{
-}
-
 #topbox ul#userbox li
 {
-	color: white;
+	color: silver;
 }
 
 #topbox ul#userbox li a
@@ -59,4 +55,25 @@ h1
 {
 	background-color: white;
 	border: #647678 1px solid;
+}
+
+#mainbox #maincolumn .msgbox
+{
+	border-color: silver;
+}
+
+#mainbox ul.composer_controls li a
+{
+	color: #647678;
+}
+
+#mainbox ul.composer_controls li a#current_composer
+{
+	background-color: #647678;
+	color: white;
+}
+
+#mainbox .composer_form
+{
+	border-left-color: #647678;
 }

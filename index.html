@@ -1,22 +1,74 @@
 {% extends "base.html" %}
+
+	{% block leftblocs %}
+        {% ifequal user_status "unregistered" %}
+		<div>
+			<div class="title">
+				<h3>Ah! A newcomer!</h3>
+			</div>
+			<div class="content">
+				<p>And what name do you go by?</p>
+			</div>
+		</div>
+        {% endifequal %}
+        {% ifequal msg_num 0 %}
+		<div>
+			<div class="title">
+				<h3>Ow! No messages!</h3>
+			</div>
+			<div class="content">
+				<p>Looks like you don't have anything to read...</p>
+                <p>Are you actually following anything?</p>
+			</div>
+		</div>
+       {% endifequal %}
+  	{% endblock %}
 	
-	{% block maincontent %}
+	{% block main %}
         {% ifnotequal user_status "anon" %}
             {% ifequal user_status "unregistered" %}
             <form action="/register" method="post" class="composer">
-                <div id="unknown_user">New? Enter a nickname...
+                <div class="msgbox">
                     <input name="nickname" type="text" value="Nickname">
                     <input type="submit" value="ok">
+					<div class="note">
+						<p>This nickname must be at least 3 characters long, and is used only as a public identifier on this site.</p>
+					</div>
                 </div>
             </form>
             {% else %}
-            <form action="/post" method="post" class="composer">
-              <div>
-                Your message :
-                <textarea name="content" rows="3" cols="40"></textarea>
-                <input type="submit" value="Send">
-              </div>
-            </form>
+            <div class="composer">
+                <ul class="composer_controls">
+                    <li><a href="/compose?mode=text" class="compose_text" {% ifequal composer_mode "text" %}id="current_composer"{% endifequal %}>text</a></li>
+                    <li><a href="/compose?mode=link" class="compose_link" {% ifequal composer_mode "link" %}id="current_composer"{% endifequal %}>link</a></li>
+                </ul>
+                <div class="composer_form">
+                    {% ifequal composer_mode "text" %}
+                        <form action="/post" method="post">
+                            <div class="msg">
+                                <p>Express yourself!</p>
+                            </div>
+                            <textarea name="content" rows="3" cols="40"></textarea>
+                            <br/>
+                            <input type="submit" value="Send">
+                        </form>
+                    {% endifequal %}
+                    {% ifequal composer_mode "link" %}
+                        <form action="/post" method="post">
+                            <div class="msg">
+                                <p>Share a link why not!</p>
+                            </div>
+                            <label for="mylink">Link</label>
+                            <input type="text" name="mylink"/>
+                            <br/>
+                            <label for="description">Tell us about it</label>
+                            <textarea name="description" rows="3" cols="40"></textarea>
+                            <br/>
+                            <input type="submit" value="Send">
+                        </form>
+                    {% endifequal %}
+                </div>
+            </div>
             {% endifequal %}
         {% endifnotequal %}
     

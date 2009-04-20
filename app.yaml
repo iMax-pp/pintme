@@ -5,28 +5,13 @@ api_version: 1
 
 handlers: 
 - url: /stylesheets
-  static_dir: stylesheets
-    
-# Index page and post requests handle by main.py
+  static_dir: public/stylesheets
+  
+- url: /images
+  static_dir: public/images
+
 - url: /
-  script: main.py
+  script: index.py
   
-- url: /(post|register|compose)
-  script: main.py
-  
-# Account Setting page and post config requests handle by account_settings.py
-- url: /account_settings
-  script: account_settings.py
-  
-- url: /account_settings/post
-  script: account_settings.py
-  
-# Search results page and profil page
-- url: /search
-  script: search.py
-  
-- url: /profil/.*
-  script: profil.py
-  
-- url: /profil/post
-  script: profil.py
+- url: /(post|register|compose|settings|down)
+  script: index.py

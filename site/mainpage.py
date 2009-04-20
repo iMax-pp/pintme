@@ -21,12 +21,10 @@ import os
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
-from models import MainTitle
-from models import Message
-from models import Account
+from site.models import Message
+from site.models import Account
 
 class MainPage(webapp.RequestHandler):
 	def get(self):		
@@ -86,70 +84,6 @@ class MainPage(webapp.RequestHandler):
 		}
 		
 		# We get the template path then show it
-		path = os.path.join(os.path.dirname(__file__), 'index.html')
+		path = os.path.join(os.path.dirname(__file__), '../views/index.html')
 		self.response.out.write(template.render(path, template_values))
         # I still haven't understood why we need to make the path...
-
-# Do you think we could put all the actions in another file?
-class PostMessage(webapp.RequestHandler):
-	def post(self):
-		# Declaration: new Message
-		message = Message()
-		
-		# Query: user's Account & new message's content
-		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
-		message.author = current_user.key()
-		content = self.request.get('content')
-		
-		# And if the content isn't empty, off to the database! Happy message :D
-		if content != '':
-			message.content = content
-			message.put()
-	  
-		self.redirect('/')
-
-class NewUser(webapp.RequestHandler):
-	def post(self):
-		# Declaration: new Account
-		# Query: nickname
-		new_user = Account()
-		nickname = self.request.get('nickname')
-		
-		# Query: Is nickname already exist ?
-		nick_already_exist = Account.gql("WHERE nickname = :1", nickname).get()
-		
-		# If not let's create the new user !
-		if nick_already_exist == None:
-			new_user.user = users.get_current_user()
-			new_user.nickname = nickname
-			new_user.put()
-		
-		self.redirect('/')
-
-
-class Maintenance(webapp.RequestHandler):
-	def get(self):
-		# Maintenance page
-		empty_template_list = dict()
-		path = os.path.join(os.path.dirname(__file__), 'maintenance.html')
-		self.response.out.write(template.render(path, empty_template_list))
-
-
-# Let's seperate this part off a bit ok? ^^
-# It freaks me out when I get here...Agh! What's this?! no def...no class...it's a thing!
-
-# Route definitions, that's what's here!
-application = webapp.WSGIApplication(
-									 [('/', MainPage),
-									  ('/compose', MainPage),
-									  ('/post', PostMessage),
-									  ('/register', NewUser)],
-									 debug = True)
-
-# Duh, it's the main!
-def main():
-	run_wsgi_app(application)
-
-# And its friend, __main__ !
-if __name__ == "__main__":
-	main()

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+	{% block title %}Pint - {{ user.nickname }}{% endblock %}
+		
+	{% block leftblocs %}
+	<div class="navbox">
+		<div class="title">
+			<h3>About!</h3>
+		</div>
+		<div class="content">
+		</div>
+	</div>
+	{% endblock %}
+		
+	{% block tabs %}
+		<li><a href="/">Pints</a></li>
+		<li><a href="" id="current">Profile</a></li>
+	{% endblock %}
+	
+	{% block main %}
+		<h1>About us</h1>
+		<p>We got to a stage when we wanted to easily share links, media and thoughts, and easily dicuss them after, and at the time, Pownce really did the trick. When Pownce went down, we turned to Twitter, but that really wasn't what we wanted. Twitter is meant for tiny sentences and mobile phone blogging, and while that can be useful, it's not what we want our sharing based around.</p>
+	{% endblock %}

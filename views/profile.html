@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+	{% block title %}Pint - {{ user.nickname }}{% endblock %}
+		
+	{% block leftblocs %}
+	<div class="navbox">
+		<div class="title">
+			<h3>Profil</h3>
+		</div>
+		<div class="content">
+            <p>This is {{ user.nickname }}'s profil page.</p>
+			<p>Here you can find some informations about him.</p>
+		</div>
+	</div>
+	{% endblock %}
+		
+	{% block tabs %}
+		<li><a href="/">Pints</a></li>
+		<li><a href="" id="current">Profile</a></li>
+	{% endblock %}
+	
+	{% block main %}
+		<h2>{{ user.nickname }}</h2>
+
+		{% if follow_him %}
+		<form action="/user/post" method="post" class="composer">
+		  	<div>
+				<input type="hidden" name="friend_added" value={{ user.nickname }} />
+				<input type="submit" value="follow" />
+		    </div>
+		</form>
+		{% endif %}
+
+		<div class="message">
+			<cite>
+				<b>Following</b>
+			</cite>
+			<blockquote>
+			<p>
+			{% for followed in followed_list %}
+					<a href="/user/{{ followed.nickname }}">{{ followed.nickname }}</a>
+			{% endfor %}
+			</p>
+			</blockquote>
+		</div>
+		<div class="message">
+			<cite>
+				<b>Followers</b>
+			</cite>
+			<blockquote>
+			<p>
+			{% for follower in followers_list %}
+				<a href="/user/{{ follower.nickname }}">{{ follower.nickname }}</a>
+			{% endfor %}
+			</p>
+			</blockquote>
+		</div>
+
+		<p>Last messages:</p>
+		{% for message in messages %}
+        <div class="message">
+            {{ message.date.date }}
+            {{ message.date.hour }}:{{ message.date.minute }}
+            <blockquote>
+                <p>{{ message.content|escape }}</p>
+            </blockquote>
+        </div>
+        {% endfor %}
+	{% endblock %}

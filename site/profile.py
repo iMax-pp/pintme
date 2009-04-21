@@ -24,48 +24,50 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
-from models import Account
-from models import Message
+from data.models import Account
+from data.models import Message
 
-class Profil(webapp.RequestHandler):
+class Profile(webapp.RequestHandler):
 	def get(self, nickname):
 		# Query: user's account & his 10th last messages
 		if nickname == '':
 			self.redirect('/')
 		else:
 			current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
-			if ((current_user != None) and (nickname == current_user.nickname)):
-				self.redirect('/account_settings')
+			if current_user == None:
+				self.redirect('/')
 			else:
-				user = Account.gql("WHERE nickname = :1", nickname).get()
-				if user == None:
-					self.redirect('/')
+				if nickname == current_user.nickname:
+					self.redirect('/settings')
 				else:
-					follow_him = (current_user != None)
-					if follow_him:
-						follow_him = user.key() not in current_user.following
-					messages = Message.gql("WHERE author = :1", user.key()).fetch(10)
-					followers_list = Account.gql("WHERE following = :1", user.key())
-				
-					# Query: Current user is admin?
-					is_admin = users.is_current_user_admin()
-				
-					# Template values
-					template_values = {
-					'user': user,
-					'follow_him': follow_him,
-					'nickname': nickname,
-					'messages': messages,
-					'followed_list': Account.get(user.following),
-					'followers_list': followers_list,
-					'is_admin': is_admin
-					}
+					user = Account.gql("WHERE nickname = :1", nickname).get()
+					if user == None:
+						self.redirect('/')
+					else:
+						follow_him = (current_user != None)
+						if follow_him:
+							follow_him = user.key() not in current_user.following
+						messages = Message.gql("WHERE author = :1", user.key()).fetch(10)
+						followers_list = Account.gql("WHERE following = :1", user.key())
 					
-					# We get the template path then show it
-					path = os.path.join(os.path.dirname(__file__), 'profil.html')
-					self.response.out.write(template.render(path, template_values))
+						# Query: Current user is admin?
+						is_admin = users.is_current_user_admin()
+					
+						# Template values
+						template_values = {
+							'user': user,
+							'follow_him': follow_him,
+							'nickname': nickname,
+							'messages': messages,
+							'followed_list': Account.get(user.following),
+							'followers_list': followers_list,
+							'is_admin': is_admin
+						}
+					
+						# We get the template path then show it
+						path = os.path.join(os.path.dirname(__file__), '../views/profile.html')
+						self.response.out.write(template.render(path, template_values))
 
-class PostAdding(webapp.RequestHandler):
 	def post(self):
 		# Let's adding a Friend to following list
 		# Query: User's account & friend's nickname
@@ -79,14 +81,3 @@ class PostAdding(webapp.RequestHandler):
 			current_user.put()
 		
 		self.redirect('/')
-
-application = webapp.WSGIApplication(
-									 [('/profil/post', PostAdding),
-									  (r'/profil/(.*)', Profil)],
-									 debug = True)
-
-def main():
-	run_wsgi_app(application)
-
-if __name__ == "__main__":
-	main()

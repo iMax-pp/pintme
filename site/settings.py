@@ -24,7 +24,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
-from models import Account
+from data.models import Account
 
 class AccountSettings(webapp.RequestHandler):
 	def get(self):
@@ -32,7 +32,7 @@ class AccountSettings(webapp.RequestHandler):
 		current_user = users.get_current_user();
 		user_account = Account.gql("WHERE user = :1", current_user).get()
 		
-		if not current_user:
+		if not user_account:
 			self.redirect('/')
 		else:
 			# Query: User is admin?
@@ -55,10 +55,9 @@ class AccountSettings(webapp.RequestHandler):
 			}
 	
 			# We get the template path then show it
-			path = os.path.join(os.path.dirname(__file__), 'account_settings.html')
+			path = os.path.join(os.path.dirname(__file__), '../views/settings.html')
 			self.response.out.write(template.render(path, template_values))
 
-class PostSettings(webapp.RequestHandler):
 	def post(self):
 		# Query: User's account & friend's nickname
 		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
@@ -76,16 +75,4 @@ class PostSettings(webapp.RequestHandler):
 				current_user.nickname = nickname
 				current_user.put()
 		
-		self.redirect('/account_settings')
-
-
-application = webapp.WSGIApplication(
-									 [('/account_settings', AccountSettings),
-									  ('/account_settings/post', PostSettings)],
-									 debug = True)
-
-def main():
-	run_wsgi_app(application)
-
-if __name__ == "__main__":
-	main()
+		self.redirect('/settings')

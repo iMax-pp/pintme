@@ -24,9 +24,9 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
-from models import Account
+from data.models import Account
 
-class SearchResults(webapp.RequestHandler):
+class Search(webapp.RequestHandler):
 	def post(self):
 		# Query: search & result list
 		search = self.request.get('search')
@@ -46,17 +46,5 @@ class SearchResults(webapp.RequestHandler):
 		}
 		
 		# We get the template path then show it
-		path = os.path.join(os.path.dirname(__file__), 'search_result.html')
+		path = os.path.join(os.path.dirname(__file__), '../views/search_result.html')
 		self.response.out.write(template.render(path, template_values))
-
-		
-
-application = webapp.WSGIApplication(
-									 [('/search', SearchResults)],
-									 debug = True)
-
-def main():
-	run_wsgi_app(application)
-
-if __name__ == "__main__":
-	main()

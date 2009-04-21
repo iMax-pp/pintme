@@ -77,10 +77,10 @@
             {{ message.date.date }}
             {{ message.date.hour }}:{{ message.date.minute }}
             <blockquote>
-                <p>{{ message.content|escape }}</p>
+                <p>{{ message.content|markup }}</p>
             </blockquote>
             <cite class="{% cycle left,right %}">
-                <a href="/profil/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a>
+                <a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a>
             </cite>
         </div>
         {% endfor %}

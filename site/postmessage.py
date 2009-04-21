@@ -24,8 +24,8 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
-from site.models import Message
-from site.models import Account
+from data.models import Account
+from data.models import Message
 
 # Do you think we could put all the actions in another file?
 class PostMessage(webapp.RequestHandler):

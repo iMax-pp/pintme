@@ -23,7 +23,7 @@
 					<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
 					<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
 				{% endif %}
-                <li><a href="/account_settings" {% ifequal tab "settings" %}id="currentTab"{% endifequal %}>Account Settings</a></li>
+                <li><a href="/settings" {% ifequal tab "settings" %}id="currentTab"{% endifequal %}>Settings</a></li>
                 <li><a href="{{ log_url }}" class="loglink">Logout</a></li>
 			{% endifequal %}
 		</ul>

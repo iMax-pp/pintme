@@ -17,20 +17,22 @@
 
 import cgi
 import os
+import re
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 
-from site.models import Message
-from site.models import Account
+from data.models import Account
+from data.models import Message
+
+webapp.template.register_template_library(
+ 'data.helpers')
 
 class MainPage(webapp.RequestHandler):
 	def get(self):		
-		# Default: last ten messages
-		messages = Message.gql("ORDER BY date DESC LIMIT 10")
-		
+	
 		# Declaration: following/followed lists
 		followed_list = list()
 		followers_list = list()
@@ -61,14 +63,19 @@ class MainPage(webapp.RequestHandler):
 				# Default action (10 last messages), but only for the followed users
 				user_account.following.append(user_account.key())
 				messages = Message.gql("WHERE author IN :1 ORDER BY date DESC LIMIT 10", user_account.following)
+			else:
+				# Default: last ten messages
+				messages = Message.gql("ORDER BY date DESC LIMIT 10")
 		
 		else:
 			# Generate the login url
 			log_url = users.create_login_url(self.request.uri)
+			# Default: last ten messages
+			messages = Message.gql("ORDER BY date DESC LIMIT 10")
 	  	
 		# Query: User is admin? (Could it be? Is the Savior here?)
 		is_admin = users.is_current_user_admin()
-       
+				
 		# Template values, yay!
 		template_values = {
             'tab': "home",

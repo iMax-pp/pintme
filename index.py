@@ -26,19 +26,23 @@ from google.appengine.ext             import db
 
 from site.mainpage    import MainPage
 from site.postmessage import PostMessage
+from site.profile     import Profile
 from site.newuser     import NewUser
+from site.settings    import AccountSettings
+from site.search	   import Search
+from site.about       import About
 from site.maintenance import Maintenance
 
-from site.models import MainTitle
-from site.models import Message
-from site.models import Account
-
 application = webapp.WSGIApplication(
-									 [('/', Maintenance),
+									 [('/', MainPage),
 									  ('/compose', MainPage),
+									  (r'/user/(.*)', Profile),
 									  ('/post', PostMessage),
 									  ('/register', NewUser),
-									  ('/down', Maintenance)],
+									  ('/settings', AccountSettings),
+									  ('/search', Search),
+									  ('/down', Maintenance),
+									  ('/about', About)],
 									 debug = True)
 
 # Duh, it's the main!

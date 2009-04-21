@@ -13,5 +13,8 @@ handlers:
 - url: /
   script: index.py
   
-- url: /(post|register|compose|settings|down)
+- url: /(post|register|compose|settings|about|down)
+  script: index.py
+  
+- url: /user/.*
   script: index.py

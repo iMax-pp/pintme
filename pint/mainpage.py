@@ -30,35 +30,35 @@ from data.models import Message
 class MainPage(webapp.RequestHandler):
 	def get(self):		
 	
-		# Declaration: following/followed lists
+		# Default declarations
+		nickname = ''
 		followed_list = list()
 		followers_list = list()
 		
-		# Query: is user logged in?
-		user_status = "anon"
-		user_nick = "unregistered"
-		current_user = users.get_current_user()
-		if current_user:
-			user_status = "unregistered"
-			
+		# Query: Get user login
+		user = users.get_current_user()
+		
+		# User is logged in!
+		if user:
 			# Query: is user registered?
-			user_account = Account.gql("WHERE user = :1", current_user).get()
-			user_nick = current_user.nickname()
+			account = Account.gql("WHERE userId = :1", user.user_id()).get()
 			
             # User is registered!
-			if user_account:
-				user_status = "registered"
-				user_account.put()
+			if account:
+				nickname = account.nickname
+				account.put()
 				
                 # Query: Get the list of users being followed
-				followed_list = Account.get(user_account.following)
+				followed_list = Account.get(account.following)
 				
                 # Query: Get the list of the users followers
-				followers_list = Account.gql("WHERE following = :1", user_account.key())
+				followers_list = Account.gql("WHERE following = :1", account.key())
 				
+				# I don't understand this line...
+				# account.following.append(account.key())
+
 				# Default action (10 last messages), but only for the followed users
-				user_account.following.append(user_account.key())
-				messages = Message.gql("WHERE author IN :1 ORDER BY date DESC LIMIT 10", user_account.following)
+				messages = Message.gql("WHERE author IN :1 ORDER BY date DESC LIMIT 10", account.following)
 			else:
 				# Default: last ten messages
 				messages = Message.gql("ORDER BY date DESC LIMIT 10")
@@ -66,10 +66,7 @@ class MainPage(webapp.RequestHandler):
 		else:
 			# Default: last ten messages
 			messages = Message.gql("ORDER BY date DESC LIMIT 10")
-	  	
-		# Query: User is admin? (Could it be? Is the Savior here?)
-		is_admin = users.is_current_user_admin()
-				
+	  					
 		# Template values, yay!
 		template_values = {
             'tab': 'home',
@@ -77,9 +74,9 @@ class MainPage(webapp.RequestHandler):
             'msg_num': messages.count(),
 			'followed_list': followed_list,
 			'followers_list': followers_list,
-			'user_status': user_status,
-            'usernick': user_nick,
-			'is_admin': is_admin,
+			'user': user,
+            'nickname': nickname,
+			'is_admin': users.is_current_user_admin(),
             'composer_mode': self.request.get("mode","text")
 		}
 		

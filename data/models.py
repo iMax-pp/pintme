@@ -19,12 +19,16 @@ import random
 
 from google.appengine.ext import db
 
+class Image(db.Expando):
+	data = db.BlobProperty()
+	
 class Account(db.Model):
-	user = db.UserProperty()
+	userId = db.StringProperty()
 	nickname = db.StringProperty()
+	avatar = db.ReferenceProperty(Image)
+	following = db.ListProperty(db.Key)
 	regDate = db.DateTimeProperty(auto_now_add=True)
 	lastSeen = db.DateTimeProperty(auto_now=True)
-	following = db.ListProperty(db.Key)
 
 class Message(db.Model):
 	author = db.ReferenceProperty(Account)

@@ -14,18 +14,21 @@
 		</div>
 	</div>
 	{% endblock %}
-	
-	{% block tabs %}
-		<li><a href="/">Pints</a></li>
-		<li><a href="/account_settings" id="current">Account Settings</a></li>
-	{% endblock %}
-	
+
 	{% block main %}
-	<form action="/account_settings/post" method="post" class="composer">
+	<form action="/settings" method="post" class="composer">
 		<div>
-			<p>Enter a new nick if you wish: </p>
-			<input type="text" name="nickname" value={{ current_user.nickname }} />
+			<p>Want to change your nickname? Enter it here:</p>
+			<input type="text" name="nickname" value={{ nickname }} />
 			<input type="submit" value="ok" />
+		</div>
+	</form>
+	<img src="/avatar/{{ nickname }}"/>
+	<form action="/settings" enctype="multipart/form-data" method="post" class="composer">
+		<div>
+			<p>How about changing that avatar?</p>
+			<input type="file" name="avatar"/>
+            <input type="submit" value="Upload">
 		</div>
 	</form>
 	{% endblock %}

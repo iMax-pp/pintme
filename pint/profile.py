@@ -33,7 +33,8 @@ class Profile(webapp.RequestHandler):
 			self.redirect('/')
 		else:
 			# Get viewers account (could be unregistered)
-			current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
+			current_user = users.get_current_user()
+			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
 
 			# Get the users account using nickname
 			called_user = Account.gql("WHERE nickname = :1", nickname).get()
@@ -42,14 +43,14 @@ class Profile(webapp.RequestHandler):
 			if called_user == None:
 				self.redirect('/')
 			else:
-				current_user.put()
+				account.put()
 				# Is this the users profile?
-				isOwner = ( nickname == current_user.nickname )
+				isOwner = ( nickname == account.nickname )
 								
 				# The follow/unfollow button
 				follow = 'n/a'
-				if current_user != None:
-					if called_user.key() not in current_user.following:
+				if account != None:
+					if called_user.key() not in account.following:
 						follow = 'possible'
 					else:
 						follow = 'unfollow'
@@ -66,13 +67,14 @@ class Profile(webapp.RequestHandler):
 				# Template values
 				template_values = {
 					'tab': 'profile',
-					'user': called_user,
+					'nickname': current_user.nickname,
+					'user': current_user,
+					'is_admin': is_admin,
+					'called_user': called_user,
 					'follow': follow,
-					'usernick': current_user.nickname,
 					'messages': messages,
 					'followed_list': Account.get(called_user.following),
-					'followers_list': followers_list,
-					'is_admin': is_admin
+					'followers_list': followers_list
 				}
 			
 				# We get the template path then show it
@@ -83,15 +85,16 @@ class Profile(webapp.RequestHandler):
 		# Toggle following a user or not
 		# Query: User's account & friend's nickname
 
-		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
+		current_user = users.get_current_user()
+		account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
 		
 		# Does that user exist?
 		follow_account = Account.gql("WHERE nickname = :1", follow_nick).get()
 		if follow_account != None:
-			if follow_account.key() in current_user.following:
-				current_user.following.remove(follow_account.key())
+			if follow_account.key() in account.following:
+				account.following.remove(follow_account.key())
 			else:
-				current_user.following.append(follow_account.key())
-			current_user.put()
+				account.following.append(follow_account.key())
+			account.put()
 		
 		self.redirect('/user/'+follow_nick)

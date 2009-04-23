@@ -23,35 +23,34 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
+from google.appengine.api import images
 
 from data.models import Account
+from data.models import Image
 
 class AccountSettings(webapp.RequestHandler):
 	def get(self):
 		# Query: User's account
-		current_user = users.get_current_user();
-		user_account = Account.gql("WHERE user = :1", current_user).get()
+		user = users.get_current_user()
+		account = Account.gql("WHERE userId = :1", user.user_id()).get()
 		
-		if not user_account:
+		if not account:
 			self.redirect('/')
 		else:
 			# Query: User is admin?
 			is_admin = users.is_current_user_admin()
 
-			# Get users gmail nick
-			user_nick = current_user.nickname()
-	
 			# Query: Get the list of the users followers
-			followers_list = Account.gql("WHERE following = :1", user_account.key())
+			followers_list = Account.gql("WHERE following = :1", account.key())
 			
 			# Template values
 			template_values = {
-                'tab': "settings",
-                'usernick': user_nick,
-				'current_user': user_account,
-				'followed_list': Account.get(user_account.following),
-				'followers_list': followers_list,
-				'is_admin': is_admin
+				'tab': 'settings',
+				'nickname': account.nickname,
+				'user': user,
+				'is_admin': is_admin,
+				'followed_list': Account.get(account.following),
+				'followers_list': followers_list
 			}
 	
 			# We get the template path then show it
@@ -60,19 +59,40 @@ class AccountSettings(webapp.RequestHandler):
 
 	def post(self):
 		# Query: User's account & friend's nickname
-		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
+		user = users.get_current_user()
+		account = Account.gql("WHERE userId = :1", user.user_id()).get()
 		
-		# Let's change the nickname
-		# Query: nickname
-		nickname = self.request.get('nickname')
-		
-		# Is the nickname available ?
-		if nickname != current_user.nickname:
-			nick_already_exist = Account.gql("WHERE nickname = :1", nickname).get()
+		if(self.request.get('nickname')):		
+			# Let's change the nickname
+			# Query: nickname
+			nickname = self.request.get('nickname')
 			
-			# Ok ? so change the nickname
-			if nick_already_exist == None:
-				current_user.nickname = nickname
-				current_user.put()
+			# Is the nickname available ?
+			if nickname != account.nickname:
+				nick_taken = Account.gql("WHERE nickname = :1", nickname).get()
+				
+				# Ok ? so change the nickname
+				if not nick_taken:
+					account.nickname = nickname
+					account.put()
+		
+		if(self.request.get('avatar')):
+			# Lets's change the avatar
+			
+			# Delete old avatar (garbage collector?)
+			if account.avatar:
+				account.avatar.delete()
+				account.avatar = None
+				
+			# Store the image
+			#print self.request.get('avatar')
+			image = images.resize(self.request.get('avatar'), 100, 100)
+			avatar = Image()
+			avatar.data = db.Blob(image)
+			avatar.put()
+			
+			# Update the user account
+			account.avatar = avatar.key()
+			account.put()
 		
 		self.redirect('/settings')

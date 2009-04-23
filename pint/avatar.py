@@ -21,29 +21,27 @@ import os
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import webapp
+from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
 from data.models import Account
-from data.models import Message
+from data.models import Image
 
-class Login(webapp.RequestHandler):
-	def get(self):
-		user = users.get_current_user()
-		if user:
-			account = Account.gql("WHERE userId = :1", user.user_id()).get()
-			if account:
-				self.redirect('/')
+class Avatar(webapp.RequestHandler):
+	
+	def get(self, nickname):
+		
+		# Get the users account using nickname
+		called_user = Account.gql("WHERE nickname = :1", nickname).get()
+		
+		if called_user:				
+		
+			if called_user.avatar:
+				self.response.headers['Content-Type'] = "image/png"
+				self.response.out.write(called_user.avatar.data)
 			else:
-				self.redirect('/register')
+				self.response.headers['Content-Type'] = "image/gif"
+				self.response.out.write(open('zoid.gif','rb').read())
 		else:
-			self.redirect(users.create_login_url(self.request.uri))
-
-class Logout(webapp.RequestHandler):
-	def get(self):
-		user = users.get_current_user()
-		if user:
-			#account = Account.gql("WHERE user = :1", user).get()
-			#account.put()
-			self.redirect(users.create_logout_url(self.request.uri))
-		else:
-			self.redirect('/')
+			self.response.headers['Content-Type'] = "image/gif"
+			self.response.out.write(open('zoid.gif','rb').read())

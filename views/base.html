@@ -10,17 +10,21 @@
 <body>
 	<div id="topbox">
 		<ul id="userbox">
-			{% ifequal user_status "anon" %}
-			<li><a href="/login" class="loglink">Login</a></li>
+			{% ifequal nickname '' %}
+				{% ifequal tab 'onemorething' %}
+					<li><a href="/register" id="currentTab">One more thing...</a></li>
+				{% else %}
+					<li><a href="/login" class="loglink">Login</a></li>
+				{% endifequal %}
 			{% else %}
-                <li>{{ usernick }} :: </li>
-                <li><a href="/" {% ifequal tab "home" %}id="currentTab"{% endifequal %}>Home</a></li>
-				<li><a href="/user/{{ usernick }}" {% ifequal tab "profile" %}id="currentTab"{% endifequal %} >Profile</a></li>		
-                <li><a href="/settings" {% ifequal tab "settings" %}id="currentTab"{% endifequal %} >Settings</a></li>
-				{% if is_admin %}
-				<li><a href="/admin"{% ifequal tab "admin" %}id="currentTab"{% endifequal %}>Admin</a></li>
-				{% endif %}
-                <li><a href="/logout" class="loglink">Logout</a></li>
+					<li>{{ user.nickname }} :: </li>
+					<li><a href="/" {% ifequal tab "home" %}id="currentTab"{% endifequal %}>Home</a></li>
+					<li><a href="/user/{{ nickname }}" {% ifequal tab "profile" %}id="currentTab"{% endifequal %} >Profile</a></li>		
+					<li><a href="/settings" {% ifequal tab "settings" %}id="currentTab"{% endifequal %} >Settings</a></li>
+					{% if is_admin %}
+					<li><a href="/admin"{% ifequal tab "admin" %}id="currentTab"{% endifequal %}>Admin</a></li>
+					{% endif %}
+					<li><a href="/logout" class="loglink">Logout</a></li>
 			{% endifequal %}
 		</ul>
 		<div class="title">

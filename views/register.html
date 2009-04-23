@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+	{% block leftblocs %}
+ 		<div>
+			<div class="title">
+				<h3>Ready to go?</h3>
+			</div>
+			<div class="content">
+				<p>Wait, just one more thing...</p>
+			</div>
+		</div>
+  	{% endblock %}
+	
+	{% block main %}
+		<form action="/register" method="post" class="composer">
+			<div class="msgbox">
+				<div class="note">
+					<p>Before we let you roam free, we need to know what your nickname is going to be. This is to hide your Google account and email address.</p>
+				</div>
+				<input name="nickname" type="text" value="Nickname">
+				<input type="submit" value="ok">
+				<div class="note">
+					<p>Your nickname must be at least 3 characters long, and is used only as a public identifier on this site.</p>
+				</div>
+			</div>
+		</form>
+	{% endblock %}

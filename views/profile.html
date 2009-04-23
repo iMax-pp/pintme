@@ -8,17 +8,17 @@
 			<h3>Profil</h3>
 		</div>
 		<div class="content">
-            <p>This is {{ user.nickname }}'s profil page.</p>
+            <p>This is {{ called_user.nickname }}'s profile page.</p>
 			<p>Here you can find some informations about him.</p>
 		</div>
 	</div>
 	{% endblock %}
 	
 	{% block main %}
-		<h2>{{ user.nickname }}</h2>
-
+		<h2>{{ called_user.nickname }}</h2>
+		<img src="/avatar/{{ called_user.nickname }}"/>
 		{% ifnotequal follow "n/a" %}
-		<form action="/user/{{ user.nickname }}" method="post" class="composer">
+		<form action="/user/{{ called_user.nickname }}" method="post" class="composer">
 		  	<div>
 				<input type="submit" value="{% ifequal follow "possible" %}follow{% else %}stop following{% endifequal %}" />
 		    </div>

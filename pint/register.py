@@ -26,20 +26,39 @@ from google.appengine.ext import db
 
 from data.models import Account
 
-class NewUser(webapp.RequestHandler):
+class Register(webapp.RequestHandler):
+	def get(self):
+		# This is the first registration page, just the pseudonym, nothing more
+		
+		template_data = {
+            'tab': 'onemorething',
+			'nickname': '',
+            'user': users.get_current_user(),
+			'is_admin': users.is_current_user_admin()
+		}
+		
+		path = os.path.join(os.path.dirname(__file__), '../views/register.html')
+		self.response.out.write(template.render(path, template_data))
+		
 	def post(self):
 		# Declaration: new Account
 		# Query: nickname
 		new_user = Account()
 		nickname = self.request.get('nickname')
 		
-		# Query: Is nickname already exist ?
-		nick_already_exist = Account.gql("WHERE nickname = :1", nickname).get()
+		if len(nickname) < 3:
+			self.redirect('/register')
 		
-		# If not let's create the new user !
-		if nick_already_exist == None:
-			new_user.user = users.get_current_user()
+		# Query: nickname taken ?
+		nick_taken = Account.gql("WHERE nickname = :1", nickname).get()
+
+		if nick_taken:
+			self.redirect('/register')
+		
+		else:
+			# If not let's create the new user !
+			new_user.userId = users.get_current_user().user_id()
 			new_user.nickname = nickname
 			new_user.put()
-		
-		self.redirect('/')
+			
+			self.redirect('/')

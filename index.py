@@ -27,12 +27,13 @@ from google.appengine.ext             import db
 from pint.mainpage    import MainPage
 from pint.postmessage import PostMessage
 from pint.profile     import Profile
-from pint.newuser     import NewUser
+from pint.register    import Register
 from pint.settings    import AccountSettings
 from pint.search	  import Search
 from pint.connection  import Login
 from pint.connection  import Logout
 from pint.admin       import Admin
+from pint.avatar      import Avatar
 from pint.about       import About
 from pint.maintenance import Maintenance
 
@@ -43,12 +44,13 @@ application = webapp.WSGIApplication(
 									  ('/compose', MainPage),
 									  (r'/user/(.*)', Profile),
 									  ('/post', PostMessage),
-									  ('/register', NewUser),
+									  ('/register', Register),
 									  ('/settings', AccountSettings),
 									  ('/search', Search),
                                       ('/login', Login),
                                       ('/logout', Logout),
 									  ('/admin', Admin),
+                                      (r'/avatar/(.*)', Avatar),
 									  ('/down', Maintenance),
 									  ('/about', About)],
 									 debug = True)

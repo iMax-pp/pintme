@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+	{% block title %}Pint - {{ user.nickname }}{% endblock %}
+		
+	{% block leftblocs %}
+	<div class="navbox">
+		<div class="title">
+			<h3>Admin</h3>
+		</div>
+		<div class="content">
+            <p>Welcome, oh great and powerful admin!</p>
+			<p>Humble am I in front of such power and authority...</p>
+		</div>
+	</div>
+	{% endblock %}
+	
+	{% block main %}
+		<h2>Welcome home master {{ usernick }}!</h2>
+		
+		{% ifequal newUserCount 0 %}
+			<h3>No new users :(</h3>
+		{% else %}
+			<h3>{{ newUserCount }} new users!</h3>
+			{% for user in newUsers %}
+				<ul>
+					<li><a href="/user/{{ user.nickname }}">{{ user.nickname }}</a> at {{ user.regDate }}</li>
+				</ul>
+			{% endfor %}
+		{% endifequal %}
+	{% endblock %}

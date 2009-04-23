@@ -13,23 +13,17 @@
 		</div>
 	</div>
 	{% endblock %}
-		
-	{% block tabs %}
-		<li><a href="/">Pints</a></li>
-		<li><a href="" id="current">Profile</a></li>
-	{% endblock %}
 	
 	{% block main %}
 		<h2>{{ user.nickname }}</h2>
 
-		{% if follow_him %}
-		<form action="/user/post" method="post" class="composer">
+		{% ifnotequal follow "n/a" %}
+		<form action="/user/{{ user.nickname }}" method="post" class="composer">
 		  	<div>
-				<input type="hidden" name="friend_added" value={{ user.nickname }} />
-				<input type="submit" value="follow" />
+				<input type="submit" value="{% ifequal follow "possible" %}follow{% else %}stop following{% endifequal %}" />
 		    </div>
 		</form>
-		{% endif %}
+		{% endifnotequal %}
 
 		<div class="message">
 			<cite>
@@ -62,7 +56,7 @@
             {{ message.date.date }}
             {{ message.date.hour }}:{{ message.date.minute }}
             <blockquote>
-                <p>{{ message.content|escape }}</p>
+                <p>{{ message.content|markup }}</p>
             </blockquote>
         </div>
         {% endfor %}

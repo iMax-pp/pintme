@@ -1,5 +1,5 @@
 application: pintme
-version: 2
+version: 3
 runtime: python
 api_version: 1
 
@@ -10,11 +10,9 @@ handlers:
 - url: /images
   static_dir: public/images
 
-- url: /
+- url: /admin.*
   script: index.py
-  
-- url: /(post|register|compose|settings|about|down)
-  script: index.py
-  
-- url: /user/.*
+  login: admin
+
+- url: .*
   script: index.py

@@ -24,14 +24,19 @@ from google.appengine.ext             import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext             import db
 
-from site.mainpage    import MainPage
-from site.postmessage import PostMessage
-from site.profile     import Profile
-from site.newuser     import NewUser
-from site.settings    import AccountSettings
-from site.search	   import Search
-from site.about       import About
-from site.maintenance import Maintenance
+from pint.mainpage    import MainPage
+from pint.postmessage import PostMessage
+from pint.profile     import Profile
+from pint.newuser     import NewUser
+from pint.settings    import AccountSettings
+from pint.search	  import Search
+from pint.connection  import Login
+from pint.connection  import Logout
+from pint.admin       import Admin
+from pint.about       import About
+from pint.maintenance import Maintenance
+
+webapp.template.register_template_library('data.helpers')
 
 application = webapp.WSGIApplication(
 									 [('/', MainPage),
@@ -41,6 +46,9 @@ application = webapp.WSGIApplication(
 									  ('/register', NewUser),
 									  ('/settings', AccountSettings),
 									  ('/search', Search),
+                                      ('/login', Login),
+                                      ('/logout', Logout),
+									  ('/admin', Admin),
 									  ('/down', Maintenance),
 									  ('/about', About)],
 									 debug = True)

@@ -10,21 +10,17 @@
 <body>
 	<div id="topbox">
 		<ul id="userbox">
-			{% block topbox %}
-			{% endblock %}
 			{% ifequal user_status "anon" %}
-			<li><a href="{{ log_url }}" class="loglink">Login</a></li>
+			<li><a href="/login" class="loglink">Login</a></li>
 			{% else %}
                 <li>{{ usernick }} :: </li>
                 <li><a href="/" {% ifequal tab "home" %}id="currentTab"{% endifequal %}>Home</a></li>
+				<li><a href="/user/{{ usernick }}" {% ifequal tab "profile" %}id="currentTab"{% endifequal %} >Profile</a></li>		
+                <li><a href="/settings" {% ifequal tab "settings" %}id="currentTab"{% endifequal %} >Settings</a></li>
 				{% if is_admin %}
-					<li><a href="http://appengine.google.com/logs?&app_id=pintme">Logs</a></li>
-					<li><a href="http://appengine.google.com/datastore/explorer?&app_id=pintme">Data Viewer</a></li>
-					<li><a href="http://appengine.google.com/dashboard?&app_id=pintme">Dashboard</a></li>
-					<li><a href="http://appengine.google.com/adminlogs?&app_id=pintme">Admin Logs</a></li>
+				<li><a href="/admin"{% ifequal tab "admin" %}id="currentTab"{% endifequal %}>Admin</a></li>
 				{% endif %}
-                <li><a href="/settings" {% ifequal tab "settings" %}id="currentTab"{% endifequal %}>Settings</a></li>
-                <li><a href="{{ log_url }}" class="loglink">Logout</a></li>
+                <li><a href="/logout" class="loglink">Logout</a></li>
 			{% endifequal %}
 		</ul>
 		<div class="title">

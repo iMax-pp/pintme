@@ -42,7 +42,7 @@ class Markup:
 	
 	@classmethod
 	def urls(cls, text):
-		text = re.sub(r'((?:udp|smtp|pop3|ssh|telnet|https?|s?ftp|imap|git|cvs|svn)://(?:www\.)?(?:[a-z0-9]+\.)?[a-z0-9]+\.(?:aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|co\.uk|gouv\.fr|[a-z]{2})(?:\:[0-9]{1,6})?(?:/[a-z0-9-]+)*(?:\.[a-z0-9]{2,4})?(?:\?[a-z0-9]+=[a-z0-9]+(?:&[a-z0-9]+=[a-z0-9]+)*)?(?:#[a-z0-9]+)?)', r'<a href="\1">\1</a>', text)
+		text = re.sub(r'((?:udp|smtp|pop3|ssh|telnet|https?|s?ftp|imap|git|cvs|svn)://(?:[a-z0-9-]+\.)+[a-z0-9]+\.(?:aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|co\.uk|gouv\.fr|[a-z]{2})(?:\:[0-9]{1,6})?(?:/[a-z0-9-]+)*(?:\.[a-z0-9]{2,4})?(?:\?[a-z0-9]+=[a-z0-9]+(?:&[a-z0-9]+=[a-z0-9]+)*)?(?:#[a-z0-9]+)?)', r'<a href="\1">\1</a>', text)
 		return text
 
 	@classmethod

@@ -27,9 +27,6 @@ from google.appengine.ext import db
 from data.models import Account
 from data.models import Message
 
-webapp.template.register_template_library(
- 'data.helpers')
-
 class MainPage(webapp.RequestHandler):
 	def get(self):		
 	
@@ -42,8 +39,6 @@ class MainPage(webapp.RequestHandler):
 		user_nick = "unregistered"
 		current_user = users.get_current_user()
 		if current_user:
-			# User Url = Logout
-			log_url = users.create_logout_url(self.request.uri)
 			user_status = "unregistered"
 			
 			# Query: is user registered?
@@ -53,6 +48,7 @@ class MainPage(webapp.RequestHandler):
             # User is registered!
 			if user_account:
 				user_status = "registered"
+				user_account.put()
 				
                 # Query: Get the list of users being followed
 				followed_list = Account.get(user_account.following)
@@ -68,8 +64,6 @@ class MainPage(webapp.RequestHandler):
 				messages = Message.gql("ORDER BY date DESC LIMIT 10")
 		
 		else:
-			# Generate the login url
-			log_url = users.create_login_url(self.request.uri)
 			# Default: last ten messages
 			messages = Message.gql("ORDER BY date DESC LIMIT 10")
 	  	
@@ -78,12 +72,11 @@ class MainPage(webapp.RequestHandler):
 				
 		# Template values, yay!
 		template_values = {
-            'tab': "home",
+            'tab': 'home',
             'messages': messages,
             'msg_num': messages.count(),
 			'followed_list': followed_list,
 			'followers_list': followers_list,
-			'log_url': log_url,
 			'user_status': user_status,
             'usernick': user_nick,
 			'is_admin': is_admin,

@@ -1,0 +1,6 @@
+# Ignore all python compiled files
+*.pyc
+*.pyo
+
+# Ignore index.yaml (this thing could change)
+index.yaml

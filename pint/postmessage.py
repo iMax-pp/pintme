@@ -34,8 +34,10 @@ class PostMessage(webapp.RequestHandler):
 		message = Message()
 		
 		# Query: user's Account & new message's content
-		current_user = Account.gql("WHERE user = :1", users.get_current_user()).get()
-		message.author = current_user.key()
+		current_user = users.get_current_user()
+		account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
+		message.author = account.key()
+
 		content = self.request.get('content')
 		
 		# And if the content isn't empty, off to the database! Happy message :D

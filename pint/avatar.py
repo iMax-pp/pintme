@@ -23,6 +23,7 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
+from google.appengine.api import memcache
 
 from data.models import Account
 from data.models import Image
@@ -34,11 +35,15 @@ class Avatar(webapp.RequestHandler):
 		# Get the users account using nickname
 		called_user = Account.gql("WHERE nickname = :1", nickname).get()
 		
-		if called_user:				
-		
+		if called_user:						
 			if called_user.avatar:
-				self.response.headers['Content-Type'] = "image/png"
-				self.response.out.write(called_user.avatar.data)
+				self.response.headers['Content-Type'] = "image/jpg"
+				data = memcache.get('avatar'+nickname)
+				if data is None:
+					data = called_user.avatar.data
+					memcache.add('avatar'+nickname, data, 60)
+				self.response.out.write(data)
+				  
 			else:
 				self.response.headers['Content-Type'] = "image/gif"
 				self.response.out.write(open('zoid.gif','rb').read())

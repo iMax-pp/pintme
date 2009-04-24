@@ -24,6 +24,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from google.appengine.api import images
+from google.appengine.api import memcache
 
 from data.models import Account
 from data.models import Image
@@ -94,5 +95,9 @@ class AccountSettings(webapp.RequestHandler):
 			# Update the user account
 			account.avatar = avatar.key()
 			account.put()
+
+			# Update the memcache
+			memcache.add('avatar'+account.nickname, account.avatar.data, 60)
+
 		
 		self.redirect('/settings')

@@ -29,7 +29,8 @@ from data.models import Message
 class Admin(webapp.RequestHandler):
 	def get(self):
 
-		account = Account.gql("WHERE user = :1", users.get_current_user()).get()
+		current_user = users.get_current_user()
+		account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
 		
 		newUsers = Account.gql("WHERE regDate > :1 ORDER BY regDate", account.lastSeen)
 

@@ -71,6 +71,7 @@
             {{ message.date.date }}
             {{ message.date.hour }}:{{ message.date.minute }}
             <blockquote>
+				<img src="/avatar/{{ message.author.nickname }}"/>
                 <p>{{ message.content|markup }}</p>
             </blockquote>
             <cite class="{% cycle left,right %}">

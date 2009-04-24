@@ -4,32 +4,39 @@
         {% ifequal nickname '' %}
 		<div>
 			<div class="title">
-				<h3>Greatings anonymous!</h3>
+				<h3>Greetings anonymous!</h3>
 			</div>
 			<div class="content">
 				<p>We don't know who you are, would you care to log in?</p>
 			</div>
 		</div>
         {% else %}
-			{% ifequal msg_num 0 %}
 			<div>
 				<div class="title">
-					<h3>Ow! No messages!</h3>
+					<h3>Greetings {{ nickname }}!</h3>
 				</div>
 				<div class="content">
-					<p>Looks like you don't have anything to read...</p>
-					<p>Try following someone :)</p>
-				</div>
+				<p>Why not share some thoughts, or a link, or an image, or...well the sky's the limit!</p>
+ 				</div>
 			</div>
+			{% ifequal msg_num 0 %}
+				<div>
+					<div class="title">
+						<h3>Ow! No messages!</h3>
+					</div>
+					<div class="content">
+						<p>Looks like you don't have anything to read...</p>
+						<p>Try following someone :)</p>
+					</div>
+				</div>
 		   {% endifequal %}
 		{% endifequal %}
   	{% endblock %}
 	
 	{% block main %}
         {% ifnotequal nickname '' %}
-			<h2>Greatings {{ nickname }}!</h2>
-			<p>Take a look at the latest posts, or write one of your own!</p>
-            <div class="composer">
+			<h2></h2>
+           <div class="composer">
                 <ul class="composer_controls">
                     <li><a href="/compose?mode=text" class="compose_text" {% ifequal composer_mode "text" %}id="current_composer"{% endifequal %}>text</a></li>
                     <li><a href="/compose?mode=link" class="compose_link" {% ifequal composer_mode "link" %}id="current_composer"{% endifequal %}>link</a></li>
@@ -48,7 +55,7 @@
                     {% ifequal composer_mode "link" %}
                         <form action="/post" method="post">
                             <div class="msg">
-                                <p>Share a link why not!</p>
+                                <p>Share a link!</p>
                             </div>
                             <label for="mylink">Link</label>
                             <input type="text" name="mylink"/>
@@ -68,15 +75,15 @@
     
         {% for message in messages %}
         <div class="message">
-            {{ message.date.date }}
-            {{ message.date.hour }}:{{ message.date.minute }}
-            <blockquote>
-				<img src="/avatar/{{ message.author.nickname }}"/>
-                <p>{{ message.content|markup }}</p>
-            </blockquote>
             <cite class="{% cycle left,right %}">
+				<img src="/avatar/{{ message.author.nickname }}"/>
+				<br/>
                 <a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a>
-            </cite>
+             </cite>
+            <blockquote>
+               <p>{{ message.content|markup }}</p>
+				{{ message.date|humandate }}
+            </blockquote>
         </div>
         {% endfor %}
 	{% endblock %}

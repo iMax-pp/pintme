@@ -133,3 +133,32 @@ body
 	margin-left: 220px;
 	font-size: x-small;
 }
+
+.message
+{
+	margin-left: 220px;
+	margin-top: 30px;
+}
+
+.message cite
+{
+	float: left;
+}
+
+.message cite img
+{
+	width: 50px;
+}
+
+.message blockquote
+{
+	padding: 5px;
+	margin-left: 60px;
+	border-left: 2px solid;
+	border-color: inherit;
+}
+
+.block
+{
+	margin-left: 220px;
+}

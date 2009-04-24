@@ -34,6 +34,8 @@ from pint.connection  import Login
 from pint.connection  import Logout
 from pint.admin       import Admin
 from pint.avatar      import Avatar
+from pint.rss         import PersonnalRss
+from pint.rss         import GeneralRss
 from pint.about       import About
 from pint.maintenance import Maintenance
 
@@ -51,6 +53,8 @@ application = webapp.WSGIApplication(
                                       ('/logout', Logout),
 									  ('/admin', Admin),
                                       (r'/avatar/(.*)', Avatar),
+                                      (r'/rss/personnal/(.*)', PersonnalRss),
+                                      ('/rss/general', GeneralRss),
 									  ('/down', Maintenance),
 									  ('/about', About)],
 									 debug = True)

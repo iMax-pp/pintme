@@ -8,8 +8,8 @@
 			<h3>Profil</h3>
 		</div>
 		<div class="content">
-            <p>This is {{ called_user.nickname }}'s profile page.</p>
-			<p>Here you can find some informations about him.</p>
+            <p>This is {{ called_user.nickname }}'s public profile page.</p>
+			<p>It regroups some quick user info.</p>
 		</div>
 	</div>
 	{% endblock %}
@@ -25,38 +25,39 @@
 		</form>
 		{% endifnotequal %}
 
-		<div class="message">
-			<cite>
-				<b>Following</b>
-			</cite>
-			<blockquote>
-			<p>
-			{% for followed in followed_list %}
-					<a href="/user/{{ followed.nickname }}">{{ followed.nickname }}</a>
-			{% endfor %}
-			</p>
-			</blockquote>
-		</div>
-		<div class="message">
-			<cite>
-				<b>Followers</b>
-			</cite>
-			<blockquote>
-			<p>
-			{% for follower in followers_list %}
-				<a href="/user/{{ follower.nickname }}">{{ follower.nickname }}</a>
-			{% endfor %}
-			</p>
-			</blockquote>
+		<div class="block">
+			<b>Following</b>
+			{% if not followed_list %}
+				None
+			{% else %}
+				{% for followed in followed_list %}
+						<a href="/user/{{ followed.nickname }}">{{ followed.nickname }}</a>
+				{% endfor %}
+			{% endif %}
 		</div>
 
-		<p>Last messages:</p>
-		{% for message in messages %}
+		<div class="block">
+			<b>Followers</b>
+			{% if not followers_list %}
+				None
+			{% else %}
+				{% for follower in followers_list %}
+					<a href="/user/{{ follower.nickname }}">{{ follower.nickname }}</a>
+				{% endfor %}
+			{% endif %}
+		</div>
+
+		<h3 class="block">Last messages:</h3>
+        {% for message in messages %}
         <div class="message">
-            {{ message.date.date }}
-            {{ message.date.hour }}:{{ message.date.minute }}
+            <cite class="{% cycle left,right %}">
+				<img src="/avatar/{{ message.author.nickname }}"/>
+				<br/>
+                <a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a>
+             </cite>
             <blockquote>
-                <p>{{ message.content|markup }}</p>
+               <p>{{ message.content|markup }}</p>
+				{{ message.date|humandate }}
             </blockquote>
         </div>
         {% endfor %}

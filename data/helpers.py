@@ -16,8 +16,10 @@
 #
 
 import re
+from datetime import datetime
 
 from google.appengine.ext import webapp
+from google.appengine.ext import db
 
 from data.markup import Markup
 
@@ -26,5 +28,24 @@ register = webapp.template.create_template_register()
 def markup(text):
 	""" parses the markup string into HTML """
 	return Markup.parse(text)
-   
+
+def humandate(stamp):
+	""" parses the date into how long ago """
+	difference = datetime.now() - stamp
+	if (difference.days) > 0:
+		result = str(difference.days) + " days ago..."
+	elif (difference.seconds // 3600) > 1:
+		result = str(difference.seconds // 3600) + " hours ago..."
+	elif (difference.seconds // 60) > 1:
+		result = str(difference.seconds // 60) + " minutes ago..."
+	else:
+		result = str(difference.seconds) + " seconds ago..."
+	return result
+
+def num(list):
+	""" returns number of members in GQL list """
+	return list.count()
+
 register.filter(markup)
+register.filter(humandate)
+register.filter(num)

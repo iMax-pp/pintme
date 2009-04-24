@@ -56,10 +56,14 @@ class Profile(webapp.RequestHandler):
 						follow = 'unfollow'
 				
 				# Users last 10 messages
-				messages = Message.gql("WHERE author = :1", called_user.key()).fetch(10)
+				messages = Message.gql("WHERE author = :1 ORDER BY date DESC LIMIT 10", called_user.key()).fetch(10)
 
 				# Users followers
 				followers_list = Account.gql("WHERE following = :1", called_user.key())
+				followed_list = Account.get(called_user.following)
+				if len(followed_list) == 0:
+					followed_list = None
+			
 			
 				# Query: Current user is admin?
 				is_admin = users.is_current_user_admin()
@@ -73,7 +77,7 @@ class Profile(webapp.RequestHandler):
 					'called_user': called_user,
 					'follow': follow,
 					'messages': messages,
-					'followed_list': Account.get(called_user.following),
+					'followed_list': followed_list,
 					'followers_list': followers_list
 				}
 			

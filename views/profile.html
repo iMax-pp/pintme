@@ -56,8 +56,8 @@
                 <a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a>
              </cite>
             <blockquote>
-               <p>{{ message.content|markup }}</p>
-				{{ message.date|humandate }}
+				<p>{{ message.content|markup }}</p>
+				<span class="time">{{ message.date|humandate }}</span>
             </blockquote>
         </div>
         {% endfor %}

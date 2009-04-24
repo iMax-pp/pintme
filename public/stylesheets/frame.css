@@ -153,7 +153,7 @@ body
 .message blockquote
 {
 	padding: 5px;
-	margin-left: 60px;
+	margin-left: 65px;
 	border-left: 2px solid;
 	border-color: inherit;
 }
@@ -161,4 +161,10 @@ body
 .block
 {
 	margin-left: 220px;
+}
+
+.message .time
+{
+	font-style: italic;
+	font-size: 7pt;
 }

@@ -9,7 +9,7 @@
   <item>
     <title>{{ item.content|truncatewords:10 }}</title>
     <link>{{ link }}</link>
-    <description>{{ item.content }}</description>
+    <description>{{ item.content|markup }}</description>
     <pubDate>{{ item.date }}</pubDate>
   </item>
   {% endfor %}

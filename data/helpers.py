@@ -34,9 +34,9 @@ def humandate(stamp):
 	difference = datetime.now() - stamp
 	if (difference.days) > 0:
 		result = str(difference.days) + " days ago..."
-	elif (difference.seconds // 3600) > 1:
+	elif (difference.seconds // 3600) > 0:
 		result = str(difference.seconds // 3600) + " hours ago..."
-	elif (difference.seconds // 60) > 1:
+	elif (difference.seconds // 60) > 0:
 		result = str(difference.seconds // 60) + " minutes ago..."
 	else:
 		result = str(difference.seconds) + " seconds ago..."

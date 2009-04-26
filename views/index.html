@@ -39,7 +39,7 @@
            <div class="composer">
                 <ul class="composer_controls">
                     <li><a href="/compose?mode=text" class="compose_text" {% ifequal composer_mode "text" %}id="current_composer"{% endifequal %}>text</a></li>
-                    <li><a href="/compose?mode=link" class="compose_link" {% ifequal composer_mode "link" %}id="current_composer"{% endifequal %}>link</a></li>
+                    <li><a href="/compose?mode=image" class="compose_image" {% ifequal composer_mode "image" %}id="current_composer"{% endifequal %}>Image</a></li>
                 </ul>
                 <div class="composer_form">
                     {% ifequal composer_mode "text" %}
@@ -47,23 +47,23 @@
                             <div class="msg">
                                 <p>Express yourself!</p>
                             </div>
-                            <textarea name="content" rows="3" cols="40"></textarea>
+                            <textarea name="textmessage" rows="3" cols="40"></textarea>
                             <br/>
                             <input type="submit" value="Send">
                         </form>
                     {% endifequal %}
-                    {% ifequal composer_mode "link" %}
-                        <form action="/post" method="post">
+                    {% ifequal composer_mode "image" %}
+                        <form action="/post" method="post" enctype="multipart/form-data">
                             <div class="msg">
-                                <p>Share a link!</p>
+                                <p>Post a pic!</p>
                             </div>
-                            <label for="mylink">Link</label>
-                            <input type="text" name="mylink"/>
+                            <label for="imageupload">Image</label>
+							<input type="file" name="imageupload"/>
                             <br/>
-                            <label for="description">Tell us about it</label>
-                            <textarea name="description" rows="3" cols="40"></textarea>
+                            <label for="imgdesc">Image description</label>
+                            <textarea name="imgdesc" rows="3" cols="40"></textarea>
                             <br/>
-                            <input type="submit" value="Send">
+							<input type="submit" value="Upload">
                         </form>
                     {% endifequal %}
                 </div>
@@ -81,6 +81,11 @@
                 <a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a>
              </cite>
             <blockquote>
+				{% if message.image %}
+				<a href="/image/{{ message.image.code }}">
+				<img src="/thumb/{{ message.image.code }}"
+				</a>
+				{% endif %}
 				<p>{{ message.content|markup }}</p>
 				<span class="time">{{ message.date|humandate }}</span>
             </blockquote>

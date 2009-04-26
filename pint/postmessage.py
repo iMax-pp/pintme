@@ -17,32 +17,72 @@
 
 import cgi
 import os
+import hashlib
+import time
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
+from google.appengine.api import images
+from google.appengine.api import memcache
 
 from data.models import Account
 from data.models import Message
+from data.models import Image
 
 # Do you think we could put all the actions in another file?
 class PostMessage(webapp.RequestHandler):
 	def post(self):
-		# Declaration: new Message
-		message = Message()
 		
-		# Query: user's Account & new message's content
-		current_user = users.get_current_user()
-		account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
-		message.author = account.key()
+		if self.request.get('textmessage') != '':
 
-		content = self.request.get('content')
-		
-		# And if the content isn't empty, off to the database! Happy message :D
-		if content != '':
-			message.content = content
+			message = Message()
+			
+			# Query: user's Account & new message's content
+			current_user = users.get_current_user()
+			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
+			message.author = account.key()
+	
+			content = self.request.get('textmessage')
+			
+			# And if the content isn't empty, off to the database! Happy message :D
+			if content != '':
+				message.content = content
+				message.put()
+				
+			self.redirect('/')
+			
+			
+		imagedata = self.request.get('imageupload')
+		if imagedata != '':
+			
+			# We need to call the image, and I know it's ugly, but I can't think of any other way right now...
+			imgCode = hashlib.md5(str(time.time())).hexdigest()
+			
+			middata = images.resize(imagedata, 300, 300)
+			thumbdata = images.resize(imagedata, 100, 100)
+			
+			image = Image()
+			image.code = imgCode
+			image.data = db.Blob(imagedata)
+			image.mid = db.Blob(middata)
+			image.thumb = db.Blob(thumbdata)
+			image.put()
+
+			# Update the memcache
+			memcache.add('img' + imgCode, imagedata, 60)
+			memcache.add('mid' + imgCode, middata, 60)
+			memcache.add('thumb' + imgCode, thumbdata, 60)
+
+			current_user = users.get_current_user()
+			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
+
+			message = Message()
+			message.author = account.key()
+			message.content = self.request.get('imgdesc')
+			message.image = image.key()
 			message.put()
-	  
+			
 		self.redirect('/')

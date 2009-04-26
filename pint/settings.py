@@ -29,6 +29,9 @@ from google.appengine.api import memcache
 from data.models import Account
 from data.models import Image
 
+from data.vars   import __lastfmApiKey__
+from data.vars   import __lastfmApiSecret__
+
 class AccountSettings(webapp.RequestHandler):
 	def get(self):
 		# Query: User's account
@@ -43,6 +46,11 @@ class AccountSettings(webapp.RequestHandler):
 
 			# Query: Get the list of the users followers
 			followers_list = Account.gql("WHERE following = :1", account.key())
+
+			# Last.fm account
+			lastfmname = ''
+			if account.lastFm != None:
+				lastfmname = account.lastFm.userName
 			
 			# Template values
 			template_values = {
@@ -50,6 +58,7 @@ class AccountSettings(webapp.RequestHandler):
 				'nickname': account.nickname,
 				'user': user,
 				'is_admin': is_admin,
+				'lastfmname': lastfmname,
 				'followed_list': Account.get(account.following),
 				'followers_list': followers_list
 			}
@@ -86,7 +95,6 @@ class AccountSettings(webapp.RequestHandler):
 				account.avatar = None
 				
 			# Store the image
-			#print self.request.get('avatar')
 			image = images.resize(self.request.get('avatar'), 100, 100)
 			avatar = Image()
 			avatar.data = db.Blob(image)

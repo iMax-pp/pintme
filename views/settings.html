@@ -31,4 +31,10 @@
             <input type="submit" value="Upload">
 		</div>
 	</form>
+	
+	{% ifequal lastfmname '' %}
+	<p class="block">If you have a last.fm account, we can use the your statistics in your profile: <a href="/lastfmauth">authorise PintMe</a>.</p>
+	{% else %}
+	<p class="block">Current Last.fm account: {{ lastfmname }}</p>
+	{% endifequal %}
 	{% endblock %}

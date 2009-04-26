@@ -24,8 +24,14 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
+from libs.pylast import *
+
 from data.models import Account
 from data.models import Message
+from data.vars import *
+
+from data.vars   import __lastfmApiKey__
+from data.vars   import __lastfmApiSecret__
 
 class Profile(webapp.RequestHandler):
 	def get(self, nickname):
@@ -64,9 +70,16 @@ class Profile(webapp.RequestHandler):
 				if len(followed_list) == 0:
 					followed_list = None
 			
-			
 				# Query: Current user is admin?
 				is_admin = users.is_current_user_admin()
+
+				# last.fm
+				lastfmname = ''
+				recentTracks = ''
+				if called_user.lastFm != None:
+					lastfmname = called_user.lastFm.userName
+					lastfmuser = User(lastfmname, __lastfmApiKey__, __lastfmApiSecret__, called_user.lastFm.sessionKey)
+					recentTracks = lastfmuser.get_recent_tracks(20)
 			
 				# Template values
 				template_values = {
@@ -77,6 +90,8 @@ class Profile(webapp.RequestHandler):
 					'called_user': called_user,
 					'follow': follow,
 					'messages': messages,
+					'lastfmname': lastfmname,
+					'recentTracks': recentTracks,
 					'followed_list': followed_list,
 					'followers_list': followers_list
 				}

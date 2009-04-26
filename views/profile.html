@@ -47,6 +47,17 @@
 			{% endif %}
 		</div>
 
+		{% ifequal lastfmname 's' %}
+		<div class="block">
+			<b>Recent tracks:</b>
+			<ul>
+			{% for track in recentTracks %}
+				<li>{{ track }}</li>
+			{% endfor %}
+			</ul>
+		</div>
+		{% endifequal %}
+
 		<h3 class="block">Last messages:</h3>
         {% for message in messages %}
         <div class="message">
@@ -56,6 +67,11 @@
                 <a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a>
              </cite>
             <blockquote>
+				{% if message.image %}
+				<a href="/image/{{ message.image.code }}">
+				<img src="/thumb/{{ message.image.code }}"
+				</a>
+				{% endif %}
 				<p>{{ message.content|markup }}</p>
 				<span class="time">{{ message.date|humandate }}</span>
             </blockquote>

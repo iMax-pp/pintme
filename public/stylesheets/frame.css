@@ -158,6 +158,11 @@ body
 	border-color: inherit;
 }
 
+.message .verbatim
+{
+	font: 1.1em/1.5 monospace;
+}
+
 .block
 {
 	margin-left: 220px;

@@ -34,12 +34,31 @@ class Markup:
 	@classmethod
 	def italic(cls, text):
 		return re.sub(r'_([^\_]*)_', r'<i>\1</i>', text)
-		
+	
+	@classmethod
+	def verbatim(cls, text):
+		# FIXME This only works with a single line.
+		# 		( With more, only the first one is verbatimized :)
+		return re.sub(r'\{\{\{((.|\n)+)\}\}\}', r'<p class="verbatim">\1</p>', text)
+	
+	@classmethod
+	def hline(cls, text):
+		return re.sub(r'\-\-[\-]+', r'<hr/>', text)
+	
 	@classmethod
 	def smileys(cls, text):
-		text = re.sub(r':p', r':P', text)
-		text = re.sub(r':d', r':D', text)		
-		text = re.sub(r'([;:][\']?[\(\)DP])', r'<b class="smiley">\1</b>', text)
+		text = re.sub(r':[\-]?\)', '<b class="smiley">:)</b>', text)
+		text = re.sub(r':[\-]?[dD]', '<b class="smiley">:D</b>', text)
+		text = re.sub(r';[\-]?\)', '<b class="smiley">;)</b>', text)
+		text = re.sub(r':\'[\-]?\(', "<b class='smiley'>:'(</b>", text)
+		text = re.sub(r':[\-]?[oO]', '<b class="smiley">:-o</b>', text)
+		text = re.sub(r':[\-]?[\\\/]', '<b class="smiley">:-/</b>', text)
+		text = re.sub(r'[xX][\-]?\(', '<b class="smiley">x-(</b>', text)
+		text = re.sub(r':[\-]?\(', '<b class="smiley">:(</b>', text)
+		text = re.sub(r'[8bB][\-]?\)', '<b class="smiley">B-)</b>', text)
+		text = re.sub(r':[\-]?[pP]', '<b class="smiley">:P</b>', text)
+		text = re.sub(r'\<3', '<b class="smiley"><3</b>', text)
+		text = re.sub(r':[\-]?\|', '<b class="smiley">:-|</b>', text)
 		return text
 	
 	@classmethod
@@ -56,6 +75,8 @@ class Markup:
 	def parse(cls, text):
 		text = Markup.bold(text)
 		text = Markup.italic(text)
+		text = Markup.verbatim(text)
+		text = Markup.hline(text)
 		text = Markup.smileys(text)
 		text = Markup.urls(text)
 		text = Markup.paragraphs(text)

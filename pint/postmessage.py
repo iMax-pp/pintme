@@ -17,8 +17,8 @@
 
 import cgi
 import os
-import hashlib
-import time
+import imghdr 
+import re
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
@@ -57,27 +57,28 @@ class PostMessage(webapp.RequestHandler):
 			
 		imagedata = self.request.get('imageupload')
 		if imagedata != '':
-			
-			# We need to call the image, and I know it's ugly, but I can't think of any other way right now...
-			imgCode = hashlib.md5(str(time.time())).hexdigest()
-			
+
+			current_user = users.get_current_user()
+			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
+				
+			filename = self.request.body_file.vars['imageupload'].filename
+			filename = re.sub(r' ', r'_', filename)
+			imagetype = imghdr.what(file,imagedata)
 			middata = images.resize(imagedata, 300, 300)
 			thumbdata = images.resize(imagedata, 100, 100)
-			
+	
 			image = Image()
-			image.code = imgCode
+			image.name = filename
+			image.type = imagetype
 			image.data = db.Blob(imagedata)
 			image.mid = db.Blob(middata)
 			image.thumb = db.Blob(thumbdata)
 			image.put()
 
 			# Update the memcache
-			memcache.add('img' + imgCode, imagedata, 60)
-			memcache.add('mid' + imgCode, middata, 60)
-			memcache.add('thumb' + imgCode, thumbdata, 60)
-
-			current_user = users.get_current_user()
-			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
+			memcache.add('img' + filename, imagedata, 60)
+			memcache.add('mid' + filename, middata, 60)
+			memcache.add('thumb' + filename, thumbdata, 60)
 
 			message = Message()
 			message.author = account.key()

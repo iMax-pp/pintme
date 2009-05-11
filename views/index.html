@@ -82,8 +82,8 @@
              </cite>
             <blockquote>
 				{% if message.image %}
-				<a href="/image/{{ message.image.code }}">
-				<img src="/thumb/{{ message.image.code }}"
+				<a href="/image/{{ message.image.name }}">
+				<img src="/thumb/{{ message.image.name }}"
 				</a>
 				{% endif %}
 				<p>{{ message.content|markup }}</p>

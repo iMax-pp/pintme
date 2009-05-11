@@ -20,7 +20,8 @@ import random
 from google.appengine.ext import db
 
 class Image(db.Expando):
-	code  = db.StringProperty()
+	name  = db.StringProperty()
+	type  = db.StringProperty()
 	data  = db.BlobProperty()
 	mid   = db.BlobProperty()
 	thumb = db.BlobProperty()
@@ -44,3 +45,7 @@ class Message(db.Model):
 	image   = db.ReferenceProperty(Image)
 	link    = db.LinkProperty()
 	date    = db.DateTimeProperty(auto_now_add=True)
+	
+class Luke(db.Model):
+	author  = db.StringProperty()
+	content = db.StringProperty()

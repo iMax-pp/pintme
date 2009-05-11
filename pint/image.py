@@ -17,6 +17,7 @@
 
 import cgi
 import os
+import imghdr 
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
@@ -29,42 +30,75 @@ from data.models import Image
 
 class GetImage(webapp.RequestHandler):
 	
-	def get(self, code):
+	def get(self, name):
 		
-		# Get the users account using nickname
-		image = Image.gql("WHERE code = :1", code).get()
+		data = memcache.get('img' + name)
+		if data:
+			imagetype = imghdr.what(file, data)
+		else:
+			image = Image.gql("WHERE name = :1", name).get()
+			imagetype = image.type
+			data = image.data
 		
-		if image:						  
-			self.response.headers['Content-Type'] = "image/jpg"
-			self.response.out.write(image.data)
+		if data:						  
+			memcache.add('img' + name, data, 60)
+			if imagetype == 'jpeg':
+				self.response.headers['Content-Type'] = "image/jpg"
+			elif imagetype == 'gif':
+				self.response.headers['Content-Type'] = "image/gif"
+			elif imagetype == 'png':
+				self.response.headers['Content-Type'] = "image/png"
+			self.response.out.write(data)
 		else:
 			self.response.headers['Content-Type'] = "image/gif"
 			self.response.out.write(open('zoid.gif','rb').read())
 
 class MidImage(webapp.RequestHandler):
 	
-	def get(self, code):
+	def get(self, name):
+
+		data = memcache.get('mid' + name)
+		if data:
+			imagetype = imghdr.what(file, data)
+		else:
+			image = Image.gql("WHERE name = :1", name).get()
+			imagetype = image.type
+			data = image.mid
 		
-		# Get the users account using nickname
-		image = Image.gql("WHERE code = :1", code).get()
-		
-		if image:						  
-			self.response.headers['Content-Type'] = "image/jpg"
-			self.response.out.write(image.mid)
+		if data:						  
+			memcache.add('mid' + name, data, 60)
+			if imagetype == 'jpeg':
+				self.response.headers['Content-Type'] = "image/jpg"
+			elif imagetype == 'gif':
+				self.response.headers['Content-Type'] = "image/gif"
+			elif imagetype == 'png':
+				self.response.headers['Content-Type'] = "image/png"
+			self.response.out.write(data)
 		else:
 			self.response.headers['Content-Type'] = "image/gif"
 			self.response.out.write(open('zoid.gif','rb').read())
 
 class Thumb(webapp.RequestHandler):
 	
-	def get(self, code):
+	def get(self, name):
+
+		data = memcache.get('thumb' + name)
+		if data:
+			imagetype = imghdr.what(file, data)
+		else:
+			image = Image.gql("WHERE name = :1", name).get()
+			imagetype = image.type
+			data = image.thumb
 		
-		# Get the users account using nickname
-		image = Image.gql("WHERE code = :1", code).get()
-		
-		if image:						  
-			self.response.headers['Content-Type'] = "image/jpg"
-			self.response.out.write(image.thumb)
+		if data:						  
+			memcache.add('thumb' + name, data, 60)
+			if imagetype == 'jpeg':
+				self.response.headers['Content-Type'] = "image/jpg"
+			elif imagetype == 'gif':
+				self.response.headers['Content-Type'] = "image/gif"
+			elif imagetype == 'png':
+				self.response.headers['Content-Type'] = "image/png"
+			self.response.out.write(data)
 		else:
 			self.response.headers['Content-Type'] = "image/gif"
 			self.response.out.write(open('zoid.gif','rb').read())

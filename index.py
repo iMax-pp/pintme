@@ -43,6 +43,7 @@ from pint.lastfm      import LastFmAuth
 from pint.lastfm      import LastFmCallback
 from pint.about       import About
 from pint.maintenance import Maintenance
+from pint.useitluke   import UseItLuke
 
 webapp.template.register_template_library('data.helpers')
 
@@ -66,6 +67,7 @@ application = webapp.WSGIApplication(
                                       ('/lastfmauth', LastFmAuth),
                                       (r'/lastfmcallback/.*', LastFmCallback),
 									  ('/down', Maintenance),
+                                      ('/useitluke', UseItLuke),
 									  ('/about', About)],
 									 debug = True)
 

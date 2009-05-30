@@ -2,32 +2,44 @@
 
 	{% block leftblocs %}
         {% ifequal nickname '' %}
-		<div>
-			<div class="title">
-				<h3>Greetings anonymous!</h3>
+			<div class="messagebox">
+				<div class="messagebox-top"><div></div></div>
+					<div class="messagebox-content">
+						<div class="title">
+							<h3>Greetings anonymous!</h3>
+						</div>
+						<div class="content">
+							<p>We don't know who you are, would you care to log in?</p>
+						</div>
+					</div>
+				<div class="messagebox-bottom"><div></div></div>
 			</div>
-			<div class="content">
-				<p>We don't know who you are, would you care to log in?</p>
-			</div>
-		</div>
         {% else %}
-			<div>
-				<div class="title">
-					<h3>Greetings {{ nickname }}!</h3>
-				</div>
-				<div class="content">
-				<p>Why not share some thoughts, or a link, or an image, or...well the sky's the limit!</p>
- 				</div>
+			<div class="messagebox">
+				<div class="messagebox-top"><div></div></div>
+					<div class="messagebox-content">
+						<div class="title">
+							<h3>Greetings {{ nickname }}!</h3>
+						</div>
+						<div class="content">
+						<p>Why not share some thoughts, or a link, or an image, or...well the sky's the limit!</p>
+						</div>
+					</div>
+				<div class="messagebox-bottom"><div></div></div>
 			</div>
 			{% ifequal msg_num 0 %}
-				<div>
-					<div class="title">
-						<h3>Ow! No messages!</h3>
-					</div>
-					<div class="content">
-						<p>Looks like you don't have anything to read...</p>
-						<p>Try following someone :)</p>
-					</div>
+				<div class="messagebox">
+					<div class="messagebox-top"><div></div></div>
+						<div class="messagebox-content">
+							<div class="title">
+								<h3>Ow! No messages!</h3>
+							</div>
+							<div class="content">
+								<p>Looks like you don't have anything to read...</p>
+								<p>Try following someone :)</p>
+							</div>
+						</div>
+					<div class="messagebox-bottom"><div></div></div>
 				</div>
 		   {% endifequal %}
 		{% endifequal %}

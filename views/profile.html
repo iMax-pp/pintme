@@ -3,15 +3,19 @@
 	{% block title %}Pint - {{ user.nickname }}{% endblock %}
 		
 	{% block leftblocs %}
-	<div class="navbox">
-		<div class="title">
-			<h3>Profil</h3>
+		<div class="messagebox">
+			<div class="messagebox-top"><div></div></div>
+				<div class="messagebox-content">
+					<div class="title">
+						<h3>Profile</h3>
+					</div>
+					<div class="content">
+						<p>This is {{ called_user.nickname }}'s public profile page.</p>
+						<p>It regroups some quick user info.</p>
+					</div>
+				</div>
+			<div class="messagebox-bottom"><div></div></div>
 		</div>
-		<div class="content">
-            <p>This is {{ called_user.nickname }}'s public profile page.</p>
-			<p>It regroups some quick user info.</p>
-		</div>
-	</div>
 	{% endblock %}
 	
 	{% block main %}

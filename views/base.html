@@ -8,45 +8,54 @@
 </head>
 
 <body>
-	<div id="topbox">
-		<ul id="userbox">
-			{% ifequal nickname '' %}
-				{% ifequal tab 'onemorething' %}
-					<li><a href="/register" id="currentTab">One more thing...</a></li>
-				{% else %}
-					<li><a href="/login" class="loglink">Login</a></li>
-				{% endifequal %}
-			{% else %}
-					<li>{{ user.nickname }} :: </li>
-					<li><a href="/" {% ifequal tab "home" %}id="currentTab"{% endifequal %}>Home</a></li>
-					<li><a href="/user/{{ nickname }}" {% ifequal tab "profile" %}id="currentTab"{% endifequal %} >Profile</a></li>		
-					<li><a href="/settings" {% ifequal tab "settings" %}id="currentTab"{% endifequal %} >Settings</a></li>
-					{% if is_admin %}
-					<li><a href="/admin"{% ifequal tab "admin" %}id="currentTab"{% endifequal %}>Admin</a></li>
-					{% endif %}
-					<li><a href="/logout" class="loglink">Logout</a></li>
-			{% endifequal %}
-		</ul>
-		<div class="title">
-			<h1>Pint</h1>
-			<cite>Beta! &#8220;Can I haz bugs?&#8221;</cite>
-		</div>
+	<div class="mainbox">
+		<div class="mainbox-top"><div></div></div>
+			<div class="mainbox-content">
+				<div id="topbox">
+					<div id="userbar">
+						<div id="userbar-top"><div></div></div>
+							<div id="userbar-content">
+								<ul id="userbar-ul">
+									{% ifequal nickname '' %}
+										{% ifequal tab 'onemorething' %}
+											<li><a href="/register" id="currentTab">One more thing...</a></li>
+										{% else %}
+											<li><a href="/login" class="loglink">Login</a></li>
+										{% endifequal %}
+									{% else %}
+											<li>{{ user.nickname }} :: </li>
+											<li><a href="/" {% ifequal tab "home" %}id="currentTab"{% endifequal %}>Home</a></li>
+											<li><a href="/user/{{ nickname }}" {% ifequal tab "profile" %}id="currentTab"{% endifequal %} >Profile</a></li>		
+											<li><a href="/settings" {% ifequal tab "settings" %}id="currentTab"{% endifequal %} >Settings</a></li>
+											{% if is_admin %}
+											<li><a href="/admin"{% ifequal tab "admin" %}id="currentTab"{% endifequal %}>Admin</a></li>
+											{% endif %}
+											<li><a href="/logout" class="loglink">Logout</a></li>
+									{% endifequal %}
+								</ul>
+							</div>
+						<div id="userbar-bottom"><div></div></div>
+					</div>
+					<div id="logo">
+					</div>
+				</div>
+				<div id="leftcolumn">
+				{% block leftblocs %}
+				{% endblock %}
+				</div>
+				<div id="maincolumn">
+					{% block main %}
+					{% endblock %}
+				</div>
+				<div class="clearer"></div>
+				<div id="footbox">
+					&copy; 2009
+					<a href="/about">About</a>
+				</div>
+			</div>
+		<div class="mainbox-bottom"><div></div></div>
 	</div>
-	<div id="mainbox">
-		<div id="leftcolumn">
-		{% block leftblocs %}
-		{% endblock %}
-		</div>
-		<div id="maincolumn">
-			{% block main %}
-			{% endblock %}
-		</div>
-		<div id="footbox">
-			&copy; 2009
-			<a href="/about">About</a>
-		</div>
-	</div>
-	<script type="text/javascript">
+<script type="text/javascript">
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 	</script>

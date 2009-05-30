@@ -1,175 +1,194 @@
-/* General and abstract rules for the frame of a PintMe style */
-
 body
 {
-	padding: 0;
-	margin: 0;
-	
-	font: 0.8em/1.5 arial; 
+	font-family: sans-serif;
+	color: #333;
+	background-color: #476472;
+	font-size: 11pt;
 }
+
+#logo
+{
+	background: url("../images/logo.png") no-repeat center;
+	width: 122px;
+	height: 54px;
+	margin: 15px 30px;
+}
+
+/* mainbox rules */
+	#userbar
+	{
+		margin-right: 80px;
+		color: white;
+		background: #1C4381;
+		float: right;
+	}
+	#userbar-top div
+	{
+	   background: url("../images/messagebox-tl.png") no-repeat top left;
+	}
+	#userbar-top
+	{
+	   background: url("../images/messagebox-tr.png") no-repeat top right;
+	}
+	#userbar-bottom div
+	{
+	   background: url("../images/messagebox-bl.png") no-repeat bottom left;
+	}
+	#userbar-bottom
+	{
+	   background: url("../images/messagebox-br.png") no-repeat bottom right;
+	}
+	#userbar-top div, #userbar-top, #userbar-bottom div, #userbar-bottom
+	{
+	   width: 100%;
+	   height: 8px;
+	   font-size: 1px;
+	}
+	#userbar-content
+	{
+		margin: 0 3px;
+	}
+	#userbar-ul
+	{
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+	#userbar-ul li
+	{
+		display: inline;
+		margin: 0 5px;
+	}
+	#userbar-ul li a
+	{
+		color: white;
+	}
+
+
+/* mainbox rules */
+	.mainbox
+	{
+	   background: #ffffff;
+	   width: 900px;
+	   margin: 20px auto;
+	}
+	.mainbox-top div
+	{
+	   background: url("../images/mainbox-tl.png") no-repeat top left;
+	}
+	.mainbox-top
+	{
+	   background: url("../images/mainbox-tr.png") no-repeat top right;
+	}
+	.mainbox-bottom div
+	{
+	   background: url("../images/mainbox-bl.png") no-repeat bottom left;
+	}
+	.mainbox-bottom
+	{
+	   background: url("../images/mainbox-br.png") no-repeat bottom right;
+	}
+	.mainbox-top div, .mainbox-top, .mainbox-bottom div, .mainbox-bottom
+	{
+	   width: 100%;
+	   height: 8px;
+	   font-size: 1px;
+	}
+	.mainbox-content
+	{
+		margin: 0 8px;
+	}
+
+/* mainbox rules */
+	.messagebox
+	{
+		float: left;
+		color: white;
+		background: #1C4381;
+		width: 250px;
+		margin: 5px;
+	}
+	.messagebox-top div
+	{
+		background: url("../images/messagebox-tl.png") no-repeat top left;
+	}
+	.messagebox-top
+	{
+		background: url("../images/messagebox-tr.png") no-repeat top right;
+	}
+	.messagebox-bottom div
+	{
+		background: url("../images/messagebox-bl.png") no-repeat bottom left;
+	}
+	.messagebox-bottom
+	{
+		background: url("../images/messagebox-br.png") no-repeat bottom right;
+	}
+	.messagebox-top div, .messagebox-top, .messagebox-bottom div, .messagebox-bottom
+	{
+		width: 100%;
+		height: 8px;
+		font-size: 1px;
+	}
+	.messagebox-content
+	{
+		margin: 0 8px;
+		padding: 5px;
+	}
+
 
 #topbox
 {
-	width: 750px;
-	text-align: left;
-	margin: auto;
-	padding: 0.5em 2em 0 2em;
-	position: relative;
+	width: 950px;
 }
 
-#topbox #title h1
+#leftcolumn
 {
-	font-size: x-large;
-	margin-bottom: 2em;
-	margin: 0;
+	width: 200px;
+	margin: 5px;
 }
 
-#topbox #title cite
+#maincolumn
 {
-	display: inline;
-	font-size: large;
-	font-style: italic;
-	padding-bottom: 5px;
+	margin-left: 280px;
 }
 
-#topbox ul#userbox, #topbox ul#userbox li
+#footbox
 {
-	margin: 0;
-	margin-right: 1em;
-	padding: 0;
-	display: inline;
-	list-style-type: none;
-}
-#topbox ul#userbox
-{
-	position: absolute;
-	bottom: 3px;
-	right: 10px;	
+	font-size: 8pt;
+	margin: 10px 10px 5px 10px;
 }
 
-#topbox ul#userbox li a
+.clearer
 {
-	border-bottom-width: 3px;
-	border-bottom-style: solid;
-	padding-bottom: 5px;
-	text-decoration: none;
+	clear: both;
 }
 
-#mainbox
-{
-	width: 800px;
-	margin: auto;
-}
-
-#mainbox #leftcolumn
-{
-	float: left;
-	width: 210px;
-	margin-right: 5px;
-	margin-bottom: 5px;	
-}
-
-#mainbox #leftcolumn div
-{
-	margin: 0 10px 10px 0;
-	padding: 10px 10px 3px 10px;
-}
-
-#mainbox #leftcolumn div .title h3
-{
-	margin: 0;
-}
-
-#mainbox #leftcolumn div .content
-{
-	padding: 0 10px;
-}
-
-#mainbox #maincolumn
-{
-	margin-top: 0.3em;
-	padding: 1em;
-}
-
-#mainbox .composer
-{
-	margin-left: 200px;
-	padding: 10px;
-}
-
-#mainbox ul.composer_controls
-{
-	float: left;
-	list-style-type: none;
-	width: 75px;
-	text-align: right;
-	padding: 10px 0;
-	margin: 0;
-}
-
-#mainbox ul.composer_controls li
-{
-	margin-bottom: 7px;
-}
-
-#mainbox ul.composer_controls li a
-{
-	text-decoration: none;
-	padding: 2px 20px 2px 5px;
-}
-
-#mainbox .composer_form
-{
-	border-left-width: 2px;
-	border-left-style: solid;
-	margin-left: 75px;
-	padding: 10px;
-}
-
-#mainbox #footbox
-{
-	text-align: center;
-	margin-top: 0.3em;
-	margin-left: 220px;
-	font-size: x-small;
-}
-
-.message
-{
-	margin-left: 220px;
-	margin-top: 30px;
-}
-
-.message cite
-{
-	float: left;
-}
-
-.message cite img
-{
-	width: 50px;
-}
-
-.message blockquote
-{
-	padding: 5px;
-	margin-left: 65px;
-	border-left: 2px solid;
-	border-color: inherit;
-}
-
-.message .verbatim
-{
-	font: 1.1em/1.5 monospace;
-}
-
-.block
-{
-	margin-left: 220px;
-}
-
-.message .time
-{
-	font-style: italic;
-	font-size: 7pt;
-}
+/* Messsage Styles */
+	.message
+	{
+		clear: both;
+		width: 600px;
+		margin: 50px 10px;
+	}
+	
+	.message cite
+	{
+		padding: 3px;
+		text-align: center;
+		font-size: 9pt;
+		float: left;
+		width: 50px;
+		border: 1px solid #CCC;
+	}
+	
+	.message cite img
+	{
+		width: 40px;
+	}
+	
+	.message blockquote
+	{
+		padding: 3px 5px;
+		margin-left: 60px;
+	}

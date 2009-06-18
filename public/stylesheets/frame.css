@@ -6,140 +6,154 @@ body
 	font-size: 11pt;
 }
 
-#logo
+a
 {
-	background: url("../images/logo.png") no-repeat center;
-	width: 122px;
-	height: 54px;
-	margin: 15px 30px;
+	text-decoration: none;
 }
 
-/* mainbox rules */
-	#userbar
+#logo
+{
+	margin: 5px;
+	padding: 15px;
+}
+
+.clear
+{
+	clear: both;
+}
+
+/* Avatar Rules */
+	
+	.avatar-normal
 	{
-		margin-right: 80px;
-		color: white;
-		background: #1C4381;
-		float: right;
+		width: 80px;
+		border: 1px #AAA solid;
+		padding: 1px;
 	}
-	#userbar-top div
+	
+	.avatar-small
 	{
-	   background: url("../images/messagebox-tl.png") no-repeat top left;
+		width: 30px;
 	}
-	#userbar-top
+	
+	.avatar-group
 	{
-	   background: url("../images/messagebox-tr.png") no-repeat top right;
+		width: 120px;
 	}
-	#userbar-bottom div
+	
+	.avatar-group a img
 	{
-	   background: url("../images/messagebox-bl.png") no-repeat bottom left;
+		width: 30px;
+		border: 1px #AAA solid;
+		padding: 1px;
+		margin: 4px;
 	}
-	#userbar-bottom
+
+/* Mainbox Rules */
+
+	#mainbox
 	{
-	   background: url("../images/messagebox-br.png") no-repeat bottom right;
+	   background: #ffffff;
+	   width: 700px;
+	   margin: 20px auto;
 	}
-	#userbar-top div, #userbar-top, #userbar-bottom div, #userbar-bottom
+	
+	#mainbox-header
+	{
+	   background: url("../images/mainbox-tl.png") no-repeat top left;
+	   height: 10px;
+	}
+	
+	#mainbox-footer div
+	{
+	   background: url("../images/mainbox-bl.png") no-repeat bottom left;
+	}
+	
+	#mainbox-footer
+	{
+	   background: url("../images/mainbox-br.png") no-repeat bottom right;
+	}
+	
+	#mainbox-footer div, #mainbox-footer
 	{
 	   width: 100%;
 	   height: 8px;
 	   font-size: 1px;
 	}
-	#userbar-content
+
+	#mainbox-content
 	{
-		margin: 0 3px;
+		margin: 0 8px;
+		clear: both;
 	}
+
+/* Userbar Rules */
+
+	#userbar
+	{
+		background: url("../images/userbox-tlbr.png") no-repeat top left;
+		padding-left: 8px;
+		margin: 0;
+		float: right;
+	}
+	
 	#userbar-ul
 	{
+		background: url("../images/userbox-bl.png") no-repeat bottom left #476472;
 		list-style-type: none;
-		padding: 0;
 		margin: 0;
+		padding: 5px;
 	}
+	
 	#userbar-ul li
 	{
 		display: inline;
 		margin: 0 5px;
 	}
+	
 	#userbar-ul li a
 	{
 		color: white;
 	}
-
-
-/* mainbox rules */
-	.mainbox
+	
+	#userbar-ul li img
 	{
-	   background: #ffffff;
-	   width: 900px;
-	   margin: 20px auto;
-	}
-	.mainbox-top div
-	{
-	   background: url("../images/mainbox-tl.png") no-repeat top left;
-	}
-	.mainbox-top
-	{
-	   background: url("../images/mainbox-tr.png") no-repeat top right;
-	}
-	.mainbox-bottom div
-	{
-	   background: url("../images/mainbox-bl.png") no-repeat bottom left;
-	}
-	.mainbox-bottom
-	{
-	   background: url("../images/mainbox-br.png") no-repeat bottom right;
-	}
-	.mainbox-top div, .mainbox-top, .mainbox-bottom div, .mainbox-bottom
-	{
-	   width: 100%;
-	   height: 8px;
-	   font-size: 1px;
-	}
-	.mainbox-content
-	{
-		margin: 0 8px;
+		width: 30px;
+		padding: 1px;
+		border: 1px #AAA solid;
 	}
 
-/* mainbox rules */
+/* MessageBox Rules */
+
 	.messagebox
 	{
+		width: 200px;
 		float: left;
-		color: white;
-		background: #1C4381;
-		width: 250px;
+		background: url('../images/message-info.png') 8px 6px no-repeat;
+		border-right: 1px solid silver;
+		color: #333;
+		font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;
+		font-size: smaller;
+		padding: 0 10px;
+		margin-bottom: 15px;
+	}
+	
+	.messagebox h3
+	{
 		margin: 5px;
+		margin-left: 25px;
+		font-size: small;
 	}
-	.messagebox-top div
+	
+	.messagebox p
 	{
-		background: url("../images/messagebox-tl.png") no-repeat top left;
-	}
-	.messagebox-top
-	{
-		background: url("../images/messagebox-tr.png") no-repeat top right;
-	}
-	.messagebox-bottom div
-	{
-		background: url("../images/messagebox-bl.png") no-repeat bottom left;
-	}
-	.messagebox-bottom
-	{
-		background: url("../images/messagebox-br.png") no-repeat bottom right;
-	}
-	.messagebox-top div, .messagebox-top, .messagebox-bottom div, .messagebox-bottom
-	{
-		width: 100%;
-		height: 8px;
-		font-size: 1px;
-	}
-	.messagebox-content
-	{
-		margin: 0 8px;
-		padding: 5px;
+		text-align: justify;
 	}
 
 
 #topbox
 {
-	width: 950px;
+	width: 700px;
 }
 
 #leftcolumn
@@ -148,47 +162,140 @@ body
 	margin: 5px;
 }
 
-#maincolumn
+#rightcolumn
 {
-	margin-left: 280px;
+	margin-left: 240px;
+}
+
+#messagecolumn
+{
+	width: 500px;
+	margin: auto;
+	margin-top: 20px;
 }
 
 #footbox
 {
 	font-size: 8pt;
 	margin: 10px 10px 5px 10px;
+	clear: both;
 }
 
-.clearer
+#footbox a
 {
-	clear: both;
+	margin-right: 5px;
 }
 
 /* Messsage Styles */
 	.message
 	{
 		clear: both;
-		width: 600px;
-		margin: 50px 10px;
+		width: 500px;
+		margin: 50px auto;
 	}
 	
-	.message cite
+	.message .author-avatar
 	{
-		padding: 3px;
-		text-align: center;
-		font-size: 9pt;
 		float: left;
+		margin-right: 10px;
+		padding: 1px;
+		width: 52px;
+	}
+	
+	.message .author-avatar img
+	{
 		width: 50px;
-		border: 1px solid #CCC;
+		border: 1px #AAA solid;
+		margin: auto;
 	}
 	
-	.message cite img
+	.message .message-header
 	{
-		width: 40px;
+		border-bottom: 1px #AAA solid;
+		font-size: 8pt;
 	}
 	
-	.message blockquote
+	.message .message-header .message-header-said
+	{}
+	
+	.message .message-header .message-time
 	{
-		padding: 3px 5px;
-		margin-left: 60px;
+		float: right;
+		text-align: right;
+		font-style: italic;
+	}
+	
+	.message .message-content
+	{
+		text-align: justify;
+		font-size: smaller;
+	}
+	
+	.message .message-content img
+	{
+		border: 1px #AAA solid;
+		padding: 2px;
+	}
+	
+	.message .message-content p
+	{
+		font-family: georgia;
+	}
+	
+	.message .message-content code
+	{
+		color: red;
+	}
+	
+	.message .message-content .time
+	{
+		font-size: x-small;
+		font-style: italic;
+		text-align: right;
+	}
+	
+/* Composer rules */
+	#composer
+	{
+		width: 400px;
+	}
+	
+	#composer .tabs
+	{
+		list-style-type: none;
+		padding: 5px;
+		margin: 0;
+		background: white;
+		border-bottom: 1px silver solid;
+	}
+	
+	#composer .tabs li
+	{
+		display: inline;
+		margin: 0;
+		padding: 3px 8px;
+		background-color: white;
+		color: black;
+	}
+	
+	#composer .tabs li.toggled
+	{
+		border-bottom: 3px orange solid;
+	}
+	
+	#composer
+	{
+		position: relative;
+	}
+
+	#composer div.composer-form
+	{
+		position: absolute;
+		visibility: hidden;
+		padding: 15px;
+	}
+	
+	#composer div.toggled
+	{
+		visibility: visible;
 	}

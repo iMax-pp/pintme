@@ -1,53 +1,63 @@
 {% extends "base.html" %}
 
 	{% block title %}Pint - {{ user.nickname }}{% endblock %}
-		
+	
+<!--	{% block head %}
+		<script type="text/javascript" src="/scripts/Fx.ProgressBar.js"></script>	
+		<script type="text/javascript" src="/scripts/Swiff.Uploader.js"></script>
+		<script type="text/javascript" src="/scripts/profile.js"></script>
+	{% endblock %}
+-->		
 	{% block leftblocs %}
 		<div class="messagebox">
-			<div class="messagebox-top"><div></div></div>
-				<div class="messagebox-content">
-					<div class="title">
-						<h3>Profile</h3>
-					</div>
-					<div class="content">
-						<p>This is {{ called_user.nickname }}'s public profile page.</p>
-						<p>It regroups some quick user info.</p>
-					</div>
-				</div>
-			<div class="messagebox-bottom"><div></div></div>
+			<h3>Profile</h3>
+			<p>This is {{ called_user.nickname }}'s public profile page.</p>
+			<p>It regroups some quick user info.</p>
 		</div>
 	{% endblock %}
 	
 	{% block main %}
-		<h2>{{ called_user.nickname }}</h2>
-		<img src="/avatar/{{ called_user.nickname }}"/>
-		{% ifnotequal follow "n/a" %}
-		<form action="/user/{{ called_user.nickname }}" method="post" class="composer">
-		  	<div>
-				<input type="submit" value="{% ifequal follow "possible" %}follow{% else %}stop following{% endifequal %}" />
-		    </div>
+	<div class="profile-card" id="profile-card">
+		<h2 id="nickname">{{ called_user.nickname }}</h2>
+		<img src="/avatar/{{ called_user.nickname }}" class="avatar-normal" id="profile-avatar" />
+		<!--	{% ifequal called_user.nickname nickname %}
+				<br/>
+				<a href="/profile" id="change-avatar" rel="{{ avatar_token }}">Change avatar.</a>
+			{% endifequal %}
+		{% ifnotequal follow "" %} -->
+		<form action="/user/{{ called_user.nickname }}" method="post">
+			<input type="submit" value="{% ifequal follow "possible" %}follow{% else %}stop following{% endifequal %}" />
 		</form>
+	</div>
 		{% endifnotequal %}
 
 		<div class="block">
-			<b>Following</b>
+			<h3>Following</h3>
 			{% if not followed_list %}
 				None
 			{% else %}
+			<div class="avatar-group">
 				{% for followed in followed_list %}
-						<a href="/user/{{ followed.nickname }}">{{ followed.nickname }}</a>
+						<a href="/user/{{ followed.nickname }}" title="{{ followed.nickname }}">
+							<img src="/avatar/{{ followed.nickname }}" alt="{{ followed.nickname }}" class="avatar-small"/>
+						</a>
 				{% endfor %}
+			</div>
 			{% endif %}
 		</div>
 
 		<div class="block">
-			<b>Followers</b>
+			<h3>Followers</h3>
 			{% if not followers_list %}
 				None
 			{% else %}
+			<div class="avatar-group">
 				{% for follower in followers_list %}
-					<a href="/user/{{ follower.nickname }}">{{ follower.nickname }}</a>
+						<a href="/user/{{ follower.nickname }}" title="{{ follower.nickname }}">
+							<img src="/avatar/{{ follower.nickname }}" alt="{{ follower.nickname }}" class="avatar-small"/>
+						</a>
 				{% endfor %}
+			</div>
 			{% endif %}
 		</div>
 
@@ -61,24 +71,31 @@
 			</ul>
 		</div>
 		{% endifequal %}
-
-		<h3 class="block">Last messages:</h3>
+	{% endblock %}
+	
+	{% block messages %}
         {% for message in messages %}
         <div class="message">
-            <cite class="{% cycle left,right %}">
-				<img src="/avatar/{{ message.author.nickname }}"/>
-				<br/>
-                <a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a>
-             </cite>
-            <blockquote>
+            <div class="author-avatar">
+				<a href="/user/{{ message.author.nickname }}">
+					<img src="/avatar/{{ message.author.nickname }}"/>
+				</a>
+            </div>
+			<div class="message-header">
+				<div class="message-time">{{ message.date|humandate }}</div>
+				<div class="message-header-said">
+					<a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a> said:
+				</div>
+ 			</div>
+            <div class="message-content">
 				{% if message.image %}
 				<a href="/image/{{ message.image.name }}">
 				<img src="/thumb/{{ message.image.name }}"
 				</a>
 				{% endif %}
-				<p>{{ message.content|markup }}</p>
-				<span class="time">{{ message.date|humandate }}</span>
-            </blockquote>
+				{{ message.content|markup }}
+				<div class="clearer"></div>
+           </div>
         </div>
-        {% endfor %}
+    {% endfor %}
 	{% endblock %}

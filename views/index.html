@@ -1,45 +1,25 @@
 {% extends "base.html" %}
 
+	{% block head %}
+		<script type="text/javascript" src="/scripts/index.js"></script>
+	{% endblock %}
+
 	{% block leftblocs %}
         {% ifequal nickname '' %}
 			<div class="messagebox">
-				<div class="messagebox-top"><div></div></div>
-					<div class="messagebox-content">
-						<div class="title">
-							<h3>Greetings anonymous!</h3>
-						</div>
-						<div class="content">
-							<p>We don't know who you are, would you care to log in?</p>
-						</div>
-					</div>
-				<div class="messagebox-bottom"><div></div></div>
+				<h3>Greetings anonymous!</h3>
+				<p>We don't know who you are, would you care to log in?</p>
 			</div>
         {% else %}
 			<div class="messagebox">
-				<div class="messagebox-top"><div></div></div>
-					<div class="messagebox-content">
-						<div class="title">
-							<h3>Greetings {{ nickname }}!</h3>
-						</div>
-						<div class="content">
-						<p>Why not share some thoughts, or a link, or an image, or...well the sky's the limit!</p>
-						</div>
-					</div>
-				<div class="messagebox-bottom"><div></div></div>
+				<h3>Greetings {{ nickname }}!</h3>
+				<p>Why not share some thoughts, or a link, or an image, or...well the sky's the limit!</p>
 			</div>
 			{% ifequal msg_num 0 %}
 				<div class="messagebox">
-					<div class="messagebox-top"><div></div></div>
-						<div class="messagebox-content">
-							<div class="title">
-								<h3>Ow! No messages!</h3>
-							</div>
-							<div class="content">
-								<p>Looks like you don't have anything to read...</p>
-								<p>Try following someone :)</p>
-							</div>
-						</div>
-					<div class="messagebox-bottom"><div></div></div>
+					<h3>Ow! No messages!</h3>
+					<p>Looks like you don't have anything to read...</p>
+					<p>Try following someone :)</p>
 				</div>
 		   {% endifequal %}
 		{% endifequal %}
@@ -47,60 +27,70 @@
 	
 	{% block main %}
         {% ifnotequal nickname '' %}
-			<h2></h2>
-           <div class="composer">
-                <ul class="composer_controls">
-                    <li><a href="/compose?mode=text" class="compose_text" {% ifequal composer_mode "text" %}id="current_composer"{% endifequal %}>text</a></li>
-                    <li><a href="/compose?mode=image" class="compose_image" {% ifequal composer_mode "image" %}id="current_composer"{% endifequal %}>Image</a></li>
+          <div id="composer">
+                <ul class="tabs">
+                    <li title="shareText" class="toggled"><a href="#text">Text</a></li>
+                    <li title="shareImage"><a href="#image">Image</a></li>
                 </ul>
-                <div class="composer_form">
-                    {% ifequal composer_mode "text" %}
-                        <form action="/post" method="post">
-                            <div class="msg">
-                                <p>Express yourself!</p>
-                            </div>
-                            <textarea name="textmessage" rows="3" cols="40"></textarea>
-                            <br/>
-                            <input type="submit" value="Send">
-                        </form>
-                    {% endifequal %}
-                    {% ifequal composer_mode "image" %}
-                        <form action="/post" method="post" enctype="multipart/form-data">
-                            <div class="msg">
-                                <p>Post a pic!</p>
-                            </div>
-                            <label for="imageupload">Image</label>
-							<input type="file" name="imageupload"/>
-                            <br/>
-                            <label for="imgdesc">Image description</label>
-                            <textarea name="imgdesc" rows="3" cols="40"></textarea>
-                            <br/>
-							<input type="submit" value="Upload">
-                        </form>
-                    {% endifequal %}
-                </div>
+				<div id="shareText" class="composer-form toggled">
+					<form action="/post" method="post">
+						Express yourself!
+						<br/>
+						<br/>
+						<textarea name="textmessage" rows="3" cols="40"></textarea>
+						<br/>
+						<input type="submit" value="Send">
+					</form>
+				</div>
+				<div id="shareImage" class="composer-form">
+					<form action="/post" method="post" enctype="multipart/form-data">
+						Post a pic!
+						<br/>
+						<br/>
+						<input type="file" name="imageupload"/>
+						<br/>
+						<textarea name="imgdesc" rows="3" cols="40"></textarea>
+						<br/>
+						<input type="submit" value="Upload">
+					</form>
+				</div>
             </div>
 		{% else %}
-			<h2>Welcome to Pint!</h2>
+			<h2>Welcome to PintMe!</h2>
+			<p>A social sharing network <i>you</i> control.</p>
 			<p>Here's what people have been posting recently:</p>
         {% endifnotequal %}
+	{% endblock %}
     
+	{% block messages %}
         {% for message in messages %}
         <div class="message">
-            <cite class="{% cycle left,right %}">
-				<img src="/avatar/{{ message.author.nickname }}"/>
-				<br/>
-                <a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a>
-             </cite>
-            <blockquote>
+            <div class="author-avatar">
+				<a href="/user/{{ message.author.nickname }}">
+					<img src="/avatar/{{ message.author.nickname }}" class="avatar-normal" title="{{ message.author.nickname }}" alt="{{ message.author.nickname }}" />
+				</a>
+            </div>
+			<div class="message-header">
+				<div class="message-time">{{ message.date|humandate }}</div>
+				<div class="message-header-said">
+					<a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a> said:
+				</div>
+ 			</div>
+            <div class="message-content">
 				{% if message.image %}
 				<a href="/image/{{ message.image.name }}">
-				<img src="/thumb/{{ message.image.name }}"
+					<img src="/thumb/{{ message.image.name }}"  class="avatar-normal" title="{{ message.image.name }}" alt="{{ message.image.name }}" />"
 				</a>
 				{% endif %}
-				<p>{{ message.content|markup }}</p>
-				<span class="time">{{ message.date|humandate }}</span>
-            </blockquote>
+				{{ message.content|markup }}
+				<div class="clearer"></div>
+           </div>
         </div>
         {% endfor %}
+		{% ifnotequal FCdata '' %}
+		<div class="debugbox">
+			<h5>Friend connect data:</h5>
+			{{ FCdata }}
+		</div>
+		{% endifnotequal %}
 	{% endblock %}

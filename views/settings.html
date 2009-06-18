@@ -20,7 +20,7 @@
 	{% endblock %}
 
 	{% block main %}
-	<form action="/settings" method="post" class="composer">
+	<form action="/settings" method="post">
 		<div>
 			<p>Want to change your nickname? Enter it here:</p>
 			<input type="text" name="nickname" value={{ nickname }} />
@@ -28,7 +28,7 @@
 		</div>
 	</form>
 	<img src="/avatar/{{ nickname }}"/>
-	<form action="/settings" enctype="multipart/form-data" method="post" class="composer">
+	<form action="/settings" enctype="multipart/form-data" method="post">
 		<div>
 			<p>How about changing that avatar?</p>
 			<input type="file" name="avatar"/>

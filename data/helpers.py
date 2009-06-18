@@ -16,6 +16,7 @@
 #
 
 import re
+import hashlib
 from datetime import datetime
 
 from google.appengine.ext import webapp
@@ -45,7 +46,12 @@ def humandate(stamp):
 def num(list):
 	""" returns number of members in GQL list """
 	return list.count()
+	
+def md5me(text):
+	""" returns md5 hashcoded string """
+	return hashlib.md5(text).hexdigest()
 
 register.filter(markup)
 register.filter(humandate)
 register.filter(num)
+register.filter(md5me)

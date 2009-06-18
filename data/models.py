@@ -46,6 +46,11 @@ class Message(db.Model):
 	link    = db.LinkProperty()
 	date    = db.DateTimeProperty(auto_now_add=True)
 	
-class Luke(db.Model):
-	author  = db.StringProperty()
-	content = db.StringProperty()
+class Token(db.Model):
+	account = db.ReferenceProperty(Account)
+	code     = db.StringProperty()
+	expires = db.DateTimeProperty()
+	
+class Log(db.Model):
+	data = db.StringProperty()
+	time = db.DateTimeProperty(auto_now_add=True)

@@ -17,6 +17,10 @@
 
 import cgi
 import os
+import string
+import random
+
+from datetime import datetime, timedelta
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
@@ -28,6 +32,7 @@ from libs.pylast import *
 
 from data.models import Account
 from data.models import Message
+from data.models import Token
 from data.vars import *
 
 from data.vars   import __lastfmApiKey__
@@ -38,10 +43,6 @@ class Profile(webapp.RequestHandler):
 		if nickname == '':
 			self.redirect('/')
 		else:
-			# Get viewers account (could be unregistered)
-			current_user = users.get_current_user()
-			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
-
 			# Get the users account using nickname
 			called_user = Account.gql("WHERE nickname = :1", nickname).get()
 			
@@ -49,17 +50,8 @@ class Profile(webapp.RequestHandler):
 			if called_user == None:
 				self.redirect('/')
 			else:
-				account.put()
-				# Is this the users profile?
-				isOwner = ( nickname == account.nickname )
-								
-				# The follow/unfollow button
-				follow = 'n/a'
-				if account != None:
-					if called_user.key() not in account.following:
-						follow = 'possible'
-					else:
-						follow = 'unfollow'
+
+				''' This is the profile data '''
 				
 				# Users last 10 messages
 				messages = Message.gql("WHERE author = :1 ORDER BY date DESC LIMIT 10", called_user.key()).fetch(10)
@@ -69,33 +61,61 @@ class Profile(webapp.RequestHandler):
 				followed_list = Account.get(called_user.following)
 				if len(followed_list) == 0:
 					followed_list = None
-			
-				# Query: Current user is admin?
-				is_admin = users.is_current_user_admin()
 
-				# last.fm
-				lastfmname = ''
-				recentTracks = ''
-				if called_user.lastFm != None:
-					lastfmname = called_user.lastFm.userName
-					lastfmuser = User(lastfmname, __lastfmApiKey__, __lastfmApiSecret__, called_user.lastFm.sessionKey)
-					recentTracks = lastfmuser.get_recent_tracks(20)
+
+				''' This is the viewer data '''
+
+				# Get viewers account (could be unregistered)
+				current_user = users.get_current_user()
+
+				if current_user:
+					account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
+					account.put()
+
+					nickname = account.nickname
+
+					# The follow/unfollow button
+					follow = ''
+					if account != None:
+						if called_user.key() not in account.following:
+							follow = 'possible'
+						else:
+							follow = 'unfollow'
+				
+					# Is this the users profile?
+					isOwner = ( nickname == account.nickname )
+					
+					if isOwner:
+						token = Token()
+						token.account = account.key()
+						avatar_token  = string.join( random.sample( string.letters + string.digits, 30  ), '' )
+						token.code    = avatar_token
+						expires = datetime.now() + timedelta( hours = 1 )
+						token.expires = expires
+						token.put()
+					else:
+						avatar_token = ''
+						
+				else:
+					nickname = ''
+					avatar_token = ''
+					follow = ''
 			
+
 				# Template values
 				template_values = {
 					'tab': 'profile',
-					'nickname': current_user.nickname,
+					'nickname': nickname,
 					'user': current_user,
-					'is_admin': is_admin,
+					'avatar_token': avatar_token,
+					'is_admin': users.is_current_user_admin(),
 					'called_user': called_user,
 					'follow': follow,
 					'messages': messages,
-					'lastfmname': lastfmname,
-					'recentTracks': recentTracks,
 					'followed_list': followed_list,
 					'followers_list': followers_list
 				}
-			
+
 				# We get the template path then show it
 				path = os.path.join(os.path.dirname(__file__), '../views/profile.html')
 				self.response.out.write(template.render(path, template_values))

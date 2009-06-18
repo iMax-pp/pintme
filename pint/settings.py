@@ -18,6 +18,8 @@
 import cgi
 import os
 
+from datetime import datetime
+
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import webapp
@@ -28,84 +30,56 @@ from google.appengine.api import memcache
 
 from data.models import Account
 from data.models import Image
+from data.models import Token
+from data.models import Log
 
 from data.vars   import __lastfmApiKey__
 from data.vars   import __lastfmApiSecret__
 
 class AccountSettings(webapp.RequestHandler):
-	def get(self):
-		# Query: User's account
-		user = users.get_current_user()
-		account = Account.gql("WHERE userId = :1", user.user_id()).get()
+	def post(self, type, token_code):
+
+		'''
+			This is where our Flash uploader sends the data
+			As Flash doesn't care about cookies or sessions,
+			we have to send a token to authentificate...
+		'''
+
+		log = Log()
+
+		token = Token.gql("WHERE code = :1", token_code ).get()
 		
-		if not account:
-			self.redirect('/')
+		if token:
+			if token.expires > datetime.now():
+
+				account = token.account
+				
+				if account.avatar:
+				  account.avatar.delete()
+				  account.avatar = None
+
+				data = self.request.get('Filedata')
+						
+				image = images.resize(data, 100, 100)
+				avatar = Image()
+				avatar.data = db.Blob( image )
+				avatar.put()
+				
+				account.avatar = avatar.key()
+				account.put()
+
+				# Update the memcache
+				memcache.add('avatar'+account.nickname, account.avatar.data, 60)
+				
+				log.data = 'Valid Token, avatar changed.'
+
+			else:
+				log.data = 'Token expired'
 		else:
-			# Query: User is admin?
-			is_admin = users.is_current_user_admin()
-
-			# Query: Get the list of the users followers
-			followers_list = Account.gql("WHERE following = :1", account.key())
-
-			# Last.fm account
-			lastfmname = ''
-			if account.lastFm != None:
-				lastfmname = account.lastFm.userName
+			log.data = 'No such token'
 			
-			# Template values
-			template_values = {
-				'tab': 'settings',
-				'nickname': account.nickname,
-				'user': user,
-				'is_admin': is_admin,
-				'lastfmname': lastfmname,
-				'followed_list': Account.get(account.following),
-				'followers_list': followers_list
-			}
-	
-			# We get the template path then show it
-			path = os.path.join(os.path.dirname(__file__), '../views/settings.html')
-			self.response.out.write(template.render(path, template_values))
-
-	def post(self):
-		# Query: User's account & friend's nickname
-		user = users.get_current_user()
-		account = Account.gql("WHERE userId = :1", user.user_id()).get()
+		log.put()
 		
-		if(self.request.get('nickname')):		
-			# Let's change the nickname
-			# Query: nickname
-			nickname = self.request.get('nickname')
-			
-			# Is the nickname available ?
-			if nickname != account.nickname:
-				nick_taken = Account.gql("WHERE nickname = :1", nickname).get()
-				
-				# Ok ? so change the nickname
-				if not nick_taken:
-					account.nickname = nickname
-					account.put()
-		
-		if(self.request.get('avatar')):
-			# Lets's change the avatar
-			
-			# Delete old avatar (garbage collector?)
-			if account.avatar:
-				account.avatar.delete()
-				account.avatar = None
-				
-			# Store the image
-			image = images.resize(self.request.get('avatar'), 100, 100)
-			avatar = Image()
-			avatar.data = db.Blob(image)
-			avatar.put()
-			
-			# Update the user account
-			account.avatar = avatar.key()
-			account.put()
-
-			# Update the memcache
-			memcache.add('avatar'+account.nickname, account.avatar.data, 60)
-
-		
-		self.redirect('/settings')
+		print 'Content-Type: text/plain'
+		print ''
+		print 'Hello, world!'

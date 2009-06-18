@@ -42,6 +42,7 @@ from pint.rss         import GeneralRss
 from pint.lastfm      import LastFmAuth
 from pint.lastfm      import LastFmCallback
 from pint.about       import About
+from pint.suggestions import Suggestions
 from pint.maintenance import Maintenance
 
 webapp.template.register_template_library('data.helpers')
@@ -52,7 +53,7 @@ application = webapp.WSGIApplication(
 									  (r'/user/(.*)', Profile),
 									  ('/post', PostMessage),
 									  ('/register', Register),
-									  ('/settings', AccountSettings),
+									  (r'/account/(.*)/(.*)', AccountSettings),
 									  ('/search', Search),
                                       ('/login', Login),
                                       ('/logout', Logout),
@@ -66,7 +67,8 @@ application = webapp.WSGIApplication(
                                       ('/lastfmauth', LastFmAuth),
                                       (r'/lastfmcallback/.*', LastFmCallback),
 									  ('/down', Maintenance),
-									  ('/about', About)],
+									  ('/about', About),
+                                      ('/suggestions', Suggestions)],
 									 debug = True)
 
 # Duh, it's the main!

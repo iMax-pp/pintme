@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+	{% block leftblocs %}
+		<div class="messagebox">
+			<div class="messagebox-top"><div></div></div>
+				<div class="messagebox-content">
+					<div class="title">
+						<h3>Got a suggestion?</h3>
+					</div>
+					<div class="content">
+						<p>Idea? Thought? Bug? Go ahead! Keep it civil though ;)</p>
+					</div>
+				</div>
+			<div class="messagebox-bottom"><div></div></div>
+		</div>
+  	{% endblock %}
+ 
+ 	{% block main %}
+		<form action="/suggestions" method="post">
+			<textarea name="content" rows="3" cols="60" style="width: 400px;"></textarea>
+			<input type="submit" value="Send Suggestion">
+		</form>
+	{% endblock %}
+   
+	{% block messages %}
+		<div class="clearer"></div>
+		<ul>
+		{% for suggest in suggestions %}
+			<li>{{ suggest.content }}<i> suggested {{ suggest.author }}</i></li>
+		{% endfor %}
+		</ul>
+	{% endblock %}

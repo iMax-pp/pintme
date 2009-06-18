@@ -25,6 +25,8 @@ from google.appengine.ext import webapp
 class Markup:
 	@classmethod
 	def paragraphs(cls, text):
+		text = text + '\n'
+		text = re.sub(r'\n+', r'\n', text)
 		return re.sub(r'([^\n]+)\n', r'<p>\1</p>', text)
 		
 	@classmethod
@@ -39,7 +41,7 @@ class Markup:
 	def verbatim(cls, text):
 		# FIXME This only works with a single line.
 		# 		( With more, only the first one is verbatimized :)
-		return re.sub(r'\{\{\{((.|\n)+)\}\}\}', r'<p class="verbatim">\1</p>', text)
+		return re.sub(r'\{\{\{(.*\n*)\}\}\}', r'<code>\1</code>', text)
 	
 	@classmethod
 	def hline(cls, text):
@@ -47,18 +49,18 @@ class Markup:
 	
 	@classmethod
 	def smileys(cls, text):
-		text = re.sub(r':[\-]?\)', '<b class="smiley">:)</b>', text)
-		text = re.sub(r':[\-]?[dD]', '<b class="smiley">:D</b>', text)
-		text = re.sub(r';[\-]?\)', '<b class="smiley">;)</b>', text)
-		text = re.sub(r':\'[\-]?\(', "<b class='smiley'>:'(</b>", text)
-		text = re.sub(r':[\-]?[oO]', '<b class="smiley">:-o</b>', text)
-		text = re.sub(r':[\-]?[\\\/]', '<b class="smiley">:-/</b>', text)
-		text = re.sub(r'[xX][\-]?\(', '<b class="smiley">x-(</b>', text)
-		text = re.sub(r':[\-]?\(', '<b class="smiley">:(</b>', text)
-		text = re.sub(r'[8bB][\-]?\)', '<b class="smiley">B-)</b>', text)
-		text = re.sub(r':[\-]?[pP]', '<b class="smiley">:P</b>', text)
-		text = re.sub(r'\<3', '<b class="smiley"><3</b>', text)
-		text = re.sub(r':[\-]?\|', '<b class="smiley">:-|</b>', text)
+		text = re.sub(r'\s:[\-]?\)\s', ' <b class="smiley">:)</b> ', text)
+		text = re.sub(r'\s:[\-]?[dD]\s', ' <b class="smiley">:D</b> ', text)
+		text = re.sub(r'\s;[\-]?\)\s', ' <b class="smiley">;)</b> ', text)
+		text = re.sub(r'\s:\'[\-]?\(\s', ' <b class="smiley">:\'(</b> ', text)
+		text = re.sub(r'\s:[\-]?[oO]\s', ' <b class="smiley">:-o</b> ', text)
+		text = re.sub(r'\s:[\-]?[\\\/]\s', ' <b class="smiley">:-/</b> ', text)
+		text = re.sub(r'\s[xX][\-]?\(\s', ' <b class="smiley">x-(</b> ', text)
+		text = re.sub(r'\s:[\-]?\(\s', ' <b class="smiley">:(</b> ', text)
+		text = re.sub(r'\s[8bB][\-]?\)\s', ' <b class="smiley">B-)</b> ', text)
+		text = re.sub(r'\s:[\-]?[pP]\s', ' <b class="smiley">:P</b> ', text)
+		text = re.sub(r'\s\<3\s', ' <b class="smiley"><3</b> ', text)
+		text = re.sub(r'\s:[\-]?\|\s', ' <b class="smiley">:-|</b> ', text)
 		return text
 	
 	@classmethod

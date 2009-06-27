@@ -5,28 +5,28 @@ api_version: 1
 
 handlers: 
 - url: /stylesheets
-  static_dir: public/stylesheets
+  static_dir: static/css
   
 - url: /images
-  static_dir: public/images
+  static_dir: static/images
   
 - url: /scripts
-  static_dir: public/js
+  static_dir: static/js
 
 - url: /swiff
-  static_dir: public/swf
+  static_dir: static/swf
 
 - url: /favicon.ico
-  static_files: public/images/favicon.ico
-  upload: public/images/favicon.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon.ico
 
 - url: /rpc_relay.html
-  static_files: public/rpc_relay.html
-  upload: public/rpc_relay.html
+  static_files: static/rpc_relay.html
+  upload: static/rpc_relay.html
 
 - url: /canvas.html
-  static_files: public/canvas.html
-  upload: public/canvas.html
+  static_files: static/canvas.html
+  upload: static/canvas.html
   
 - url: /admin.*
   script: index.py

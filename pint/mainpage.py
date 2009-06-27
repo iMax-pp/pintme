@@ -17,85 +17,27 @@
 
 import cgi
 import os
-import re
-import hashlib
 
 from google.appengine.ext.webapp import template
-from google.appengine.api import users
 from google.appengine.ext import webapp
-from google.appengine.ext import db
+
+from pintcore.useraccount import UserAccount
 
 from data.models import Account
 from data.models import Message
 
-from opensocial import *
-
 class MainPage(webapp.RequestHandler):
 	def get(self):		
 	
-		# Default declarations
-		nickname = ''
-		followed_list = list()
-		followers_list = list()
+		account = UserAccount()
+		account.getFromSession()
 		
-		# Query: Get user login
-		user = users.get_current_user()
-
-		FCdata = ""
-				
-		# User is logged in!
-		if user:
-
-			"""	if self.request.cookies.has_key('fcauth08311002481026592939'):
-				cookie = self.request.cookies['fcauth08311002481026592939']
-				config = ContainerConfig(oauth_consumer_key='*:08311002481026592939', 
-										 oauth_consumer_secret='-UMCNXDLDi0=', 
-										 server_rest_base='http://www.google.com/friendconnect/api/') 
-				container = ContainerContext(config) 
-				FCdata = container.fetch_person('@viewer') """
-
-			# Query: is user registered?
-			account = Account.gql("WHERE userId = :1", user.user_id()).get()
-			
-            # User is registered!
-			if account:
-				nickname = account.nickname
-				account.put()
-				
-                # Query: Get the list of users being followed
-				followed_list = Account.get(account.following)
-				
-                # Query: Get the list of the users followers
-				followers_list = Account.gql("WHERE following = :1", account.key())
-				
-				# I don't understand this line...
-				# account.following.append(account.key())
-
-				# Default action (10 last messages), but only for the followed users
-				messages = Message.gql("WHERE author IN :1 ORDER BY date DESC LIMIT 10", account.following)
-			else:
-				# Default: last ten messages
-				messages = Message.gql("ORDER BY date DESC LIMIT 10")
-		
-		else:
-			# Default: last ten messages
-			messages = Message.gql("ORDER BY date DESC LIMIT 10")
-	  					
 		# Template values, yay!
 		template_values = {
-            'tab': 'home',
-            'messages': messages,
-            'msg_num': messages.count(),
-			'followed_list': followed_list,
-			'followers_list': followers_list,
-			'user': user,
-            'nickname': nickname,
-			'is_admin': users.is_current_user_admin(),
-            'composer_mode': self.request.get("mode","text"),
-			'FCdata': FCdata
+            'messages': account.getMessages(),
+            'nickname': account.getNickname()
 		}
 		
 		# We get the template path then show it
 		path = os.path.join(os.path.dirname(__file__), '../views/index.html')
 		self.response.out.write(template.render(path, template_values))
-        # I still haven't understood why we need to make the path...

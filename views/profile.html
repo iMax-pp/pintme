@@ -1,31 +1,31 @@
 {% extends "base.html" %}
 
 	{% block title %}Pint - {{ user.nickname }}{% endblock %}
-	
+
 <!--	{% block head %}
-		<script type="text/javascript" src="/scripts/Fx.ProgressBar.js"></script>	
+		<script type="text/javascript" src="/scripts/Fx.ProgressBar.js"></script>
 		<script type="text/javascript" src="/scripts/Swiff.Uploader.js"></script>
 		<script type="text/javascript" src="/scripts/profile.js"></script>
 	{% endblock %}
--->		
+-->
 	{% block leftblocs %}
 		<div class="messagebox">
 			<h3>Profile</h3>
-			<p>This is {{ called_user.nickname }}'s public profile page.</p>
+			<p>This is {{ profile.nickname }}'s public profile page.</p>
 			<p>It regroups some quick user info.</p>
 		</div>
 	{% endblock %}
-	
+
 	{% block main %}
 	<div class="profile-card" id="profile-card">
-		<h2 id="nickname">{{ called_user.nickname }}</h2>
-		<img src="/avatar/{{ called_user.nickname }}" class="avatar-normal" id="profile-avatar" />
-		<!--	{% ifequal called_user.nickname nickname %}
+		<h2 id="nickname">{{ profile.nickname }}</h2>
+		<img src="/avatar/{{ profile.nickname }}" class="avatar-normal" id="profile-avatar" />
+		<!--	{% ifequal profile.nickname nickname %}
 				<br/>
 				<a href="/profile" id="change-avatar" rel="{{ avatar_token }}">Change avatar.</a>
 			{% endifequal %}
 		{% ifnotequal follow "" %} -->
-		<form action="/user/{{ called_user.nickname }}" method="post">
+		<form action="/user/{{ profile.nickname }}" method="post">
 			<input type="submit" value="{% ifequal follow "possible" %}follow{% else %}stop following{% endifequal %}" />
 		</form>
 	</div>
@@ -33,11 +33,11 @@
 
 		<div class="block">
 			<h3>Following</h3>
-			{% if not followed_list %}
+			{% if not profileFollowed %}
 				None
 			{% else %}
 			<div class="avatar-group">
-				{% for followed in followed_list %}
+				{% for followed in profileFollowed %}
 						<a href="/user/{{ followed.nickname }}" title="{{ followed.nickname }}">
 							<img src="/avatar/{{ followed.nickname }}" alt="{{ followed.nickname }}" class="avatar-small"/>
 						</a>
@@ -48,11 +48,11 @@
 
 		<div class="block">
 			<h3>Followers</h3>
-			{% if not followers_list %}
+			{% if not profileFollowing %}
 				None
 			{% else %}
 			<div class="avatar-group">
-				{% for follower in followers_list %}
+				{% for follower in profileFollowers %}
 						<a href="/user/{{ follower.nickname }}" title="{{ follower.nickname }}">
 							<img src="/avatar/{{ follower.nickname }}" alt="{{ follower.nickname }}" class="avatar-small"/>
 						</a>
@@ -72,7 +72,7 @@
 		</div>
 		{% endifequal %}
 	{% endblock %}
-	
+
 	{% block messages %}
         {% for message in messages %}
         <div class="message">

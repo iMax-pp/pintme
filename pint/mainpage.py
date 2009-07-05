@@ -27,17 +27,23 @@ from data.models import Account
 from data.models import Message
 
 class MainPage(webapp.RequestHandler):
-	def get(self):		
-	
-		account = UserAccount()
-		account.getFromSession()
-		
+	def get(self):
+
+		user = UserAccount()
+		user.getFromSession()
+
 		# Template values, yay!
-		template_values = {
-            'messages': account.getMessages(),
-            'nickname': account.getNickname()
-		}
-		
+		if user.validAccount:
+			template_values = {
+				'messages': user.getMessages(),
+				'nickname': user.account.nickname
+			}
+		else:
+			template_values = {
+				'messages': None,
+				'nickname': ''
+			}
+
 		# We get the template path then show it
 		path = os.path.join(os.path.dirname(__file__), '../views/index.html')
 		self.response.out.write(template.render(path, template_values))

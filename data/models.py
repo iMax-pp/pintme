@@ -27,9 +27,9 @@ class Image(db.Expando):
 	thumb = db.BlobProperty()
 
 class LastFm(db.Model):
-	userName = db.StringProperty()
+	userName   = db.StringProperty()
 	sessionKey = db.StringProperty()
-	
+
 class Account(db.Model):
 	userId    = db.StringProperty()
 	nickname  = db.StringProperty()
@@ -45,12 +45,12 @@ class Message(db.Model):
 	image   = db.ReferenceProperty(Image)
 	link    = db.LinkProperty()
 	date    = db.DateTimeProperty(auto_now_add=True)
-	
+
 class Token(db.Model):
 	account = db.ReferenceProperty(Account)
-	code     = db.StringProperty()
+	code    = db.StringProperty()
 	expires = db.DateTimeProperty()
-	
+
 class Log(db.Model):
 	data = db.StringProperty()
 	time = db.DateTimeProperty(auto_now_add=True)

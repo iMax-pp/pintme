@@ -23,97 +23,55 @@ import random
 from datetime import datetime, timedelta
 
 from google.appengine.ext.webapp import template
-from google.appengine.api import users
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext import db
 
-from libs.pylast import *
+from pintcore.useraccount import UserAccount
 
 from data.models import Account
 from data.models import Message
-from data.models import Token
-from data.vars import *
-
-from data.vars   import __lastfmApiKey__
-from data.vars   import __lastfmApiSecret__
 
 class Profile(webapp.RequestHandler):
 	def get(self, nickname):
+
 		if nickname == '':
+
 			self.redirect('/')
+
 		else:
-			# Get the users account using nickname
-			called_user = Account.gql("WHERE nickname = :1", nickname).get()
-			
+
+			profile = UserAccount()
+			profile.getFromNickname( nickname )
+
 			# Called user doesn't exist
-			if called_user == None:
+			if not profile.validAccount:
+
 				self.redirect('/')
+
 			else:
 
-				''' This is the profile data '''
-				
-				# Users last 10 messages
-				messages = Message.gql("WHERE author = :1 ORDER BY date DESC LIMIT 10", called_user.key()).fetch(10)
+				user = UserAccount()
+				user.getFromSession()
 
-				# Users followers
-				followers_list = Account.gql("WHERE following = :1", called_user.key())
-				followed_list = Account.get(called_user.following)
-				if len(followed_list) == 0:
-					followed_list = None
-
-
-				''' This is the viewer data '''
-
-				# Get viewers account (could be unregistered)
-				current_user = users.get_current_user()
-
-				if current_user:
-					account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
-					account.put()
-
-					nickname = account.nickname
-
-					# The follow/unfollow button
-					follow = ''
-					if account != None:
-						if called_user.key() not in account.following:
-							follow = 'possible'
-						else:
-							follow = 'unfollow'
-				
-					# Is this the users profile?
-					isOwner = ( nickname == account.nickname )
-					
-					if isOwner:
-						token = Token()
-						token.account = account.key()
-						avatar_token  = string.join( random.sample( string.letters + string.digits, 30  ), '' )
-						token.code    = avatar_token
-						expires = datetime.now() + timedelta( hours = 1 )
-						token.expires = expires
-						token.put()
-					else:
-						avatar_token = ''
-						
+				'''if isOwner:
+					token = Token()
+					token.account = account.key()
+					avatar_token  = string.join( random.sample( string.letters + string.digits, 30  ), '' )
+					token.code    = avatar_token
+					expires = datetime.now() + timedelta( hours = 1 )
+					token.expires = expires
+					token.put()
 				else:
-					nickname = ''
-					avatar_token = ''
-					follow = ''
-			
+					avatar_token = '' '''
+
 
 				# Template values
 				template_values = {
-					'tab': 'profile',
-					'nickname': nickname,
-					'user': current_user,
-					'avatar_token': avatar_token,
-					'is_admin': users.is_current_user_admin(),
-					'called_user': called_user,
-					'follow': follow,
-					'messages': messages,
-					'followed_list': followed_list,
-					'followers_list': followers_list
+					'user': user.account,
+					'profile': profile.account,
+					'canFollow': user.canFollow( profile ),
+					'profileMessages': profile.getSentMessages(),
+					'profileFollowed': profile.getFollowed(),
+					'profileFollowers': profile.getFollowers()
 				}
 
 				# We get the template path then show it
@@ -126,7 +84,7 @@ class Profile(webapp.RequestHandler):
 
 		current_user = users.get_current_user()
 		account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
-		
+
 		# Does that user exist?
 		follow_account = Account.gql("WHERE nickname = :1", follow_nick).get()
 		if follow_account != None:
@@ -135,5 +93,5 @@ class Profile(webapp.RequestHandler):
 			else:
 				account.following.append(follow_account.key())
 			account.put()
-		
+
 		self.redirect('/user/'+follow_nick)

@@ -44,6 +44,7 @@ from pint.lastfm      import LastFmCallback
 from pint.about       import About
 from pint.suggestions import Suggestions
 from pint.maintenance import Maintenance
+from pint.bookmarklet import Bookmarklet
 
 webapp.template.register_template_library('data.helpers')
 
@@ -68,8 +69,9 @@ application = webapp.WSGIApplication(
                                       (r'/lastfmcallback/.*', LastFmCallback),
 									  ('/down', Maintenance),
 									  ('/about', About),
-                                      ('/suggestions', Suggestions)],
-									 debug = True)
+                                      ('/suggestions', Suggestions),
+                                      ('/bookmarklet', Bookmarklet)],
+									 debug = False)
 
 # Duh, it's the main!
 def main():

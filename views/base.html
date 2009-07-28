@@ -10,7 +10,7 @@
 	<script type="text/javascript">
 	  google.load('friendconnect', '0.8');
 	</script>
-	<script type="text/javascript">    
+	<script type="text/javascript">
 		google.friendconnect.container.setParentUrl('/');
 		google.friendconnect.container.loadOpenSocialApi({
 			site: '08311002481026592939',
@@ -52,7 +52,7 @@
 					{% else %}
 							<li><img src="/avatar/{{ nickname }}" title="{{ nickname }}" alt="{{ nickname }}" class="avatar-small" /></li>
 							<li><a href="/" {% ifequal tab "home" %}id="currentTab"{% endifequal %}>Home</a></li>
-							<li><a href="/user/{{ nickname }}" {% ifequal tab "profile" %}id="currentTab"{% endifequal %} >Profile</a></li>		
+							<li><a href="/user/{{ nickname }}" {% ifequal tab "profile" %}id="currentTab"{% endifequal %} >Profile</a></li>
 							{% if is_admin %}
 							<!--<li><a href="/admin"{% ifequal tab "admin" %}id="currentTab"{% endifequal %}>Admin</a></li>-->
 							{% endif %}
@@ -85,7 +85,8 @@
 			<div id="footbox">
 				&copy; 2009
 				<a href="/about">About</a>
-				<a href="/suggestions">Make a suggestion</a>
+				<a href="/suggestions">Feedback</a>
+				<a href="javascript:var b=document.body;var PM________bookmarklet_domain='http://pintme.appspot.com';if(b&&!document.xmlVersion){void(z=document.createElement('script'));void(z.src='http://pintme.appspot.com/scripts/bookmarklet.js?x='+(Math.random()));void(b.appendChild(z));}else{}">Bookmarklet</a>
 			</div>
 		</div>
 		<div id="mainbox-footer"><div></div></div>

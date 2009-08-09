@@ -17,19 +17,44 @@
 
 import cgi
 import os
+import re
+import urllib
+import urlparse
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
+from google.appengine.api import urlfetch
 
 from pintcore.useraccount import UserAccount
+from libs.BeautifulSoup import BeautifulSoup
 
 from data.models import Account
 from data.models import Message
 
 class Bookmarklet(webapp.RequestHandler):
-    def get(self):
-		template_values = {}
+    def get(self,url,selection=''):
+        pageURL = urllib.unquote(url)
+        pageURLParts = urlparse.urlparse(pageURL)
+        pageURLDir = re.search('(/.*)',pageURLParts[2]).group(0)
+        page = urlfetch.fetch(pageURL)
+        pageSoup = BeautifulSoup(page.content)
+        pageTitle =  pageSoup.html.head.title.string
+        pageImgs = pageSoup.findAll('img')
 
-		# We get the template path then show it
-		path = os.path.join(os.path.dirname(__file__), '../views/bookmarklet.html')
-		self.response.out.write(template.render(path, template_values))
+        for image in pageImgs:
+            if not image['src'].startswith('http://'):
+                image['src'] = '/' + image['src']
+            if image['src'].startswith('/'):
+                image['src'] = pageURLParts[0] + '://' + pageURLParts[1] + pageURLDir + image['src']
+            if 'alt' not in image:
+                image['alt'] = 'Unnamed'
+
+        template_values = {
+            'url': pageURL,
+            'title': pageTitle,
+            'images': pageImgs
+        }
+
+        # We get the template path then show it
+        path = os.path.join(os.path.dirname(__file__), '../views/bookmarklet.html')
+        self.response.out.write(template.render(path, template_values))

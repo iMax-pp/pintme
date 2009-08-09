@@ -1,11 +1,74 @@
 body
 {
 	font-family: sans-serif;
-	color: #333;
 	font-size: 11pt;
+	background-color: #444477;
 }
 
-ul
+h3
 {
-	list-style-type: square;
+	color: white;
+}
+
+#mainbox
+{
+	color: #333;
+	margin: 10px;
+	background: white;
+	width: 380px;
+	height: 430px;
+}
+
+#tabs
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	background-color: #444477;
+}
+
+#tabs li
+{
+	display: inline;
+	padding: 5px 10px;
+	background-color: white;
+}
+
+#content
+{
+	padding: 10px;
+}
+
+#content .contentbox
+{
+	position: absolute;
+	margin: 5px;
+}
+
+#content .imagebox
+{
+	position: relative;
+	padding: 1px;
+	border: 1px gray solid;
+	margin: 5px;
+	float: left;
+}
+
+#content .imagebox img
+{
+	max-height: 100px;
+}
+
+#content .imagebox .imgid
+{
+	position: absolute;
+	bottom: 0;
+	background: black;
+	opacity: .8;
+	color: white;
+}
+
+.clear
+{
+	clear: both;
 }

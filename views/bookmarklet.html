@@ -4,41 +4,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<title>Post to Pintme</title>
-	<style type="text/css">
-		body
-		{
-			font-family: sans-serif;
-			color: #333;
-			font-size: 11pt;
-			background: white;
-		}
-
-		#mainbox
-		{
-			padding: 10px;
-		}
-
-		.thingbox
-		{
-			margin: 10px 20px;
-		}
-	</style>
+	<link type="text/css" rel="stylesheet" href="/stylesheets/bookmarklet.css" />
 </head>
 
 <body>
+	<h3>{{title}}</h3>
 	<div id="mainbox">
-		<h3>Post to Pintme</h3>
-		<h5>Selected:</h5>
-		<div id="selectedbox" class="thingbox">
-			No selection.
-		</div>
-		<h5>Links:</h5>
-		<div id="linksbox" class="thingbox">
-			No links.
-		</div>
-		<h5>Images:</h5>
-		<div id="imagesbox" class="thingbox">
-			No images.
+		<ul id="tabs">
+			<li>Url</li>
+			<li>Quote</li>
+			<li>Images</li>
+		</ul>
+		<div id="content">
+			<div id="pageUrl" class="contentbox">
+			</div>
+			<div id="pageImgs" class="contentbox">
+				<div class="scrollbox">
+				{% for image in images %}
+					<div class="imagebox">
+						{{image}}
+					</div>
+					<div class="clear"></div>
+				{% endfor %}
+				</div>
+			</div>
+			<div class="clear"></div>
 		</div>
 	</div>
 </body>

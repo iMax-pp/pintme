@@ -37,8 +37,9 @@ from pint.avatar      import Avatar
 from pint.image       import GetImage
 from pint.image       import MidImage
 from pint.image       import Thumb
-from pint.rss         import PersonnalRss
-from pint.rss         import GeneralRss
+from pint.feeds         import PersonnalFeed
+from pint.feeds         import GeneralFeed
+from pint.feeds       import FeedGen
 from pint.lastfm      import LastFmAuth
 from pint.lastfm      import LastFmCallback
 from pint.about       import About
@@ -63,15 +64,16 @@ application = webapp.WSGIApplication(
                                       (r'/image/(.*)', GetImage),
                                       (r'/midimage/(.*)', MidImage),
                                       (r'/thumb/(.*)', Thumb),
-                                      (r'/rss/personnal/(.*)', PersonnalRss),
-                                      ('/rss/general', GeneralRss),
+                                      (r'/rss/personnal/(.*)', PersonnalFeed),
+                                      ('/rss/general', GeneralFeed),
+									  ('/feed/(.*)', FeedGen),
                                       ('/lastfmauth', LastFmAuth),
                                       (r'/lastfmcallback/.*', LastFmCallback),
 									  ('/down', Maintenance),
 									  ('/about', About),
                                       ('/suggestions', Suggestions),
-                                      ('/bookmarklet', Bookmarklet)],
-									 debug = False)
+                                      ('/share/url/(.*)/selection/(.*)', Bookmarklet)],
+									 debug = True)
 
 # Duh, it's the main!
 def main():

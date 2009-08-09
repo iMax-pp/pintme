@@ -5,32 +5,6 @@
 <head>
 	<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 	<title>{% block title %}Pint{% endblock %}</title>
-<!--
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-	  google.load('friendconnect', '0.8');
-	</script>
-	<script type="text/javascript">
-		google.friendconnect.container.setParentUrl('/');
-		google.friendconnect.container.loadOpenSocialApi({
-			site: '08311002481026592939',
-			onload: function(securityToken) {
-				if (!window.timesloaded)
-				{
-					window.timesloaded = 1;
-				}
-				else
-				{
-					window.timesloaded++;
-				}
-				if (window.timesloaded > 1)
-				{
-					window.top.location.href = "/";
-				}
-			}
-		});
-	</script>
--->
 	<script type="text/javascript" src="/scripts/mootools-1.2.2-core-yc.js"></script>
 	<script type="text/javascript" src="/scripts/mootools-1.2.2.2-more.js"></script>
 	{% block head %}
@@ -47,7 +21,6 @@
 							<li>One more thing...</li>
 						{% else %}
 							<li><a href="/login" class="loglink">Login</a></li>
-							<!--<li><a href="#" onclick="google.friendconnect.requestSignIn();">FC Sign in</a></li>-->
 						{% endifequal %}
 					{% else %}
 							<li><img src="/avatar/{{ nickname }}" title="{{ nickname }}" alt="{{ nickname }}" class="avatar-small" /></li>
@@ -86,23 +59,10 @@
 				&copy; 2009
 				<a href="/about">About</a>
 				<a href="/suggestions">Feedback</a>
-				<a href="javascript:var b=document.body;var PM________bookmarklet_domain='http://pintme.appspot.com';if(b&&!document.xmlVersion){void(z=document.createElement('script'));void(z.src='http://pintme.appspot.com/scripts/bookmarklet.js?x='+(Math.random()));void(b.appendChild(z));}else{}">Bookmarklet</a>
+				<a href="javascript:(function(){var u='http://pintme.appspot.com/share/url/'+document.location+'/selection/none';window.open(u,'p','toolbar=0,resizable=0,status=1,width=420,height=500');})()">Post to PintMe</a>
 			</div>
 		</div>
 		<div id="mainbox-footer"><div></div></div>
 	</div>
-<!--
-<script type="text/javascript">
-	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-	try
-	{
-		var pageTracker = _gat._getTracker("UA-7258394-1");
-		pageTracker._trackPageview();
-	} catch(err) {}
-</script>
--->
 </body>
 </html>

@@ -3,6 +3,7 @@ body
 	font-family: sans-serif;
 	font-size: 11pt;
 	background-color: #444477;
+	margin: 0;
 }
 
 h3
@@ -15,22 +16,29 @@ h3
 	color: #333;
 	margin: 10px;
 	background: white;
-	width: 380px;
-	height: 430px;
+	width: 400px;
+	height: 480px;
 }
 
 #tabs
 {
 	list-style-type: none;
-	padding: 0;
+	padding: 3px 0;
 	margin: 0;
 	background-color: #444477;
+	text-align: center;
 }
 
 #tabs li
 {
 	display: inline;
-	padding: 5px 10px;
+	padding: 3px 10px;
+	background-color: silver;
+	cursor: pointer;
+}
+
+#tabs li.first
+{
 	background-color: white;
 }
 
@@ -45,21 +53,31 @@ h3
 	margin: 5px;
 }
 
-#content .imagebox
+#pageUrl
 {
-	position: relative;
-	padding: 1px;
-	border: 1px gray solid;
-	margin: 5px;
-	float: left;
+	display: block;
 }
 
-#content .imagebox img
+#pageQuote, #pageImgs
+{
+	display: none;
+	background-color: white;
+}
+
+#content .imagebox
+{
+	border: 1px gray solid;
+	height: 100px;
+	width: 365px;
+	overflow: auto;
+}
+
+#content .imagebox .imagepiece
 {
 	max-height: 100px;
 }
 
-#content .imagebox .imgid
+#content .imagepiece .imgid
 {
 	position: absolute;
 	bottom: 0;
@@ -68,7 +86,31 @@ h3
 	color: white;
 }
 
+form label
+{
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+form input, form textarea
+{
+	width: 365px;
+	border: 1px #CCC solid;
+	background-color: #EEE;
+	padding: 2px;
+}
+
+form textarea
+{
+	height: 150px;
+}
+
 .clear
 {
 	clear: both;
+}
+
+.nodisplay
+{
+	visibility: hidden;
 }

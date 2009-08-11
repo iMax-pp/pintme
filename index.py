@@ -66,13 +66,13 @@ application = webapp.WSGIApplication(
                                       (r'/thumb/(.*)', Thumb),
                                       (r'/rss/personnal/(.*)', PersonnalFeed),
                                       ('/rss/general', GeneralFeed),
-									  ('/feed/(.*)', FeedGen),
+									  (r'/feed/(.*)', FeedGen),
                                       ('/lastfmauth', LastFmAuth),
-                                      (r'/lastfmcallback/.*', LastFmCallback),
+                                      (r'/lastfmcallback/(.*)', LastFmCallback),
 									  ('/down', Maintenance),
 									  ('/about', About),
                                       ('/suggestions', Suggestions),
-                                      ('/share/url/(.*)/selection/(.*)', Bookmarklet)],
+                                      (r'/share/(.*)/selection/(.*)', Bookmarklet)],
 									 debug = True)
 
 # Duh, it's the main!

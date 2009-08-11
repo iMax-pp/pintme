@@ -33,12 +33,17 @@ from data.models import Message
 
 class Bookmarklet(webapp.RequestHandler):
     def get(self,url,selection=''):
+        pageSelection = urllib.unquote(selection)
         pageURL = urllib.unquote(url)
         pageURLParts = urlparse.urlparse(pageURL)
         pageURLDir = re.search('(/.*)',pageURLParts[2]).group(0)
         page = urlfetch.fetch(pageURL)
         pageSoup = BeautifulSoup(page.content)
-        pageTitle =  pageSoup.html.head.title.string
+
+        try:
+            pageTitle =  pageSoup.html.head.title.string
+        except AttributeError:
+            pageTitle = 'Tried to find title, found: ' + pageSoup.html.head.title
         pageImgs = pageSoup.findAll('img')
 
         for image in pageImgs:
@@ -52,6 +57,7 @@ class Bookmarklet(webapp.RequestHandler):
         template_values = {
             'url': pageURL,
             'title': pageTitle,
+            'selection': pageSelection,
             'images': pageImgs
         }
 

@@ -59,7 +59,7 @@
 				&copy; 2009
 				<a href="/about">About</a>
 				<a href="/suggestions">Feedback</a>
-				<a href="javascript:(function(){var u='http://pintme.appspot.com/share/url/'+document.location+'/selection/none';window.open(u,'p','toolbar=0,resizable=0,status=1,width=420,height=500');})()">Post to PintMe</a>
+				<a href="javascript:(function(){var d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://pintme.appspot.com/share/',l=d.location,e=encodeURIComponent,u=f+e(l.href)+'/selection/'+s;window.open(u,'p','toolbar=0,resizable=0,status=1,width=420,height=500');})()">Post to PintMe</a>
 			</div>
 		</div>
 		<div id="mainbox-footer"><div></div></div>

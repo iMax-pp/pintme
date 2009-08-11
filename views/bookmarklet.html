@@ -5,28 +5,79 @@
 <head>
 	<title>Post to Pintme</title>
 	<link type="text/css" rel="stylesheet" href="/stylesheets/bookmarklet.css" />
+	<script type="text/javascript" language="javascript" src="/scripts/mootools-1.2.2-core-yc.js"></script>
+	<script type="text/javascript" language="javascript" src="/scripts/bookmarklet.js"></script>
 </head>
 
 <body>
-	<h3>{{title}}</h3>
 	<div id="mainbox">
 		<ul id="tabs">
-			<li>Url</li>
-			<li>Quote</li>
-			<li>Images</li>
+			<li rel="pageUrl" class="first">Link</li>
+			<li rel="pageQuote">Quote</li>
+			<li rel="pageImgs">Image</li>
 		</ul>
 		<div id="content">
 			<div id="pageUrl" class="contentbox">
+				<form action="" method="post">
+					<label>Name</label>
+					<br/>
+					<input type="text" name="name" value="{{title}}">
+					<br/>
+					<br/>
+
+					<label>URL</label>
+					<br/>
+					<input type="text" name="name" value="{{url}}">
+
+					<br/>
+					<br/>
+
+					<label for="notes">Description</label>
+					<br/>
+					<textarea name="notes"></textarea>
+				</form>
+			</div>
+			<div id="pageQuote" class="contentbox">
+				<form action="" method="post">
+					<label>Name</label>
+					<br/>
+					<input type="text" name="name" value="{{title}}">
+					<br/>
+					<br/>
+
+					<label>URL</label>
+					<br/>
+					<input type="text" name="name" value="{{url}}">
+
+					<br/>
+					<br/>
+
+					<label for="quote">Quote</label>
+					<br/>
+					<textarea name="quote">{{selection}}</textarea>
+
+					<br/>
+					<br/>
+
+					<label for="notes">Description</label>
+					<br/>
+					<textarea name="notes"></textarea>
+				</form>
 			</div>
 			<div id="pageImgs" class="contentbox">
-				<div class="scrollbox">
-				{% for image in images %}
+				<form action="" method="post">
+					<label for="imageurl">Image</label>
+					<br/>
 					<div class="imagebox">
-						{{image}}
+					{% for image in images %}
+						<div class="imagepiece">
+							{{image}}
+						</div>
+						<div class="clear"></div>
+					{% endfor %}
 					</div>
-					<div class="clear"></div>
-				{% endfor %}
-				</div>
+					<input type="text" name="imageurl" class="nodisplay">
+				</form>
 			</div>
 			<div class="clear"></div>
 		</div>

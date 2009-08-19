@@ -23,6 +23,8 @@ from google.appengine.ext import webapp
 
 class About(webapp.RequestHandler):
 	def get(self):
-		empty_template_list = dict()
+		empty_template_list = {
+			'nickname': ''
+		}
 		path = os.path.join(os.path.dirname(__file__), '../views/about.html')
 		self.response.out.write(template.render(path, empty_template_list))

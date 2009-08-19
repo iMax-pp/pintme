@@ -2,19 +2,8 @@ body
 {
 	font-family: sans-serif;
 	color: #333;
-	background-color: #476472;
+	background-color: #1f1f1f;
 	font-size: 11pt;
-}
-
-a
-{
-	text-decoration: none;
-}
-
-#logo
-{
-	margin: 5px;
-	padding: 15px;
 }
 
 .clear
@@ -23,25 +12,49 @@ a
 	height: 20px;
 }
 
+a
+{
+	text-decoration: none;
+	color: white;
+}
+
+a:hover
+{
+	color: #FB4B03;
+}
+
+#root
+{
+	width: 620px;
+	margin: 0 auto;
+}
+
+#root #logo
+{
+	width: 400px;
+	margin: 5px auto;
+	padding: 5px;
+}
+
 /* Avatar Rules */
-	
+
 	.avatar-normal
 	{
 		width: 80px;
 		border: 1px #AAA solid;
 		padding: 1px;
 	}
-	
+
 	.avatar-small
 	{
 		width: 30px;
 	}
-	
+
 	.avatar-group
 	{
 		width: 120px;
 	}
-	
+
 	.avatar-group a img
 	{
 		width: 30px;
@@ -52,71 +65,111 @@ a
 
 /* Mainbox Rules */
 
-	#mainbox
+	#main
 	{
-	   background: #ffffff;
-	   width: 700px;
-	   margin: 20px auto;
+	   background: white;
+	   width: 620px;
+	   margin: 5px auto;
 	}
-	
-	#mainbox-header
+
+	#main #header
 	{
-	   background: url("../images/mainbox-tl.png") no-repeat top left;
+	   background: url("../images/white-tl.png") no-repeat top left;
 	   height: 10px;
 	}
-	
-	#mainbox-footer div
+
+	#main #footer div
 	{
-	   background: url("../images/mainbox-bl.png") no-repeat bottom left;
+	   background: url("../images/white-bl.png") no-repeat bottom left;
 	}
-	
-	#mainbox-footer
+
+	#main #footer
 	{
-	   background: url("../images/mainbox-br.png") no-repeat bottom right;
+	   background: url("../images/white-br.png") no-repeat bottom right;
 	}
-	
-	#mainbox-footer div, #mainbox-footer
+
+	#main #footer div, #main #footer
 	{
 	   width: 100%;
-	   height: 8px;
+	   height: 10px;
 	   font-size: 1px;
 	}
 
-	#mainbox-content
+	#main #content
 	{
 		margin: 0 8px;
 		clear: both;
+		padding: 0 20px;
+	}
+
+/* Post choice menu Rules */
+
+	#post-choice-menu
+	{
+		width: 400px;
+		height: 100px;
+		padding: 8px 11px;
+	}
+
+	#post-choice-menu ul
+	{
+		height: 60px;
+		margin: 0;
+		padding: 0 7px 0 0;
+		list-style-type: none;
+	}
+
+	#post-choice-menu ul li
+	{
+		display: block;
+		margin: 0 3px 0 0;
+		padding: 10px 13px;
+		float: left;
+		height: 20px;
+		text-align: center;
+		vertical-align: middle;
+		color: white;
+		background-color: #1f1f1f;
+	}
+
+	#post-choice-menu ul li.head
+	{
+		background: left top url('../images/redbox-left.png') no-repeat;
+		width: 40px;
+		padding: 10px 5px 10px 5px;
+	}
+
+	#post-choice-menu ul li.cap
+	{
+		background: right top url('../images/redbox-right.png') no-repeat;
+		padding: 10px 3px;
 	}
 
 /* Userbar Rules */
 
 	#userbar
 	{
-		background: url("../images/userbox-tlbr.png") no-repeat top left;
-		padding-left: 8px;
+		background: url("../images/white-tr-small.png") no-repeat top left;
+		padding-left: 4px;
 		margin: 0;
 		float: right;
+		color: white;
 	}
-	
+
 	#userbar-ul
 	{
-		background: url("../images/userbox-bl.png") no-repeat bottom left #476472;
+		background: url("../images/white-bl-inv-small.png") no-repeat bottom left #1f1f1f;
 		list-style-type: none;
 		margin: 0;
 		padding: 5px;
 	}
-	
+
 	#userbar-ul li
 	{
 		display: inline;
 		margin: 0 5px;
 	}
-	
-	#userbar-ul li a
-	{
-		color: white;
-	}
-	
+
 	#userbar-ul li img
 	{
 		width: 30px;
@@ -138,14 +191,14 @@ a
 		padding: 0 10px;
 		margin-bottom: 15px;
 	}
-	
+
 	.messagebox h3
 	{
 		margin: 5px;
 		margin-left: 25px;
 		font-size: small;
 	}
-	
+
 	.messagebox p
 	{
 		text-align: justify;
@@ -165,7 +218,7 @@ a
 
 #rightcolumn
 {
-	margin-left: 240px;
+
 }
 
 #messagecolumn
@@ -175,16 +228,25 @@ a
 	margin-top: 20px;
 }
 
-#footbox
+#foot
 {
 	font-size: 8pt;
-	margin: 10px 10px 5px 10px;
+	margin: 5px auto;
 	clear: both;
+	width: 450px;
+	text-align: right;
+	color: #888;
 }
 
-#footbox a
+#foot a
 {
 	margin-right: 5px;
+	color: #888;
+}
+
+#foot a:hover
+{
+	color: #FB4B03;
 }
 
 /* Messsage Styles */
@@ -194,7 +256,7 @@ a
 		width: 500px;
 		margin: 50px auto;
 	}
-	
+
 	.message .author-avatar
 	{
 		float: left;
@@ -202,101 +264,105 @@ a
 		padding: 1px;
 		width: 52px;
 	}
-	
+
 	.message .author-avatar img
 	{
 		width: 50px;
 		border: 1px #AAA solid;
 		margin: auto;
 	}
-	
+
 	.message .message-header
 	{
 		border-bottom: 1px #AAA solid;
 		font-size: 8pt;
 	}
-	
+
 	.message .message-header .message-header-said
 	{}
-	
+
 	.message .message-header .message-time
 	{
 		float: right;
 		text-align: right;
 		font-style: italic;
 	}
-	
+
 	.message .message-content
 	{
 		text-align: justify;
 		font-size: smaller;
 	}
-	
+
 	.message .message-content img
 	{
 		border: 1px #AAA solid;
 		padding: 2px;
 	}
-	
+
 	.message .message-content p
 	{
 		font-family: georgia;
 	}
-	
+
 	.message .message-content code
 	{
 		color: red;
 	}
-	
+
 	.message .message-content .time
 	{
 		font-size: x-small;
 		font-style: italic;
 		text-align: right;
 	}
-	
+
 /* Composer rules */
 	#composer
 	{
-		width: 400px;
-	}
-	
-	#composer .tabs
-	{
-		list-style-type: none;
-		padding: 5px;
-		margin: 0;
-		background: white;
-		border-bottom: 1px silver solid;
-	}
-	
-	#composer .tabs li
-	{
-		display: inline;
-		margin: 0;
-		padding: 3px 8px;
-		background-color: white;
-		color: black;
-	}
-	
-	#composer .tabs li.toggled
-	{
-		border-bottom: 3px orange solid;
-	}
-	
-	#composer
-	{
+		width: 580px;
 		position: relative;
+		padding: 10px;
+		height: 500px;
 	}
 
-	#composer div.composer-form
+	#composer form
 	{
 		position: absolute;
 		visibility: hidden;
 		padding: 15px;
+		clear: both;
 	}
-	
-	#composer div.toggled
+
+	#composer form label
 	{
-		visibility: visible;
+		color: #616A6D;
+		font-size: 10pt;
+	}
+
+	#composer form label i
+	{
+		font-size: 8pt;
+	}
+
+	#composer form textarea, #composer form input[type="text"]
+	{
+		width: 500px;
+		padding: 5px;
+		border: 2px solid #ddd;
+	}
+
+	#composer form textarea.small
+	{
+		height: 150px;
+	}
+
+	#composer form textarea.big
+	{
+		height: 300px;
+	}
+
+	#composer form input.big
+	{
+		font-size: 16pt;
 	}

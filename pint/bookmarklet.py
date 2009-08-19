@@ -32,32 +32,38 @@ from data.models import Account
 from data.models import Message
 
 class Bookmarklet(webapp.RequestHandler):
-    def get(self,url,selection=''):
-        pageSelection = urllib.unquote(selection)
-        pageURL = urllib.unquote(url)
-        pageURLParts = urlparse.urlparse(pageURL)
-        pageURLDir = re.search('(/.*)',pageURLParts[2]).group(0)
-        page = urlfetch.fetch(pageURL)
+    def get(self):
+
+        shareURL = urllib.unquote(self.request.get('u'))
+        shareSelection = urllib.unquote(self.request.get('s'))
+
+        shareURLParts = urlparse.urlparse(shareURL)
+        if shareURLParts[2] != '':
+            shareURLDir = re.search('(/.*)',shareURLParts[2]).group(0)
+        else:
+            shareURLDir = ''
+        page = urlfetch.fetch(shareURL)
         pageSoup = BeautifulSoup(page.content)
 
         try:
-            pageTitle =  pageSoup.html.head.title.string
+            shareTitle =  pageSoup.html.head.title.string
         except AttributeError:
-            pageTitle = 'Tried to find title, found: ' + pageSoup.html.head.title
+            shareTitle = urllib.unquote(self.request.get('t'))
+
         pageImgs = pageSoup.findAll('img')
 
         for image in pageImgs:
-            if not image['src'].startswith('http://'):
-                image['src'] = '/' + image['src']
+            #if not image['src'].startswith('http://'):
+                #image['src'] = '/' + image['src']
             if image['src'].startswith('/'):
-                image['src'] = pageURLParts[0] + '://' + pageURLParts[1] + pageURLDir + image['src']
+                image['src'] = shareURLParts[0] + '://' + shareURLParts[1] + shareURLDir + image['src']
             if 'alt' not in image:
                 image['alt'] = 'Unnamed'
 
         template_values = {
-            'url': pageURL,
-            'title': pageTitle,
-            'selection': pageSelection,
+            'url': shareURL,
+            'title': shareTitle,
+            'selection': shareSelection,
             'images': pageImgs
         }
 

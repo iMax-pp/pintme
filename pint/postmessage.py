@@ -17,7 +17,7 @@
 
 import cgi
 import os
-import imghdr 
+import imghdr
 import re
 
 from google.appengine.ext.webapp import template
@@ -28,6 +28,8 @@ from google.appengine.ext import db
 from google.appengine.api import images
 from google.appengine.api import memcache
 
+from pintcore.useraccount import UserAccount
+
 from data.models import Account
 from data.models import Message
 from data.models import Image
@@ -35,38 +37,38 @@ from data.models import Image
 # Do you think we could put all the actions in another file?
 class PostMessage(webapp.RequestHandler):
 	def post(self):
-		
+
 		if self.request.get('textmessage') != '':
 
 			message = Message()
-			
+
 			# Query: user's Account & new message's content
 			current_user = users.get_current_user()
 			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
 			message.author = account.key()
-	
+
 			content = self.request.get('textmessage')
-			
+
 			# And if the content isn't empty, off to the database! Happy message :D
 			if content != '':
 				message.content = content
 				message.put()
-				
+
 			self.redirect('/')
-			
-			
+
+
 		imagedata = self.request.get('imageupload')
 		if imagedata != '':
 
 			current_user = users.get_current_user()
 			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
-				
+
 			filename = self.request.body_file.vars['imageupload'].filename
 			filename = re.sub(r' ', r'_', filename)
 			imagetype = imghdr.what(file,imagedata)
 			middata = images.resize(imagedata, 300, 300)
 			thumbdata = images.resize(imagedata, 100, 100)
-	
+
 			image = Image()
 			image.name = filename
 			image.type = imagetype
@@ -85,5 +87,22 @@ class PostMessage(webapp.RequestHandler):
 			message.content = self.request.get('imgdesc')
 			message.image = image.key()
 			message.put()
-			
+
 		self.redirect('/')
+
+	def get(self):
+
+		user = UserAccount()
+		user.getFromSession()
+
+		# Template values, yay!
+		if user.validAccount:
+			template_values = {
+				'nickname': user.account.nickname
+			}
+		else:
+			self.redirect('/')
+
+		# We get the template path then show it
+		path = os.path.join(os.path.dirname(__file__), '../views/post.html')
+		self.response.out.write(template.render(path, template_values))

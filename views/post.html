@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+	{% block head %}
+		<link rel="stylesheet" type="text/css" href="/stylesheets/MooEditable.css">
+		<script type="text/javascript" src="/scripts/MooEditable.js"></script>
+		<script type="text/javascript" src="/scripts/index.js"></script>
+	{% endblock %}
+
+	{% block top %}
+    {% ifnotequal nickname '' %}
+	<div id="post-choice-menu">
+		<ul>
+			<li class="head">Post:</li>
+			<li><a href="/post#text" rel="text">Text</a></li>
+			<li><a href="/post#quote" rel="quote">Quote</a></li>
+			<li><a href="/post#link" rel="link">Link</a></li>
+			<li><a href="/post#image" rel="image">Image</a></li>
+			<li><a href="/post#media" rel="media">Media</a></li>
+			<li class="cap"></li>
+		</ul>
+	</div>
+	{% endifnotequal %}
+	{% endblock %}
+
+	{% block main %}
+		<div id="composer">
+			<form action="/post" method="post" id="sharetext">
+				<label for="title">Title <i>(optional)</i></label>
+				<br/>
+				<input type="text" name="title" class="big"/>
+				<br/>
+				<br/>
+				<label for="textpost">Post</label>
+				<br/>
+				<textarea name="textpost" id="textedit" class="big"></textarea>
+				<br/>
+				<input type="submit" value="Done!">
+			</form>
+			<form action="/post" method="post" id="sharequote">
+				<label for="quote">Quote</label>
+				<br/>
+				<textarea name="quote" id="quoteedit" class="small"></textarea>
+				<br/>
+				<br/>
+				<label for="source">Source <i>(Optional)</i></label>
+				<textarea name="source" id="sourceedit" class="small"></textarea>
+				<input type="submit" value="Done!">
+			</form>
+			<form action="/post" method="post" id="sharelink">
+				<label for="title">Title <i>(optional)</i></label>
+				<br/>
+				<input type="text" name="title"/>
+				<br/>
+				<br/>
+				<label for="url">URL</i></label>
+				<br/>
+				<input type="text" name="url">
+				<br/>
+				<label for="description">Description <i>(optional)</i></label>
+				<br/>
+				<textarea name="description" id="descedit" class="small"></textarea>
+				<br/>
+				<input type="submit" value="Done!">
+			</form>
+			<form action="/post" method="post" enctype="multipart/form-data" id="shareimage">
+				<label for="image">Image</label>
+				<br/>
+				<input type="file" name="image"/>
+				<br/>
+				<br/>
+				<label for="caption">Caption <i>(optional)</i></label>
+				<textarea name="caption" id="captionedit" class="small"></textarea>
+				<br/>
+				<input type="submit" value="Done!">
+			</form>
+			<form action="/post" method="post" enctype="multipart/form-data" id="sharemedia">
+				<label for="embedcode">Embed Code</label>
+				<br/>
+				<input type="text" name="embedcode"/>
+				<br/>
+				<br/>
+				<label for="description">Description <i>(optional)</i></label>
+				<br/>
+				<textarea name="description" id="descedit2" class="small"></textarea>
+				<br/>
+				<input type="submit" value="Done!">
+			</form>
+		</div>
+	{% endblock %}

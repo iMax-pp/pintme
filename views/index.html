@@ -4,6 +4,7 @@
 		<script type="text/javascript" src="/scripts/index.js"></script>
 	{% endblock %}
 
+{% comment %}
 	{% block leftblocs %}
         {% ifequal nickname '' %}
 			<div class="messagebox">
@@ -24,10 +25,28 @@
 		   {% endifequal %}
 		{% endifequal %}
   	{% endblock %}
+{% endcomment %}
+
+	{% block top %}
+    {% ifnotequal nickname '' %}
+	<div id="post-choice-menu">
+		<ul>
+			<li class="head">Post:</li>
+			<li><a href="/post#text">Text</a></li>
+			<li><a href="/post#quote">Quote</a></li>
+			<li><a href="/post#link">Link</a></li>
+			<li><a href="/post#image">Image</a></li>
+			<li><a href="/post#media">Media</a></li>
+			<li class="cap"></li>
+		</ul>
+	</div>
+	{% endifnotequal %}
+	{% endblock %}
 
 	{% block main %}
         {% ifnotequal nickname '' %}
-          <div id="composer">
+        {% comment %}
+			<div id="composer">
                 <ul class="tabs">
                     <li title="shareText" class="toggled"><a href="#text">Text</a></li>
                     <li title="shareImage"><a href="#image">Image</a></li>
@@ -55,6 +74,7 @@
 					</form>
 				</div>
             </div>
+		{% endcomment %}
 		{% else %}
 			<h2>Welcome to PintMe!</h2>
 			<p>A social sharing network <i>you</i> control.</p>

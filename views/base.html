@@ -12,57 +12,56 @@
 </head>
 
 <body>
-	<div id="mainbox">
-		<div id="mainbox-header">
-			<div id="userbar">
-				<ul id="userbar-ul">
-					{% ifequal nickname '' %}
-						{% ifequal tab 'onemorething' %}
-							<li>One more thing...</li>
+	<div id="root">
+		<div id="logo">
+			<a href="/">
+				<img src="/images/logo.png" alt="PintMe"/>
+			</a>
+		</div>
+		<div id="main">
+			<div id="header">
+				<div id="userbar">
+					<ul id="userbar-ul">
+						{% ifequal nickname '' %}
+							{% ifequal tab 'onemorething' %}
+								<li>One more thing...</li>
+							{% else %}
+								<li><a href="/login" class="loglink">Login</a></li>
+							{% endifequal %}
 						{% else %}
-							<li><a href="/login" class="loglink">Login</a></li>
+								<li><img src="/avatar/{{ nickname }}" title="{{ nickname }}" alt="{{ nickname }}" class="avatar-small" /></li>
+								<li><a href="/" {% ifequal tab "home" %}id="currentTab"{% endifequal %}>Home</a></li>
+								<li><a href="/user/{{ nickname }}" {% ifequal tab "profile" %}id="currentTab"{% endifequal %} >Profile</a></li>
+								{% if is_admin %}
+								<!--<li><a href="/admin"{% ifequal tab "admin" %}id="currentTab"{% endifequal %}>Admin</a></li>-->
+								{% endif %}
+								<li><a href="/logout" class="loglink">Logout</a></li>
 						{% endifequal %}
-					{% else %}
-							<li><img src="/avatar/{{ nickname }}" title="{{ nickname }}" alt="{{ nickname }}" class="avatar-small" /></li>
-							<li><a href="/" {% ifequal tab "home" %}id="currentTab"{% endifequal %}>Home</a></li>
-							<li><a href="/user/{{ nickname }}" {% ifequal tab "profile" %}id="currentTab"{% endifequal %} >Profile</a></li>
-							{% if is_admin %}
-							<!--<li><a href="/admin"{% ifequal tab "admin" %}id="currentTab"{% endifequal %}>Admin</a></li>-->
-							{% endif %}
-							<li><a href="/logout" class="loglink">Logout</a></li>
-					{% endifequal %}
-				</ul>
-			</div>
-			<div id="logo">
-				<a href="/">
-					<img src="/images/logo.png" alt="PintMe"/>
-				</a>
-			</div>
-		</div>
-		<div class="clear"></div>
-		<div id="mainbox-content">
-			<div id="leftcolumn">
-			{% block leftblocs %}
-			{% endblock %}
-			</div>
-			<div id="rightcolumn">
-				{% block main %}
+					</ul>
+				</div>
+				{% block top %}
 				{% endblock %}
 			</div>
-			<div class="clear"></div>
-			<div id="centralcolumn">
-				{% block messages %}
-				{% endblock %}
+			<div id="content">
+				<div id="rightcolumn">
+					{% block main %}
+					{% endblock %}
+				</div>
+				<div class="clear"></div>
+				<div id="centralcolumn">
+					{% block messages %}
+					{% endblock %}
+				</div>
+				<div class="clear"></div>
 			</div>
-			<div class="clear"></div>
-			<div id="footbox">
-				&copy; 2009
-				<a href="/about">About</a>
-				<a href="/suggestions">Feedback</a>
-				<a href="javascript:(function(){var d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://pintme.appspot.com/share/',l=d.location,e=encodeURIComponent,u=f+e(l.href)+'/selection/'+s;window.open(u,'p','toolbar=0,resizable=0,status=1,width=420,height=500');})()">Post to PintMe</a>
-			</div>
+			<div id="footer"><div></div></div>
 		</div>
-		<div id="mainbox-footer"><div></div></div>
+		<div id="foot">
+			<a href="/about">About</a>
+			<a href="/suggestions">Feedback</a>
+			<a href="javascript:var d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://pintme.appspot.com/share',l=d.location,e=encodeURIComponent,p='?v=1&u='+e(l.href) +'&t='+e(d.title) +'&s='+e(s),u=f+p;a =function(){if(!w.open(u,'t','toolbar=0,resizable=0,status=1,width=450,height=430'))l.href=u;};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();void(0)">Post to PintMe</a>
+			&copy; 2009
+		</div>
 	</div>
 </body>
 </html>

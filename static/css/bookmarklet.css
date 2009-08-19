@@ -72,18 +72,9 @@ h3
 	overflow: auto;
 }
 
-#content .imagebox .imagepiece
+#content .imagebox img
 {
-	max-height: 100px;
-}
-
-#content .imagepiece .imgid
-{
-	position: absolute;
-	bottom: 0;
-	background: black;
-	opacity: .8;
-	color: white;
+	max-width: 100px;
 }
 
 form label

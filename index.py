@@ -72,7 +72,7 @@ application = webapp.WSGIApplication(
 									  ('/down', Maintenance),
 									  ('/about', About),
                                       ('/suggestions', Suggestions),
-                                      (r'/share/(.*)/selection/(.*)', Bookmarklet)],
+                                      (r'/share?.*', Bookmarklet)],
 									 debug = True)
 
 # Duh, it's the main!

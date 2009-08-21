@@ -1,6 +1,7 @@
 .mooeditable-container{
 	position: relative;
 	border: 2px solid #ddd;
+	background-color: white;
 }
 
 .mooeditable-ui-toolbar{

@@ -130,6 +130,7 @@ a:hover
 		vertical-align: middle;
 		color: white;
 		background-color: #1f1f1f;
+		border-bottom: 10px solid white;
 	}
 
 	#post-choice-menu ul li.head
@@ -137,12 +138,14 @@ a:hover
 		background: left top url('../images/redbox-left.png') no-repeat;
 		width: 40px;
 		padding: 10px 5px 10px 5px;
+		border: none;
 	}
 
 	#post-choice-menu ul li.cap
 	{
 		background: right top url('../images/redbox-right.png') no-repeat;
 		padding: 10px 3px;
+		border: none;
 	}
 
 /* Userbar Rules */
@@ -320,23 +323,25 @@ a:hover
 /* Composer rules */
 	#composer
 	{
-		width: 580px;
-		position: relative;
-		padding: 10px;
+		margin-top: 10px;
+		width: 540px;
+		position: absolute;
 		height: 500px;
 	}
 
 	#composer form
 	{
+		background-color: #FFFFFE;
+		border: 2px solid #1F1F1F;
 		position: absolute;
-		visibility: hidden;
+		opacity: 0;
 		padding: 15px;
 		clear: both;
 	}
 
 	#composer form label
 	{
-		color: #616A6D;
+		color: #998;
 		font-size: 10pt;
 	}
 
@@ -350,6 +355,7 @@ a:hover
 		width: 500px;
 		padding: 5px;
 		border: 2px solid #ddd;
+		background: white;
 	}
 
 	#composer form textarea.small

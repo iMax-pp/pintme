@@ -5,76 +5,104 @@
 <head>
 	<title>Post to Pintme</title>
 	<link type="text/css" rel="stylesheet" href="/stylesheets/bookmarklet.css" />
+	<link rel="stylesheet" type="text/css" href="/stylesheets/MooEditable.css">
 	<script type="text/javascript" language="javascript" src="/scripts/mootools-1.2.2-core-yc.js"></script>
+	<script type="text/javascript" src="/scripts/MooEditable.js"></script>
 	<script type="text/javascript" language="javascript" src="/scripts/bookmarklet.js"></script>
 </head>
 
 <body>
 	<div id="mainbox">
 		<ul id="tabs">
-			<li rel="pageUrl" class="first">Link</li>
+			<li rel="pageText">Text</li>
 			<li rel="pageQuote">Quote</li>
-			<li rel="pageImgs">Image</li>
+			<li rel="pageLink">Link</li>
+			<li rel="pageImage">Image</li>
+			<li rel="pageMedia">Media</li>
 		</ul>
 		<div id="content">
-			<div id="pageUrl" class="contentbox">
-				<form action="" method="post">
-					<label>Name</label>
+			<div id="pageText" class="contentbox">
+				<form action="/post" method="post" id="sharetext">
+					<label for="title">Title <i>(optional)</i></label>
 					<br/>
-					<input type="text" name="name" value="{{title}}">
-					<br/>
-					<br/>
-
-					<label>URL</label>
-					<br/>
-					<input type="text" name="name" value="{{url}}">
-
+					<input type="text" name="title" class="big"/>
 					<br/>
 					<br/>
-
-					<label for="notes">Description</label>
+					<label for="textpost">Post</label>
 					<br/>
-					<textarea name="notes"></textarea>
+					<textarea name="textpost" id="textedit" class="big">{% ifnotequal selection '' %}{{selection}}{% endifnotequal %}</textarea>
+					<br/>
+					<br/>
+					<input type="submit" value="Share!">
 				</form>
 			</div>
 			<div id="pageQuote" class="contentbox">
-				<form action="" method="post">
-					<label>Name</label>
-					<br/>
-					<input type="text" name="name" value="{{title}}">
-					<br/>
-					<br/>
-
-					<label>URL</label>
-					<br/>
-					<input type="text" name="name" value="{{url}}">
-
-					<br/>
-					<br/>
-
+				<form action="/post" method="post" id="sharequote">
 					<label for="quote">Quote</label>
 					<br/>
-					<textarea name="quote">{{selection}}</textarea>
-
+					<textarea name="quote" id="quoteedit" class="small">{% ifnotequal selection '' %}{{selection}}{% endifnotequal %}</textarea>
 					<br/>
 					<br/>
-
-					<label for="notes">Description</label>
+					<label for="source">Source <i>(Optional)</i></label>
 					<br/>
-					<textarea name="notes"></textarea>
+					<textarea name="source" id="sourceedit" class="small"><a href="{{url}}">{{title}}</a></textarea>
+					<br/>
+					<input type="submit" value="Share!">
 				</form>
 			</div>
-			<div id="pageImgs" class="contentbox">
-				<form action="" method="post">
-					<label for="imageurl">Image</label>
+			<div id="pageLink" class="contentbox">
+				<form action="/post" method="post" id="sharelink">
+					<label for="title">Title <i>(optional)</i></label>
 					<br/>
+					<input type="text" name="title" value="{{title}}" />
+					<br/>
+					<br/>
+					<label for="url">URL</i></label>
+					<br/>
+					<input type="text" name="url" value="{{url}}" />
+					<br/>
+					<br/>
+					<label for="description">Description <i>(optional)</i></label>
+					<br/>
+					<textarea name="description" id="descedit" class="small">{% ifnotequal selection '' %}{{selection}}{% endifnotequal %}</textarea>
+					<br/>
+					<br/>
+					<input type="submit" value="Share!">
+				</form>
+			</div>
+			<div id="pageImage" class="contentbox">
+				<form action="/post" method="post" enctype="multipart/form-data" id="shareimage">
+					<label>Image</label>
+					<br/>
+					<input type="text" name="imageurl" id="imageurl"/>
 					<div class="imagebox">
 					{% for image in images %}
 							{{image}}
 					{% endfor %}
 						<div class="clear"></div>
 					</div>
-					<input type="text" name="imageurl" class="nodisplay">
+					<br/>
+					<br/>
+					<label for="caption">Caption <i>(optional)</i></label>
+					<br/>
+					<input type="hidden" name="imageurl"/>
+					<textarea name="caption" id="captionedit" class="small">{% ifnotequal selection '' %}{{selection}}{% endifnotequal %}</textarea>
+					<br/>
+					<input type="submit" value="Share!">
+				</form>
+			</div>
+			<div id="pageMedia" class="contentbox">
+				<form action="/post" method="post" enctype="multipart/form-data" id="sharemedia">
+					<label for="embedcode">Embed Code</label>
+					<br/>
+					<textarea name="embedcode" class="small"></textarea>
+					<br/>
+					<br/>
+					<label for="description">Description <i>(optional)</i></label>
+					<br/>
+					<textarea name="description" id="descedit2" class="small">{% ifnotequal selection '' %}{{selection}}{% endifnotequal %}</textarea>
+					<br/>
+					<input type="submit" value="Share!">
 				</form>
 			</div>
 			<div class="clear"></div>

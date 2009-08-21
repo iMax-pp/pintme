@@ -18,6 +18,7 @@
 import random
 
 from google.appengine.ext import db
+from google.appengine.ext.db import polymodel
 
 class Image(db.Expando):
 	name  = db.StringProperty()
@@ -39,13 +40,6 @@ class Account(db.Model):
 	regDate   = db.DateTimeProperty(auto_now_add=True)
 	lastSeen  = db.DateTimeProperty(auto_now=True)
 
-class Message(db.Model):
-	author  = db.ReferenceProperty(Account)
-	content = db.StringProperty(multiline=True)
-	image   = db.ReferenceProperty(Image)
-	link    = db.LinkProperty()
-	date    = db.DateTimeProperty(auto_now_add=True)
-
 class Token(db.Model):
 	account = db.ReferenceProperty(Account)
 	code    = db.StringProperty()
@@ -54,3 +48,31 @@ class Token(db.Model):
 class Log(db.Model):
 	data = db.StringProperty()
 	time = db.DateTimeProperty(auto_now_add=True)
+
+
+''' Message models, kinda important :) '''
+
+class Message(polymodel.PolyModel):
+	author  = db.ReferenceProperty(Account)
+	date    = db.DateTimeProperty(auto_now_add=True)
+
+class TextMsg(Message):
+	title = db.StringProperty()
+	text  = db.TextProperty()
+
+class QuoteMsg(Message):
+	quote  = db.TextProperty()
+	source = db.TextProperty()
+
+class LinkMsg(Message):
+	title = db.StringProperty()
+	url   = db.StringProperty()
+	description = db.TextProperty()
+
+class ImageMsg(Message):
+	url = db.StringProperty()
+	caption = db.StringProperty()
+
+class MediaMsg(Message):
+	embed = db.TextProperty()
+	description = db.TextProperty()

@@ -53,12 +53,7 @@ class Bookmarklet(webapp.RequestHandler):
         pageImgs = pageSoup.findAll('img')
 
         for image in pageImgs:
-            #if not image['src'].startswith('http://'):
-                #image['src'] = '/' + image['src']
-            if image['src'].startswith('/'):
-                image['src'] = shareURLParts[0] + '://' + shareURLParts[1] + shareURLDir + image['src']
-            if 'alt' not in image:
-                image['alt'] = 'Unnamed'
+            image['src'] = urlparse.urljoin(shareURL, image['src'])
 
         template_values = {
             'url': shareURL,

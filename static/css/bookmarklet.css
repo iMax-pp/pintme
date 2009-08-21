@@ -1,21 +1,15 @@
 body
 {
 	font-family: sans-serif;
+	color: #333;
+	background-color: #1f1f1f;
 	font-size: 11pt;
-	background-color: #444477;
-	margin: 0;
-}
-
-h3
-{
-	color: white;
 }
 
 #mainbox
 {
 	color: #333;
 	margin: 10px;
-	background: white;
 	width: 400px;
 	height: 480px;
 }
@@ -23,45 +17,33 @@ h3
 #tabs
 {
 	list-style-type: none;
-	padding: 3px 0;
-	margin: 0;
-	background-color: #444477;
-	text-align: center;
+	padding: 10px 20px;
+	background: url('../images/logo-small.png') 15px center no-repeat #1f1f1f;
+	text-align: right;
+	margin-bottom: 0;
 }
 
 #tabs li
 {
 	display: inline;
-	padding: 3px 10px;
+	padding: 7px 10px;
 	background-color: silver;
 	cursor: pointer;
-}
-
-#tabs li.first
-{
-	background-color: white;
+	border-bottom: 3px #1f1f1f solid;
 }
 
 #content
 {
+	height: 450px;
 	padding: 10px;
+	background: url("../images/bmback.png") no-repeat top left #1F1F1F;
 }
 
 #content .contentbox
 {
 	position: absolute;
 	margin: 5px;
-}
-
-#pageUrl
-{
-	display: block;
-}
-
-#pageQuote, #pageImgs
-{
-	display: none;
-	background-color: white;
+	visibility: hidden;
 }
 
 #content .imagebox
@@ -74,26 +56,47 @@ h3
 
 #content .imagebox img
 {
-	max-width: 100px;
+	margin: 10px;
+	padding: 1px;
+	border: 2px white solid;
 }
 
 form label
 {
-	font-size: 12pt;
-	font-weight: bold;
+	font-size: 10pt;
+	padding: 3px 5px;
+	color: #998;
 }
 
-form input, form textarea
+form label i
 {
-	width: 365px;
+	font-size: 8pt;
+}
+
+form input[type="text"], form textarea
+{
+	width: 360px;
 	border: 1px #CCC solid;
 	background-color: #EEE;
 	padding: 2px;
+	background-color: white;
+	border: 2px #DDD solid;
 }
 
-form textarea
+form input.big
 {
-	height: 150px;
+	font-size: 15pt;
+	padding: 2px;
+}
+
+form textarea.small
+{
+	height: 100px
+}
+
+form textarea.big
+{
+	height: 200px;
 }
 
 .clear

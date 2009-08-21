@@ -11,11 +11,11 @@
 	<div id="post-choice-menu">
 		<ul>
 			<li class="head">Post:</li>
-			<li><a href="/post#text" rel="text">Text</a></li>
-			<li><a href="/post#quote" rel="quote">Quote</a></li>
-			<li><a href="/post#link" rel="link">Link</a></li>
-			<li><a href="/post#image" rel="image">Image</a></li>
-			<li><a href="/post#media" rel="media">Media</a></li>
+			<li id="texttab"><a href="/post#text" rel="text">Text</a></li>
+			<li id="quotetab"><a href="/post#quote" rel="quote">Quote</a></li>
+			<li id="linktab"><a href="/post#link" rel="link">Link</a></li>
+			<li id="imagetab"><a href="/post#image" rel="image">Image</a></li>
+			<li id="mediatab"><a href="/post#media" rel="media">Media</a></li>
 			<li class="cap"></li>
 		</ul>
 	</div>
@@ -33,6 +33,7 @@
 				<label for="textpost">Post</label>
 				<br/>
 				<textarea name="textpost" id="textedit" class="big"></textarea>
+				<hidden
 				<br/>
 				<input type="submit" value="Done!">
 			</form>

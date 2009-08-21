@@ -3,7 +3,7 @@ window.addEvent('domready', function(){
     /**********************************
      * Composer switcher code
      **********************************/
-
+/*
     var currentComposer = 'text';
     if( window.location.hash != '' )
     {
@@ -12,12 +12,35 @@ window.addEvent('domready', function(){
     }
 
     $('share'+currentComposer).setStyle('visibility', 'visible');
+    $(currentComposer+'tab').setStyle('border-color', '#1F1F1F');
+*/
+
+    var currentComposer = '';
 
     $$('#post-choice-menu ul li a').each(function(el){
-        el.addEvent('click', function(){
-            $('share'+currentComposer).setStyle('visibility', 'hidden');
-            currentComposer = el.rel;
-            $('share'+currentComposer).setStyle('visibility', 'visible');
+        $('share'+el.rel).setStyle('opacity', 0);
+        el.addEvent('click', function(e){
+            e.stop();
+            if( currentComposer != '' )
+            {
+                $('share'+currentComposer).tween('opacity', 0);
+                $(currentComposer+'tab').morph({
+                    'border-color': '#FFFFFF'
+                });
+            }
+
+            if( currentComposer != el.rel )
+            {
+                currentComposer = el.rel;
+                $('share'+currentComposer).tween('opacity', 1);
+                $(currentComposer+'tab').morph({
+                    'border-color': '#1F1F1F'
+                });
+            }
+            else
+            {
+                currentComposer = '';
+            }
         });
     });
 

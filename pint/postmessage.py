@@ -28,81 +28,57 @@ from google.appengine.ext import db
 from google.appengine.api import images
 from google.appengine.api import memcache
 
-from pintcore.useraccount import UserAccount
+from pintcore.accountio import AccountIO
+from pintcore.postio import PostWrite
 
 from data.models import Account
-from data.models import Message
+from data.models import TextMsg, QuoteMsg, LinkMsg, ImageMsg, EmbedMsg
 from data.models import Image
 
 # Do you think we could put all the actions in another file?
 class PostMessage(webapp.RequestHandler):
-	def post(self):
+    def post(self,type):
 
-		if self.request.get('textmessage') != '':
+        if type != '':
+            user = AccountIO()
+            user.getFromSession()
 
-			message = Message()
+            if user.account:
+                postwrite = PostWrite(user.account)
 
-			# Query: user's Account & new message's content
-			current_user = users.get_current_user()
-			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
-			message.author = account.key()
+                if type == 'text':
+                    postwrite.postText(self.request.get('title'), self.request.get('textpost'))
+                elif type == 'quote':
+                    postwrite.postQuote(self.request.get('quote'), self.request.get('source'))
+                elif type == 'link':
+                    postwrite.postLink(self.request.get('title'), self.request.get('url'), self.request.get('description'))
+                elif type == 'image':
+                    if self.request.get('imageurl') != '':
+                        postwrite.postImage(self.request.get('imageurl'), self.request.get('caption'))
+                    # Todo: add image upload code.
+                elif type == 'embed':
+                    postwrite.postEmbed(self.request.get('embedcode'), self.request.get('description'))
 
-			content = self.request.get('textmessage')
 
-			# And if the content isn't empty, off to the database! Happy message :D
-			if content != '':
-				message.content = content
-				message.put()
+        if self.request.headers['referer'].startswith('http://pinstme.appspot.com/share'):
+            path = os.path.join(os.path.dirname(__file__), '../views/bookmarklet-exit.html')
+            self.response.out.write(template.render(path,{'message':'Message Posted!'}))
+        else:
+            self.redirect('/')
 
-			self.redirect('/')
+    def get(self):
 
+        user = AccountIO()
+        user.getFromSession()
 
-		imagedata = self.request.get('imageupload')
-		if imagedata != '':
+        # Template values, yay!
+        if user.account:
+            template_values = {
+                'nickname': user.account.nickname
+            }
+        else:
+            self.redirect('/')
 
-			current_user = users.get_current_user()
-			account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
-
-			filename = self.request.body_file.vars['imageupload'].filename
-			filename = re.sub(r' ', r'_', filename)
-			imagetype = imghdr.what(file,imagedata)
-			middata = images.resize(imagedata, 300, 300)
-			thumbdata = images.resize(imagedata, 100, 100)
-
-			image = Image()
-			image.name = filename
-			image.type = imagetype
-			image.data = db.Blob(imagedata)
-			image.mid = db.Blob(middata)
-			image.thumb = db.Blob(thumbdata)
-			image.put()
-
-			# Update the memcache
-			memcache.add('img' + filename, imagedata, 60)
-			memcache.add('mid' + filename, middata, 60)
-			memcache.add('thumb' + filename, thumbdata, 60)
-
-			message = Message()
-			message.author = account.key()
-			message.content = self.request.get('imgdesc')
-			message.image = image.key()
-			message.put()
-
-		self.redirect('/')
-
-	def get(self):
-
-		user = UserAccount()
-		user.getFromSession()
-
-		# Template values, yay!
-		if user.validAccount:
-			template_values = {
-				'nickname': user.account.nickname
-			}
-		else:
-			self.redirect('/')
-
-		# We get the template path then show it
-		path = os.path.join(os.path.dirname(__file__), '../views/post.html')
-		self.response.out.write(template.render(path, template_values))
+        # We get the template path then show it
+        path = os.path.join(os.path.dirname(__file__), '../views/post.html')
+        self.response.out.write(template.render(path, template_values))

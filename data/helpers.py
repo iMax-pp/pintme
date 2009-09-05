@@ -46,7 +46,7 @@ def humandate(stamp):
 def num(list):
 	""" returns number of members in GQL list """
 	return list.count()
-	
+
 def md5me(text):
 	""" returns md5 hashcoded string """
 	return hashlib.md5(text).hexdigest()

@@ -71,8 +71,10 @@ class LinkMsg(Message):
 
 class ImageMsg(Message):
 	url = db.StringProperty()
-	caption = db.StringProperty()
+	image = db.ReferenceProperty(Image)
+	imageurl = db.StringProperty()
+	caption = db.TextProperty()
 
-class MediaMsg(Message):
-	embed = db.TextProperty()
+class EmbedMsg(Message):
+	embedcode = db.TextProperty()
 	description = db.TextProperty()

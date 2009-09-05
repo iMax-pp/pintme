@@ -25,7 +25,8 @@ from datetime import datetime, timedelta
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 
-from pintcore.useraccount import UserAccount
+from pintcore.accountio import AccountIO
+from pintcore.postio import PostRead
 
 from data.models import Account
 from data.models import Message
@@ -39,18 +40,20 @@ class Profile(webapp.RequestHandler):
 
 		else:
 
-			profile = UserAccount()
+			profile = AccountIO()
 			profile.getFromNickname( nickname )
 
 			# Called user doesn't exist
-			if not profile.validAccount:
+			if not profile.account:
 
 				self.redirect('/')
 
 			else:
 
-				user = UserAccount()
+				user = AccountIO()
 				user.getFromSession()
+
+				posts = PostRead()
 
 				'''if isOwner:
 					token = Token()
@@ -68,8 +71,9 @@ class Profile(webapp.RequestHandler):
 				template_values = {
 					'user': user.account,
 					'profile': profile.account,
-					'canFollow': user.canFollow( profile ),
-					'profileMessages': profile.getSentMessages(),
+					'profileFollowing': user.isFollowing( profile ),
+					'profileFolled': user.isFollowing( profile ),
+					'profileMessages': posts.getSentMessages( profile.account ),
 					'profileFollowed': profile.getFollowed(),
 					'profileFollowers': profile.getFollowers()
 				}
@@ -82,16 +86,17 @@ class Profile(webapp.RequestHandler):
 		# Toggle following a user or not
 		# Query: User's account & friend's nickname
 
-		current_user = users.get_current_user()
-		account = Account.gql("WHERE userId = :1", current_user.user_id()).get()
+		user_account = AccountIO()
+		user_account.getFromSession()
 
 		# Does that user exist?
-		follow_account = Account.gql("WHERE nickname = :1", follow_nick).get()
-		if follow_account != None:
-			if follow_account.key() in account.following:
-				account.following.remove(follow_account.key())
+		follow_account = AccountIO()
+		follow_account.getFromSession()
+		if follow_account.account and user_account.account:
+			if user_account.isFollowing( follow_account.account ):
+				user_account.account.following.remove(follow_account.account.key())
 			else:
-				account.following.append(follow_account.key())
-			account.put()
+				user_account.account.following.append(follow_account.account.key())
+			user_account.account.put()
 
 		self.redirect('/user/'+follow_nick)

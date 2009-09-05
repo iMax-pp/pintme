@@ -3,7 +3,6 @@
 	{% block head %}
 		<link rel="stylesheet" type="text/css" href="/stylesheets/MooEditable.css">
 		<script type="text/javascript" src="/scripts/MooEditable.js"></script>
-		<script type="text/javascript" src="/scripts/index.js"></script>
 	{% endblock %}
 
 {% comment %}
@@ -48,7 +47,7 @@
 	{% block main %}
         {% ifnotequal nickname '' %}
 		<div id="composer">
-			<form action="/post" method="post" id="sharetext">
+			<form action="/post/text" method="post" id="sharetext">
 				<label for="title">Title <i>(optional)</i></label>
 				<br/>
 				<input type="text" name="title" class="big"/>
@@ -59,9 +58,9 @@
 				<textarea name="textpost" id="textedit" class="big"></textarea>
 				<hidden
 				<br/>
-				<input type="submit" value="Done!">
+				<input type="submit" value="Post it!">
 			</form>
-			<form action="/post" method="post" id="sharequote">
+			<form action="/post/quote" method="post" id="sharequote">
 				<label for="quote">Quote</label>
 				<br/>
 				<textarea name="quote" id="quoteedit" class="small"></textarea>
@@ -69,9 +68,9 @@
 				<br/>
 				<label for="source">Source <i>(Optional)</i></label>
 				<textarea name="source" id="sourceedit" class="small"></textarea>
-				<input type="submit" value="Done!">
+				<input type="submit" value="Post it!">
 			</form>
-			<form action="/post" method="post" id="sharelink">
+			<form action="/post/link" method="post" id="sharelink">
 				<label for="title">Title <i>(optional)</i></label>
 				<br/>
 				<input type="text" name="title"/>
@@ -85,12 +84,12 @@
 				<br/>
 				<textarea name="description" id="descedit" class="small"></textarea>
 				<br/>
-				<input type="submit" value="Done!">
+				<input type="submit" value="Post it!">
 			</form>
-			<form action="/post" method="post" enctype="multipart/form-data" id="shareimage">
+			<form action="/post/image" method="post" id="shareimage">
 				<label for="image">Image</label>
 				<br/>
-				<input type="file" name="image"/>
+				<input type="file" name="imageupload"/>
 				<br/>
 				<br/>
 				<label for="caption">Caption <i>(optional)</i></label>
@@ -98,7 +97,7 @@
 				<br/>
 				<input type="submit" value="Done!">
 			</form>
-			<form action="/post" method="post" enctype="multipart/form-data" id="sharemedia">
+			<form action="/post/embed" method="post" enctype="multipart/form-data" id="sharemedia">
 				<label for="embedcode">Embed Code</label>
 				<br/>
 				<input type="text" name="embedcode"/>
@@ -111,64 +110,60 @@
 				<input type="submit" value="Done!">
 			</form>
 		</div>
-        {% comment %}
-			<div id="composer">
-                <ul class="tabs">
-                    <li title="shareText" class="toggled"><a href="#text">Text</a></li>
-                    <li title="shareImage"><a href="#image">Image</a></li>
-                </ul>
-				<div id="shareText" class="composer-form toggled">
-					<form action="/post" method="post">
-						Express yourself!
-						<br/>
-						<br/>
-						<textarea name="textmessage" rows="3" cols="40"></textarea>
-						<br/>
-						<input type="submit" value="Send">
-					</form>
-				</div>
-				<div id="shareImage" class="composer-form">
-					<form action="/post" method="post" enctype="multipart/form-data">
-						Post a pic!
-						<br/>
-						<br/>
-						<input type="file" name="imageupload"/>
-						<br/>
-						<textarea name="imgdesc" rows="3" cols="40"></textarea>
-						<br/>
-						<input type="submit" value="Upload">
-					</form>
-				</div>
-            </div>
-		{% endcomment %}
 		{% else %}
 			<h2>Welcome to PintMe!</h2>
-			<p>A social sharing network <i>you</i> control.</p>
-			<p>Here's what people have been posting recently:</p>
+			<p>Helping you get the best in your interest.
+			<p><i>So much to see, so little time.</i></p>
+			<p>Recently shared:</p>
         {% endifnotequal %}
 	{% endblock %}
 
 	{% block messages %}
         {% for message in messages %}
         <div class="message">
-            <div class="author-avatar">
-				<a href="/user/{{ message.author.nickname }}">
-					<img src="/avatar/{{ message.author.nickname }}" class="avatar-normal" title="{{ message.author.nickname }}" alt="{{ message.author.nickname }}" />
-				</a>
+            <div class="left-bar">
+                <div class="author-avatar">
+                    <a href="/user/{{ message.author.nickname }}">
+                        <img src="/avatar/{{ message.author.nickname }}" class="avatar-normal" title="{{ message.author.nickname }}" alt="{{ message.author.nickname }}" />
+                    </a>
+                    <div class="mask"></div>
+                </div>
             </div>
-			<div class="message-header">
-				<div class="message-time">{{ message.date|humandate }}</div>
-				<div class="message-header-said">
-					<a href="/user/{{ message.author.nickname }}"><b>{{ message.author.nickname }}</b></a> said:
-				</div>
- 			</div>
             <div class="message-content">
-				{% if message.image %}
-				<a href="/image/{{ message.image.name }}">
-					<img src="/thumb/{{ message.image.name }}"  class="avatar-normal" title="{{ message.image.name }}" alt="{{ message.image.name }}" />"
-				</a>
-				{% endif %}
-				{{ message.content|markup }}
+                {% ifequal message.class_name 'TextMsg' %}
+                    {% if message.title %}
+                        <h3 class="big">{{ message.title }}</h3>
+                    {% endif %}
+                    {{ message.text }}
+                {% endifequal %}
+                {% ifequal message.class_name 'QuoteMsg' %}
+                    <blockquote class="big">&ldquo;{{ message.quote }}&rdquo;</blockquote>
+                    {% if message.source %}
+                        {{ message.source }}
+                    {% endif %}
+                {% endifequal %}
+                {% ifequal message.class_name 'LinkMsg' %}
+                    <a href="{{ message.url }}" class="big">{{ message.title }}</a>
+                    {% if message.description %}
+                        {{ message.description }}
+                    {% endif %}
+                {% endifequal %}
+                {% ifequal message.class_name 'ImageMsg' %}
+                    <a href="{{ message.imageurl }}" title="{{ message.imageurl }}"><img src="{{ message.imageurl }}" alt="{{ message.imageurl }}"/></a>
+                    {% if message.caption %}
+                        <div class="caption">{{ message.caption }}</div>
+                    {% endif %}
+                {% endifequal %}
+                {% ifequal message.class_name 'EmbedMsg' %}
+                    {{ message.embedcode }}
+                    {% if message.description %}
+                        {{ message.description }}
+                    {% endif %}
+                {% endifequal %}
+                {% ifequal message.class_name 'Message' %}
+                    {{message.content}}
+                {% endifequal %}
+                <div class="date">{{message.date|humandate}}</div>
 				<div class="clearer"></div>
            </div>
         </div>

@@ -18,6 +18,11 @@ a
 	color: white;
 }
 
+a img
+{
+    border: none;
+}
+
 a:hover
 {
 	color: #FB4B03;
@@ -41,8 +46,6 @@ a:hover
 	.avatar-normal
 	{
 		width: 80px;
-		border: 1px #AAA solid;
-		padding: 1px;
 	}
 
 	.avatar-small
@@ -260,29 +263,52 @@ a:hover
 		margin: 50px auto;
 	}
 
-	.message .author-avatar
+    .message .left-bar
+    {
+        float: left;
+        width: 50px;
+    }
+
+	.message .left-bar .author-avatar
 	{
-		float: left;
-		margin-right: 10px;
-		padding: 1px;
-		width: 52px;
+        position: relative;
+        width: 50px;
 	}
 
-	.message .author-avatar img
+	.message .left-bar .author-avatar img
 	{
 		width: 50px;
-		border: 1px #AAA solid;
 		margin: auto;
+        position: absolute;
 	}
 
-	.message .message-header
+    .author-avatar .mask
+    {
+        background: url('../images/avatar-mask-med.png') no-repeat center;
+        position: absolute;
+        width: 50px;
+        height: 50px;
+    }
+
+	.message .date
 	{
-		border-bottom: 1px #AAA solid;
-		font-size: 8pt;
+        width: 380px;
+        font-style: italic;
+        color: silver;
+        font-size: 10pt;
+        margin-top: 3px;
+		text-align: right;
 	}
 
-	.message .message-header .message-header-said
-	{}
+	.message a
+	{
+		color: gray;
+	}
+
+    .message a:hover
+    {
+        color: #FB4B03;
+    }
 
 	.message .message-header .message-time
 	{
@@ -295,17 +321,16 @@ a:hover
 	{
 		text-align: justify;
 		font-size: smaller;
+        margin-left: 60px;
+        min-height: 100px;
 	}
 
 	.message .message-content img
 	{
-		border: 1px #AAA solid;
-		padding: 2px;
-	}
-
-	.message .message-content p
-	{
-		font-family: georgia;
+		padding: 0;
+        margin: 5px;
+        max-width: 400px;
+        border-bottom: 4px silver solid;
 	}
 
 	.message .message-content code
@@ -313,12 +338,22 @@ a:hover
 		color: red;
 	}
 
-	.message .message-content .time
-	{
-		font-size: x-small;
-		font-style: italic;
-		text-align: right;
-	}
+    .message .message-content a.big
+    {
+        font-size: 12pt;
+    }
+
+    .message .message-content blockquote.big
+    {
+        margin-top: 50px;
+        font-size: 12pt;
+    }
+
+    .message .message-content .caption
+    {
+        width: 390px;
+        margin: 0 10px;
+    }
 
 /* Composer rules */
 	#composer
@@ -326,7 +361,8 @@ a:hover
 		margin-top: 10px;
 		width: 540px;
 		position: absolute;
-		height: 500px;
+		height: 0px;
+        z-index: 150;
 	}
 
 	#composer form

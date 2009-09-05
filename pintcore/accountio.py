@@ -24,21 +24,16 @@ from data.models import Account
 from data.models import Token
 from data.models import Message
 
-class UserAccount:
+class AccountIO:
 
     def __init__(self):
-        self.account = Account()
-        self.validAccount = False
+        self.account = None
 
     def getFromSession(self):
 
         user = users.get_current_user()
         if user:
             self.account = Account.gql("WHERE userId = :1", user.user_id()).get()
-            if self.account:
-                self.validAccount = True
-            else:
-                self.validAccount = False
 
     def getFromToken(self, token_code):
 
@@ -46,11 +41,6 @@ class UserAccount:
         if token:
             if token.account and token.expires > datetime.now():
                 self.account = token.account
-                self.validAccount = True
-            else:
-                self.validAccount = False
-        else:
-            self.validAccount = False
 
 
     def getFromNickname(self, nickname):
@@ -58,48 +48,31 @@ class UserAccount:
         nickAccount = Account.gql( "WHERE nickname = :1", nickname ).get()
         if nickAccount:
             self.account = nickAccount
-            self.validAccount = True
-        else:
-            self.validAccount = False
 
-    def getSentMessages(self, limit = 10):
+    def getFollowers(self, account = None):
 
-        if self.validAccount:
-            return Message.gql( "WHERE author = :1 ORDER BY date DESC", self.account.key() ).fetch( limit )
-        else:
-            return list()
-
-
-    def getMessages(self, limit = 10):
-
-        if self.validAccount:
-            return Message.gql( "WHERE author IN :1 ORDER BY date DESC", self.account.following ).fetch( limit )
-        else:
-            return list()
-
-
-    def getFollowers(self):
-
-        if self.validAccount:
+        if account:
+            return Account.gql("WHERE following = :1", account.key())
+        elif self.account:
             return Account.gql("WHERE following = :1", self.account.key())
         else:
-            return list()
+            return None
 
+    def getFollowed(self, account = None):
 
-    def getFollowed(self):
-
-        if self.validAccount:
+        if account:
+            return account.following
+        elif self.account:
             return self.account.following
         else:
-            return list()
+            return None
 
+    def isFollowing(self, user, account = None):
 
-    def canFollow(self, user):
-
-        if self.validAccount:
+        if account and user:
             if self.account.key() not in user.getFollowed():
-                return 'possible'
+                return False
             else:
-                return 'unfollow'
+                return True
         else:
-            return ''
+            return None

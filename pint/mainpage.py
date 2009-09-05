@@ -21,7 +21,8 @@ import os
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 
-from pintcore.useraccount import UserAccount
+from pintcore.accountio import AccountIO
+from pintcore.postio import PostRead
 
 from data.models import Account
 from data.models import Message
@@ -29,18 +30,20 @@ from data.models import Message
 class MainPage(webapp.RequestHandler):
 	def get(self):
 
-		user = UserAccount()
+		user = AccountIO()
+		postread = PostRead()
+
 		user.getFromSession()
 
 		# Template values, yay!
-		if user.validAccount:
+		if user.account:
 			template_values = {
-				'messages': user.getMessages(),
+				'messages': postread.getMessages(user.account),
 				'nickname': user.account.nickname
 			}
 		else:
 			template_values = {
-				'messages': None,
+				'messages': postread.getAllMessages(),
 				'nickname': ''
 			}
 

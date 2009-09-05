@@ -3,7 +3,7 @@ window.addEvent('domready', function(){
     /**********************************
      * Composer switcher code
      **********************************/
-/*
+
     var currentComposer = 'text';
     if( window.location.hash != '' )
     {
@@ -13,7 +13,7 @@ window.addEvent('domready', function(){
 
     $('share'+currentComposer).setStyle('visibility', 'visible');
     $(currentComposer+'tab').setStyle('border-color', '#1F1F1F');
-*/
+
 
     var currentComposer = '';
 
@@ -23,7 +23,10 @@ window.addEvent('domready', function(){
             e.stop();
             if( currentComposer != '' )
             {
-                $('share'+currentComposer).tween('opacity', 0);
+                $('share'+currentComposer).morph({
+                    'opacity': 0,
+                    'display': 'none'
+                });
                 $(currentComposer+'tab').morph({
                     'border-color': '#FFFFFF'
                 });
@@ -32,7 +35,10 @@ window.addEvent('domready', function(){
             if( currentComposer != el.rel )
             {
                 currentComposer = el.rel;
-                $('share'+currentComposer).tween('opacity', 1);
+                $('share'+currentComposer).morph({
+                    'opacity': 1,
+                    'display': 'block'
+                });
                 $(currentComposer+'tab').morph({
                     'border-color': '#1F1F1F'
                 });

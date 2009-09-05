@@ -22,7 +22,7 @@
 		</ul>
 		<div id="content">
 			<div id="pageText" class="contentbox">
-				<form action="/post" method="post" id="sharetext">
+				<form action="/post/text" method="post" id="sharetext">
 					<label for="title">Title <i>(optional)</i></label>
 					<br/>
 					<input type="text" name="title" class="big"/>
@@ -37,7 +37,7 @@
 				</form>
 			</div>
 			<div id="pageQuote" class="contentbox">
-				<form action="/post" method="post" id="sharequote">
+				<form action="/post/quote" method="post" id="sharequote">
 					<label for="quote">Quote</label>
 					<br/>
 					<textarea name="quote" id="quoteedit" class="small">{% ifnotequal selection '' %}{{selection}}{% endifnotequal %}</textarea>
@@ -51,7 +51,7 @@
 				</form>
 			</div>
 			<div id="pageLink" class="contentbox">
-				<form action="/post" method="post" id="sharelink">
+				<form action="/post/link" method="post" id="sharelink">
 					<label for="title">Title <i>(optional)</i></label>
 					<br/>
 					<input type="text" name="title" value="{{title}}" />
@@ -71,13 +71,13 @@
 				</form>
 			</div>
 			<div id="pageImage" class="contentbox">
-				<form action="/post" method="post" enctype="multipart/form-data" id="shareimage">
+				<form action="/post/image" method="post" enctype="multipart/form-data" id="shareimage">
 					<label>Image</label>
 					<br/>
 					<input type="text" name="imageurl" id="imageurl"/>
 					<div class="imagebox">
 					{% for image in images %}
-							{{image}}
+						{{image}}
 					{% endfor %}
 						<div class="clear"></div>
 					</div>
@@ -92,7 +92,7 @@
 				</form>
 			</div>
 			<div id="pageMedia" class="contentbox">
-				<form action="/post" method="post" enctype="multipart/form-data" id="sharemedia">
+				<form action="/post/embed" method="post" enctype="multipart/form-data" id="sharemedia">
 					<label for="embedcode">Embed Code</label>
 					<br/>
 					<textarea name="embedcode" class="small"></textarea>

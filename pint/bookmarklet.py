@@ -25,8 +25,9 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 from google.appengine.api import urlfetch
 
-from pintcore.useraccount import UserAccount
+from pintcore.accountio import AccountIO
 from libs.BeautifulSoup import BeautifulSoup
+from libs.BeautifulSoup import BeautifulStoneSoup
 
 from data.models import Account
 from data.models import Message
@@ -36,6 +37,10 @@ class Bookmarklet(webapp.RequestHandler):
 
         shareURL = urllib.unquote(self.request.get('u'))
         shareSelection = urllib.unquote(self.request.get('s'))
+
+        if shareURL.startswith('https'):
+            path = os.path.join(os.path.dirname(__file__), '../views/bookmarklet-exit.html')
+            self.response.out.write(template.render(path,{'message':'Oops! This is a secure page :('}))
 
         shareURLParts = urlparse.urlparse(shareURL)
         if shareURLParts[2] != '':

@@ -3,7 +3,10 @@ version: 3
 runtime: python
 api_version: 1
 
-handlers: 
+inbound_services:
+- xmpp_message
+
+handlers:
 - url: /stylesheets
   static_dir: static/css
   

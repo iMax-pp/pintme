@@ -37,8 +37,8 @@ from pint.avatar      import Avatar
 from pint.image       import GetImage
 from pint.image       import MidImage
 from pint.image       import Thumb
-from pint.feeds         import PersonnalFeed
-from pint.feeds         import GeneralFeed
+from pint.feeds       import PersonnalFeed
+from pint.feeds       import GeneralFeed
 from pint.feeds       import FeedGen
 from pint.lastfm      import LastFmAuth
 from pint.lastfm      import LastFmCallback
@@ -46,6 +46,7 @@ from pint.about       import About
 from pint.suggestions import Suggestions
 from pint.maintenance import Maintenance
 from pint.bookmarklet import Bookmarklet
+from pint.xmpp        import XMPPHandler
 
 webapp.template.register_template_library('data.helpers')
 
@@ -54,6 +55,7 @@ application = webapp.WSGIApplication(
 									  ('/compose', MainPage),
 									  (r'/user/(.*)', Profile),
 									  ('/post', PostMessage),
+									  ('/post/(.*)', PostMessage),
 									  ('/register', Register),
 									  (r'/account/(.*)/(.*)', AccountSettings),
 									  ('/search', Search),
@@ -72,7 +74,8 @@ application = webapp.WSGIApplication(
 									  ('/down', Maintenance),
 									  ('/about', About),
                                       ('/suggestions', Suggestions),
-                                      (r'/share?.*', Bookmarklet)],
+                                      (r'/share?.*', Bookmarklet),
+									  ('/_ah/xmpp/message/chat/', XMPPHandler)],
 									 debug = True)
 
 # Duh, it's the main!
